@@ -1,0 +1,9 @@
+{
+  "name": "web-shop-templatewith-react",
+  "version": "0.0.0",
+  "description": "WebShopTemplatewithReact",
+  "main": "server.js",
+  "author": {
+    "name": "MustafaErgin"
+  }
+}
