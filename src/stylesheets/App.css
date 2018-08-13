@@ -1,0 +1,389 @@
+
+body {
+    padding-top: 8rem !important;
+}
+
+.container {
+    flex-wrap: wrap;
+}
+
+.row{
+    width: 100%;
+}
+
+.navbar {
+    background: #a5e4a5; /* fallback for old browsers */
+    background: -webkit-linear-gradient(right, #a5e4a5, #7ed2ea);
+    background: -moz-linear-gradient(right, #a5e4a5, #7ed2ea);
+    background: -o-linear-gradient(right, #a5e4a5, #7ed2ea);
+    background: linear-gradient(to left, #a5e4a5, #7ed2ea); /* Chrome 10-25, Safari 5.1-6 */
+}
+
+.navbar-toggler {
+    font-size: 15px;
+}
+
+.far, .fa, .fas {
+    font-size: 15px;
+    margin: 0.35rem;
+    padding: 0;
+}
+
+.fa-child {
+    border-bottom: 1.5px solid black;
+    font-size: 12px;
+}
+
+.fa-heart {
+    color: #f1356b;
+}
+
+.fa-user {
+    color: #200cdc;
+}
+
+.fa-shopping-basket {
+    color: blue;
+}
+
+.search_box {
+    justify-content: center;
+}
+
+.search_input:hover {
+    min-width: 100px;
+    border-color: #ccc;
+}
+
+.search_input {
+    background-color: white;
+    border-color: #ccc;
+}
+
+.search_button:hover {
+    background-color: transparent;
+}
+
+.search_button {
+    background-color: white;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-color: #ccc;
+}
+
+.show > .dropdown-menu {
+    display: block;
+    background: linear-gradient(to left, #a5e4a5, #7ed2ea);
+}
+
+.img-fluid {
+    width: 300px;
+    height: 300px;
+    border: 1px solid rgba(0,0,0,.15);
+    z-index: 1;
+}
+
+.login_button {
+    background-color: transparent;
+    border-color: #dddddd;
+    border-radius: 100px;
+}
+
+.btn:hover {
+    background-color: #12cbe2;
+    border-color: #12cbe2;
+}
+
+.signup_button {
+    background-color: #FF7043;
+    border-color: #FF7043;
+    border-radius: 16px;
+}
+
+.favorites_button {
+    background-color: transparent;
+    border-color: transparent;
+    border-radius: 48px;
+}
+
+.myorders_button {
+    background-color: transparent;
+    border-color: transparent;
+    border-radius: 48px;
+}
+
+.box {
+    display: flex;
+    flex-direction: row;
+}
+
+.box :nth-child(1) {
+    order: 1;
+}
+
+.box :nth-child(2) {
+    order: 2;
+}
+
+.box :nth-child(3) {
+    order: 3;
+}
+
+.image_add_ons {
+    position: relative;
+}
+
+.add_to_cart_img:before {
+    top: 13px;
+    right: 17px;
+    position: absolute;
+    content: "\f055";
+    font-family: "FontAwesome";
+    font-size: 25px;
+    color: rgba(60, 58, 58, 0.8);
+    margin: 0;
+    z-index: 2;
+}
+
+.add_to_favorites_img:before {
+    top: 40px;
+    right: 15px;
+    display: inline-block;
+    position: absolute;
+    content: "\f004";
+    font-family: "FontAwesome";
+    font-size: 25px;
+    color: rgba(60, 58, 58, 0.8);
+    margin: 0;
+    z-index: 2;
+}
+
+.fawesome {
+    text-align: right;
+}
+
+#Toys, #Puzzles, #Books, #Smart_Toys {
+    color: #3F51B5;
+    font-size: 14px;
+}
+
+.fa-child {
+    font-size: 12px;
+}
+
+#Category_list {
+    font-size: 16px;
+}
+
+#icons {
+    font-size: 12px;
+    color: black;
+    display: block;
+}
+
+@media screen and (max-width: 351px) {
+    body {
+        padding-top: 12rem !important;
+    }
+
+    .nav_top {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .box :nth-child(1) {
+        order: 1;
+    }
+
+    .box :nth-child(2) {
+        order: 3;
+    }
+
+    .box :nth-child(3) {
+        order: 2;
+    }
+
+    .navbar-brand {
+        display: none;
+    }
+
+    .img_logo {
+        max-width: 30px;
+        height: 30px;
+    }
+
+    .search_input {
+        min-width: 100px;
+    }
+
+    #Category_list {
+        font-size: 12px;
+    }
+
+    #icons {
+        font-size: 0px;
+    }
+
+    .fawesome {
+        text-align: center;
+        justify-content: center;
+    }
+
+    #Toys, #Puzzles, #Books, #Smart_Toys {
+        font-size: 10px;
+    }
+
+    .fa-child {
+        font-size: 8px;
+    }
+
+    .container {
+        padding: 0px;
+    }
+}
+
+@media screen and (min-width: 352px) and (max-width: 576px) {
+
+    body {
+        padding-top: 12rem !important;
+    }
+
+    .box :nth-child(1) {
+        order: 1;
+    }
+
+    .box :nth-child(2) {
+        order: 3;
+    }
+
+    .box :nth-child(3) {
+        order: 2;
+    }
+
+    .nav_top {
+        text-align: center;
+        justify-content: center;
+    }
+
+    .nav_top {
+        text-align: center;
+        justify-content: center;
+    }
+
+    .navbar-brand {
+        display: none;
+    }
+
+    .search_input {
+        min-width: 100px;
+    }
+
+    #Category_list {
+        font-size: 12px;
+    }
+
+    #icons {
+        font-size: 0px;
+    }
+
+    .fawesome {
+        text-align: center;
+        justify-content: center;
+    }
+
+    #Toys, #Puzzles, #Books, #Smart_Toys {
+        font-size: 10px;
+    }
+
+    .fa-child {
+        font-size: 10px;
+    }
+
+    .images {
+        padding-left: 65px;
+        padding-right: 65px;
+    }
+}
+
+@media screen and (min-width: 577px) and (max-width: 767px) {
+    body {
+        padding-top: 12rem !important;
+    }
+
+    .box :nth-child(1) {
+        order: 1;
+    }
+
+    .box :nth-child(2) {
+        order: 3;
+    }
+
+    .box :nth-child(3) {
+        order: 2;
+    }
+
+    #Category_list {
+        font-size: 0px;
+    }
+
+    .search_input {
+        min-width: 50px;
+    }
+
+    .fawesome {
+        text-align: right;
+        justify-content: center;
+    }
+
+    #icons {
+        font-size: 8px;
+    }
+
+    #Toys, #Puzzles, #Books, #Smart_Toys {
+        font-size: 12px;
+    }
+
+    .fa-child {
+        font-size: 12px;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 994px) {
+    body {
+        padding-top: 8rem !important;
+    }
+
+    #Category_list {
+        font-size: 10px;
+    }
+
+    .search_box {
+        justify-content: flex-end;
+        text-align: right;
+    }
+
+    .search_input {
+        min-width: 50px;
+    }
+
+    #icons {
+        font-size: 8px;
+    }
+}
+
+@media screen and (min-width: 995px) {
+    .body {
+        padding-top: 16rem !important;
+    }
+
+    .search_box {
+        padding-top: 10px;
+        justify-content: flex-end;
+        text-align: right;
+    }
+
+    .search_input {
+        min-width: 200px;
+    }
+}

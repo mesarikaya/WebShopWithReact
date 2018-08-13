@@ -1,0 +1,189 @@
+﻿
+body {
+    padding-top: 7rem !important;
+}
+
+.container {
+    flex-wrap: wrap;
+    padding-bottom: 15px;
+}
+
+.row {
+    width: 100%;
+}
+
+.form-check-input {
+    margin-top: .4rem;
+}
+
+.form-check-label {
+    font-size: 14px;
+}
+
+.navbar {
+    background: #a5e4a5; /* fallback for old browsers */
+    background: -webkit-linear-gradient(right, #a5e4a5, #7ed2ea);
+    background: -moz-linear-gradient(right, #a5e4a5, #7ed2ea);
+    background: -o-linear-gradient(right, #a5e4a5, #7ed2ea);
+    background: linear-gradient(to left, #a5e4a5, #7ed2ea); /* Chrome 10-25, Safari 5.1-6 */
+}
+
+.nav-left {
+    text-align: left;
+}
+
+.nav-right {
+    text-align: right;
+}
+
+.home_button, .back_button {
+    background-color: rgba(23,88,121, 0.89);
+    color: white;
+}
+
+.left {
+    border: 2px solid rgba(82, 131, 121, 0.43);
+    border-radius: 16px;
+}
+
+.right {
+    padding: 5px;
+    border: 2px solid rgba(82, 131, 121, 0.43);
+    border-radius: 16px;
+}
+
+.login-left {
+    border-right: solid 1px #e3dbdb;
+}
+
+.login-right {
+    justify-content: center;
+}
+
+#username, #password {
+    max-width: 5rem;
+    text-align: center;
+    font-size: 12px;
+}
+
+#username:hover, #password:hover {
+    border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.sign-in-letter {
+    color: white;
+}
+
+.btn-facebook {
+    color: white;
+    background-color: #3b5998;
+    border-color: #3b5998;
+    width: 110px;
+    height: 40px;
+    margin-right: 5px;
+    margin-bottom: 22px;
+    border-radius: 8px;
+}
+
+.fa-facebook-f {
+    color: white;
+    font-size: 25px;
+    border-radius: 8px;
+}
+
+.btn-group-vertical > .btn:first-child:not(:last-child) {
+    border-radius: 8px;
+}
+
+.btn-google {
+    color: white;
+    background-color: #e71313;
+    border-color: #e71313;
+    height: 40px;
+    width: 110px;
+    border-radius: 8px;
+    margin-top: 0px;
+}
+
+.btn-group-vertical > .btn + .btn, .btn-group-vertical > .btn + .btn-group, .btn-group-vertical > .btn-group + .btn, .btn-group-vertical > .btn-group + .btn-group {
+    margin-top: 0px;
+    margin-left: 0;
+}
+
+.btn-group-vertical > .btn:last-child:not(:first-child) {
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+}
+
+.fa-google {
+    color: white;
+    font-size: 20px;
+    border-radius: 8px;
+}
+
+.fa-check {
+    color: #3aaf85;
+}
+
+.text-secondary {
+    color: #b82029;
+}
+
+#benefits {
+    font-size: 12px;
+}
+
+.input-group-text {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+}
+
+@media screen and (max-width:576px) {
+    body {
+        padding-top: 6rem !important;
+    }
+
+    .container {
+        padding-right: 30px;
+        padding-left: 30px;
+    }
+
+    #username, #password {
+        max-width: 20rem;
+    }
+
+    .navbar-brand {
+        display: none;
+    }
+
+    .btn-group-vertical {
+        flex-direction: row;
+    }
+
+    .left {
+        margin-bottom: 20px;
+    }
+
+    .right {
+        margin-bottom: 20px;
+    }
+
+    .login-left {
+        border-right: none;
+    }
+}
+
+@media screen and (min-width:567px) and (max-width:768px) {
+    body {
+        padding-top: 7rem !important;
+    }
+
+    #username, #password {
+        max-width: 30rem;
+    }
+
+    .navbar-brand {
+        display: none;
+    }
+}
