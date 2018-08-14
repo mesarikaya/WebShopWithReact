@@ -50,20 +50,10 @@ app.use('/api', router);
 // console.log('App routes are', app.routes);
 /** start server */
 
-
-// API calls
-app.get('/api/hello', (req, res) => {
-    res.send({ express: 'Hello From Express' });
-});
 app.listen(port, () => {
     // tslint:disable-next-line:no-console
     console.log(`Server started at port: ${port}`);
 });
-
-
-
-
-
 
 /* 'use strict';
 var http = require('http');

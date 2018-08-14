@@ -9,6 +9,7 @@ import Logo from '.././src/images/Logo.png';
 import '.././src/stylesheets/App.css';
 
 
+
 // const API = 'https://hn.algolia.com/api/v1/search?query=';
 // const DEFAULT_QUERY = 'redux';
 
@@ -51,7 +52,16 @@ class App extends React.Component {
                 // handle success
                 // tslint:disable-next-line:no-console
                 console.log("Inside the images axios", response);
-                // this.setState({ page_data: response.data.hits, isLoading: false });
+
+                if (response.data["0"].Content_Items === "No data" ) {
+                    this.setState({ isLoading: false });
+                }
+                else if (response.status === 503) {
+                    this.setState({ isLoading: false });
+                }
+                else {
+                    this.setState({ page_data: response.data["0"].Content_Items, isLoading: false });
+                }
             })
             .catch(error =>
                 // handle error
