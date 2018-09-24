@@ -57,6 +57,7 @@ interface ImageListState {
 
 export interface ImageProps {
     Author: string;
+    Description: string;
     Group: string;
     Image: string;
     key: string;
@@ -68,6 +69,7 @@ export interface ImageProps {
 
 interface ImageState {
     Author: string;
+    Description: string;
     Group: string;
     Image: string;
     key: string;
@@ -164,6 +166,7 @@ class App extends React.Component<Props, State> {
                     Reserved={data[obj].Reserved}
                     Reserved_Until={data[obj].Reserved_Until}
                     Image={data[obj].Image}
+                    Description={data[obj].Description}
                 />);
             }
         }
@@ -358,14 +361,17 @@ class Image extends React.Component<ImageProps, ImageState> {
     }
 
     public render() {
-        let defaultPicture = './images/Books/0-1/At_the_zoo.png';
+        // Set default picture
+        let picture = './images/Books/0-1/At_the_zoo.png';
+
+        // Get teh appropriate picture dynamically
         if (this.props.Type === "Smart Toys") {
             if (typeof this.props.Type !== 'undefined' && typeof this.props.Image !== 'undefined') {
-                defaultPicture = './images/' + this.props.Type + '/' + this.props.Image;
+                picture = './images/' + this.props.Type + '/' + this.props.Image;
             }
         } else {
             if (typeof this.props.Type !== 'undefined' && typeof this.props.Group !== 'undefined' && typeof this.props.Image !== 'undefined') {
-                defaultPicture = './images/' + this.props.Type + '/' + this.props.Group + '/' + this.props.Image;
+                picture = './images/' + this.props.Type + '/' + this.props.Group + '/' + this.props.Image;
             }
         }
 
@@ -375,7 +381,7 @@ class Image extends React.Component<ImageProps, ImageState> {
             
             <div className="col-12 col-sm-6 col-md-3 text-center p-2 image_add_ons">
                 <a className="" onClick={(e) => { this.openProductPage(e, this.props) }}>
-                    <img className="img-fluid rounded" src={require(`${defaultPicture}`)} alt="test" />
+                    <img className="img-fluid rounded" src={require(`${picture}`)} alt="test" />
                 </a>
                 <a className="add_to_cart_img" href="/add_to_basket" />
                 <a className="add_to_favorites_img" href="/add_to_favorites" />

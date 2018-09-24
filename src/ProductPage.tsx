@@ -7,8 +7,69 @@ import 'font-awesome/css/font-awesome.min.css';
 import Logo from '.././src/images/Logo.png';
 import '.././src/stylesheets/ProductPage.css';
 
-class ProductPage extends React.Component {
+import createBrowserHistory from 'history/createBrowserHistory';
+
+const history = createBrowserHistory({ forceRefresh: true });
+
+export interface ProductPageProps {
+    Author: string;
+    Description: string;
+    Group: string;
+    Image: string;
+    key: string;
+    Name: string;
+    Reserved: string;
+    Reserved_Until: string;
+    Type: string;
+};
+
+interface ProductPageState {
+    Author: string;
+    Description:string;
+    Group: string;
+    Image: string;
+    key: string;
+    Name: string;
+    Reserved: string;
+    Reserved_Until: string;
+    Type: string;
+};
+
+
+
+class ProductPage extends React.Component<ProductPageProps, ProductPageState> {
+    public state: ProductPageState;
+
+    constructor(props: ProductPageProps) {
+        super(props);
+        this.state = {
+            Author: history.location.state.Author,
+            Description: history.location.state.Description,
+            Group: history.location.state.Group,
+            Image: history.location.state.Image,
+            Name: history.location.state.Name,
+            Reserved: history.location.state.Reserved,
+            Reserved_Until: history.location.state.Reserved_Until,
+            Type: history.location.state.Type,
+            key: history.location.state.key,
+        };
+    }
+
     public render() {
+        // Set default picture
+        let picture = './images/Books/0-1/At_the_zoo.png';
+
+        // Get teh appropriate picture dynamically
+        if (this.state.Type === "Smart Toys") {
+            if (typeof this.state.Type !== 'undefined' && typeof this.state.Image !== 'undefined') {
+                picture = './images/' + this.state.Type + '/' + this.state.Image;
+            }
+        } else {
+            if (typeof this.state.Type !== 'undefined' && typeof this.state.Group !== 'undefined' && typeof this.state.Image !== 'undefined') {
+                picture = './images/' + this.state.Type + '/' + this.state.Group + '/' + this.state.Image;
+            }
+        }
+
         return (
         <div className="ProductPage">
            {/*<!-- Navigation Bar -->*/}
@@ -125,16 +186,15 @@ class ProductPage extends React.Component {
                 <div className="row">
                     <div className="col-12 col-sm-4 col-md-4 text-center p-2">
                         <a className="" href="/product_page">
-                            <img className="img-fluid rounded" src={require('./images/Books/0-1/At_the_zoo.png')} alt="testing" />
+                            <img className="img-fluid rounded" src={require(`${picture}`)} alt="testing" />
                         </a>
                     </div>
-                    <div className="col-12 col-sm-8 col-md-8">
-                        <h4 className="text-center mb-3" id="product_name">Big Honey Hunt</h4>
+                        <div className="col-12 col-sm-8 col-md-8">
+                            <h4 className="text-center mb-3" id="product_name">{this.state.Name}</h4>
                         <div className="product_details">
-                            <p> <strong>Author:</strong> <span id="Author">Author details</span></p>
-                            <p> <strong>Age Group:</strong> <span id="Age_Group">Age Group</span></p>
-                            <p> <strong>Description:</strong> <span id="Description">Serious silliness for all ages. Artist Sandra Boynton is back and better than ever with completely redrawn versions of her multi-million selling board books. These whimsical and hilarious books, featuring nontraditional texts and her famous animal characters, have been printed on thick board pages, and are sure to educate and entertain children of all ages.
-    </span></p>
+                                <p> <strong>Author:</strong> <span id="Author">{this.state.Author}</span></p>
+                                <p> <strong>Age Group:</strong> <span id="Age_Group">{this.state.Group}</span></p>
+                                <p> <strong>Description:</strong> <span id="Description">{this.state.Description}</span></p>
                         </div>
 
                         <div className="row justify-content-center">
