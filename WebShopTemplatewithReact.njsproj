@@ -22243,6 +22243,7 @@
     <Content Include="src\stylesheets\App.css" />
     <Content Include="src\index.css" />
     <Content Include="src\logo.svg" />
+    <Content Include="src\stylesheets\ProductPage.css" />
     <Content Include="tsconfig.json" />
     <Content Include="tsconfig.prod.json" />
     <Content Include="tsconfig.test.json" />
@@ -26199,6 +26200,7 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\index.tsx" />
+    <TypeScriptCompile Include="src\ProductPage.tsx" />
     <TypeScriptCompile Include="src\registerServiceWorker.ts" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->

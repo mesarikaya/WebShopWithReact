@@ -14,7 +14,6 @@ import '.././src/stylesheets/Account.css';
 library.add(faUser);
 library.add(faKey);
 
-
 class Account extends React.Component {
     public render() {
         return (<div className="Account">

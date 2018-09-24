@@ -8,4 +8,4 @@ module.exports = (router) => {
     // console.log("in the index router: ", router);
     contents(router);
     // article(router)
-}
+};

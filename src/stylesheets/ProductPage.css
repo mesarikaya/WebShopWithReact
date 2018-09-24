@@ -1,13 +1,13 @@
-
-body  {
-    padding-top: 4rem !important;
+﻿
+body {
+    padding-top: 8rem !important;
 }
 
 .container {
     flex-wrap: wrap;
 }
 
-.row{
+.row {
     width: 100%;
 }
 
@@ -117,17 +117,17 @@ body  {
     flex-direction: row;
 }
 
-.box :nth-child(1) {
-    order: 1;
-}
+    .box :nth-child(1) {
+        order: 1;
+    }
 
-.box :nth-child(2) {
-    order: 2;
-}
+    .box :nth-child(2) {
+        order: 2;
+    }
 
-.box :nth-child(3) {
-    order: 3;
-}
+    .box :nth-child(3) {
+        order: 3;
+    }
 
 .image_add_ons {
     position: relative;

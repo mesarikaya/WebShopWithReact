@@ -31,6 +31,8 @@
     "ordered-imports": [
       true
     ],
-    "no-console": 0
-  }
+    "no-console": 0,
+    "jsx-no-lambda": false
+  },
+  "max-classes-per-file": [ true, 5, "exclude-class-expressions" ]
 }

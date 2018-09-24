@@ -1,1 +1,3 @@
 C:\Users\MustafaErgin\source\repos\WebShopTemplatewithReact\obj\Debug\WebShopTemplatewithReact.njsprojAssemblyReference.cache
+C:\Users\MustafaErgin\source\repos\WebShopTemplatewithReact\obj\Debug\WebShopTemplatewithReact.njsproj.CoreCompileInputs.cache
+C:\Users\MustafaErgin\source\repos\WebShopTemplatewithReact\bin\Microsoft.NodejsTools.WebRole.dll
