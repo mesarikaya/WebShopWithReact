@@ -1,7 +1,9 @@
 ﻿import * as React from 'react';
+import { connect } from 'react-redux';
+import { RouteComponentProps } from "react-router";
+import { withRouter } from 'react-router-dom';
 
 // Import bootstrap css
-
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faKey } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
@@ -14,9 +16,102 @@ import '.././src/stylesheets/Account.css';
 library.add(faUser);
 library.add(faKey);
 
-class Account extends React.Component {
+// Import necessary code from other modules
+import { store } from './redux/store';
+
+import * as actions from '.././src/redux/actions/PageContentActions';
+import { ImageContent, StoreState } from '.././src/redux/types/storeState';
+
+import createBrowserHistory from 'history/createBrowserHistory';
+import { Dispatch } from 'redux';
+
+const history = createBrowserHistory({ forceRefresh: true });
+
+// These props are provided by the router
+interface PathProps {
+    history: any;
+    location: any;
+    match: any;
+}
+
+export interface AccountPageProps {
+    synchronizePageData(pageData: ImageContent[]): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
+};
+
+interface AccountPageState {
+    originatedPage: string;
+};
+
+// Create mapToState and mapDispatch for Redux
+export function mapStateToProps(state: StoreState & AccountPageState, OwnProps:AccountPageProps & RouteComponentProps<PathProps>) {
+    return {
+        error: state.error,
+        images: state.images,
+        isLoading: state.isLoading,
+        pageData: state.pageData,
+    }
+}
+
+export function mapDispatchToProps(dispatch: any) {
+    return {
+        synchronizePageData: (pageData: ImageContent[]) => dispatch(actions.SynchronizePageData(pageData)),
+    }
+}
+
+class Account extends React.Component < AccountPageProps & RouteComponentProps < PathProps >, AccountPageState > {
+    public state: AccountPageState & StoreState;
+
+    constructor(props: AccountPageProps & RouteComponentProps<PathProps>) {
+        super(props);
+        this.state = {
+            error: history.location.state.error,
+            images: history.location.state.images,
+            isLoading: history.location.state.isLoading,
+            originatedPage: history.location.state.originatedPage,
+            pageData: history.location.state.pageData,
+        };
+    }
+
+    public componentDidMount() {
+        // Send all the data on component load
+        this.props.synchronizePageData(this.state.pageData);
+    }
+
+    // Action for back button - Return to the previous page
+    public goBack(e: any) {
+        // Deactivate default behavior
+        if (e !== null) { e.preventDefault(); }
+        // tslint:disable-next-line:no-console
+        console.log("Calling the previous");
+        const currAppState = store.getState();
+        const dataToShare = {
+            'error': currAppState.error,
+            'images': currAppState.images,
+            'isLoading': true,
+            'pageData': currAppState.pageData,
+        };
+        history.push(this.state.originatedPage, dataToShare);
+    }
+
+    public openSignupPage(e: any) {
+        // Deactivate default behavior
+        if (e !== null) { e.preventDefault(); }
+        // tslint:disable-next-line:no-console
+        console.log("Calling the previous");
+        const currAppState = store.getState();
+        const dataToShare = {
+            'error': currAppState.error,
+            'images': currAppState.images,
+            'isLoading': true,
+            'pageData': currAppState.pageData,
+        };
+        history.push('/signup', dataToShare);
+    }
+
+
+
     public render() {
-        return (<div className="Account">
+        return (<div className="Account mt-5">
             {/*<!-- Navigation Bar -->*/}
             <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top">
 
@@ -50,7 +145,7 @@ class Account extends React.Component {
             <section id="box">
                 <div className="container pt-4">
                     <div className="row justify-content-around">
-                        <div className="col-12 col-sm-12 col-md-5 left mx-auto">
+                        <div className="col-12 col-sm-12 col-md-5 left text-center">
                             <h2 className="text-uppercase text-secondary mt-2 mb-0 text-center">Sign in</h2>
                             <hr className="clearfix pt-2" />
                             <div className="row justify-content-center">
@@ -64,9 +159,11 @@ class Account extends React.Component {
                                             <div className="control-group">
                                                 <div className="form-group floating-label-form-group controls mb-0 pb-2">
                                                     <div className="input-group text-center">
-                                                        <input className="form-control py-2 border-right-0 border" id="username" type="text" placeholder="Username" name="username" required={true}  data-validation-required-message="Please enter username." />
-                                                        <div className="input-group-addon" style={{ background: 'white' }}>
-                                                            <div className="input-group-text"><FontAwesomeIcon icon="user" /></div>
+                                                        <input className="form-control py-2 border-right-0 border" id="username"
+                                                            type="text" placeholder="Username" name="username" required={true}
+                                                            data-validation-required-message="Please enter username." />
+                                                        <div className="input-group-addon userIcon" style={{ background: 'white' }}>
+                                                            <div className="input-group-text border-0 border" style={{ background: 'white' }}><FontAwesomeIcon icon="user" /></div>
                                                         </div>
                                                     </div>
                                                     <p className="help-block text-danger"/>
@@ -75,9 +172,11 @@ class Account extends React.Component {
                                             <div className="control-group">
                                                 <div className="form-group floating-label-form-group controls mb-0 pb-2">
                                                     <div className="input-group text-center">
-                                                        <input className="form-control py-2 border-right-0 border" id="password" type="password" name="password" placeholder="Password" required={true} data-validation-required-message="Please enter your password." />
-                                                        <div className="input-group-addon" style={{ background: 'white' }}>
-                                                            <div className="input-group-text"><FontAwesomeIcon icon="key" /></div>
+                                                        <input className="form-control py-2 border-right-0 border" id="password"
+                                                            type="password" name="password" placeholder="Password" required={true}
+                                                            data-validation-required-message="Please enter your password."/>
+                                                        <div className="input-group-addon passwordIcon" style={{ background: 'white' }}>
+                                                            <div className="input-group-text border-0 border" style={{ background: 'white' }}><FontAwesomeIcon icon="key" aria-hidden="true"/></div>
                                                         </div>
                                                     </div>
                                                     <p className="help-block text-danger"/>
@@ -86,14 +185,15 @@ class Account extends React.Component {
                                             <div className="form-group">
                                                 <div className="form-check ml-3">
                                                     <input className="form-check-input" type="checkbox" value="" id="remember_me" />
-                                                    <label className="form-check-label" htmlFor="remember_me" style={{ paddingLeft: '0px' }}>
+                                                    <label className="form-check-label" htmlFor="remember_me" style={{ paddingLeft: '0px', fontSize: '10px' }}>
                                                         Remember me
                                                     </label>
                                                 </div>
                                             </div>
                                             <div id="success"/>
                                             <div className="form form-group">
-                                                <button type="submit" className="btn btn-primary btn-xl" id="sendLoginRequestButton" value="Send">Sign in</button>
+                                                <button type="submit" className="btn btn-primary btn-xl"
+                                                    id="sendLoginRequestButton" value="Send">Sign in</button>
                                             </div>
                                         </form>
                                     </div>
@@ -105,10 +205,12 @@ class Account extends React.Component {
                                     <div className="row justify-content-center">
                                         <div className="btn-group-vertical">
                                             <button className="btn btn-sm btn-social btn-facebook">
-                                                <i className="fab fa-facebook-f" aria-hidden="true"/>  <a className="sign-in-letter ml-2">    Sign-in</a>
+                                                <i className="fab fa-facebook-f" aria-hidden="true" />
+                                                <a href='api/auth/facebook' className="sign-in-letter">  Sign-in</a>
                                             </button>
                                             <button className="btn btn-sm btn-social btn-google">
-                                                <i className="fab fa-google" aria-hidden="true"/> <a className="sign-in-letter">Sign-in</a>
+                                                <i className="fab fa-google" aria-hidden="true" />
+                                                <a href='/api/auth/google' className="sign-in-letter">  Sign-in</a>
                                             </button>
                                         </div>
                                     </div>
@@ -116,13 +218,16 @@ class Account extends React.Component {
                             </div>
                         </div>
                         <div className="col-12 col-sm-12 col-md-5 right">
-                            <h2 className="text-uppercase text-secondary mt-2 mb-0 text-center" >Not a member?</h2>
+                            <h2 className="text-uppercase text-secondary mt-2 mb-0 text-center">Not a member?</h2>
                             <hr className="clearfix pt-2" />
 
-                            <div className="row justify-content-center" style={{ marginBottom: '15px' }}>
-                                <p> Register and enjoy the personal services!</p>
+                            <div className="row justify-content-center" style={{ marginBottom: '0px', marginTop: '1px', padding:0 }}>
+                                <p> Register now! </p>
                             </div>
-                            <div className="row justify-content-center" style={{ marginBottom: '5px' }}>
+                            <div className="row justify-content-center" style={{ marginBottom: '5px', marginTop: '2px' }}>
+                                <p> Enjoy our personalized services!</p>
+                            </div>
+                            <div className="row justify-content-center" style={{ marginBottom: '0px' }}>
                                 <div className="signup_benefits ml-3">
                                     <p id="benefits"><i className="fas fa-check"/> Quick and fast order</p>
                                     <p id="benefits"><i className="fas fa-check"/> List of favorite products</p>
@@ -132,7 +237,7 @@ class Account extends React.Component {
                             </div>
                             <div className="row justify-content-center" >
                                 <a className="ml-2" href="/signup">
-                                    <button className="btn btn-success" type="button">
+                                    <button className="btn btn-success" type="button" onClick={(e) => { this.openSignupPage(e) }}>
                                         <strong id="signup_button">Sign up</strong>
                                     </button>
                                 </a>
@@ -146,4 +251,4 @@ class Account extends React.Component {
     }
 }
 
-export default Account;
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Account));

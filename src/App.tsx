@@ -1,59 +1,54 @@
-import axios from 'axios';
-
+// Import necessary packages
 import * as React from 'react';
-
-import createBrowserHistory from 'history/createBrowserHistory';
-
-const history = createBrowserHistory({ forceRefresh: true });
+import { connect } from 'react-redux';
+import { RouteComponentProps } from "react-router";
+import { withRouter } from 'react-router-dom';
+import { Dispatch } from "redux";
 
 // Import bootstrap css
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import Logo from '.././src/images/Logo.png';
 import '.././src/stylesheets/App.css';
 
-// Get the images section to feed the images
-// var images = document.querySelector("#images");
+import createBrowserHistory from 'history/createBrowserHistory';
+const history = createBrowserHistory({ forceRefresh: true });
 
-// const API = 'https://hn.algolia.com/api/v1/search?query=';
-// const DEFAULT_QUERY = 'redux';
+// Import necessary code from other modules
+import * as actions from '.././src/redux/actions/PageContentActions';
+import { ImageContent, StoreState } from '.././src/redux/types/storeState';
 
+import { store } from './redux/store';
+
+// CREATE Prop and State interfaces
 // Set the default Props
 export interface Props {
     error: any;
     images: string;
     isLoading: boolean;
-    pageData: any;
+    pageData: ImageContent[];
+    onGetContent(e: any, type: string, ageGroup: string): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
+    synchronizePageData(pageData: ImageContent[]): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
 };
 
-interface State {
-    error: any;
-    images: string;
-    isLoading: boolean;
-    pageData: any;
-};
-
-/* export interface Contents {
-    Type: any;
-    Name: any;
-    Author: any;
-    Group: any;
-    Reserved: any;
-    Reserved_Until: any;
-} */
+// These props are provided by the router
+interface PathProps {
+    history: any;
+    location: any;
+    match: any;
+}
 
 interface ImageListProps {
-    pageData: any;
+    pageData: ImageContent[];
     rows: any;
+    history: any;
 };
-
 
 interface ImageListState {
-    pageData: any;
+    pageData: ImageContent[];
     rows: any;
+    history: any;
 };
-
 
 export interface ImageProps {
     Author: string;
@@ -79,79 +74,59 @@ interface ImageState {
     Type: string; 
 };
 
-class App extends React.Component<Props, State> {
-    public state: State;
+// Create mapToState and mapDispatch for Redux
+export function mapStateToProps(state: StoreState, OwnProps: Props & RouteComponentProps<PathProps>) {
+    return {
+        error: state.error,
+        images: state.images,
+        isLoading: state.isLoading,
+        pageData: state.pageData,
+    }
+}
 
-    constructor(props: Props) {
+export function mapDispatchToProps(dispatch: any) {
+    return {
+        onGetContent: (e: any, type: string, ageGroup: string) => dispatch(actions.UpdatePageContent(e, type, ageGroup)),
+        synchronizePageData: (pageData: ImageContent[]) => dispatch(actions.SynchronizePageData(pageData)),
+    }
+}
+
+// Create App component 
+class App extends React.Component<Props & RouteComponentProps<PathProps>, StoreState> {
+  
+    constructor(props: Props & RouteComponentProps<PathProps> ) {
         super(props);
 
-        this.state = {
-            error: null,
-            images: "",
-            isLoading: false,
-            pageData: [{ Type: "", Name: "", Author: "", Group: "", Reserved: "", Reserved_Until: ""}]        
-        };
     }
 
     public componentDidMount() {
-        // tslint:disable-next-line:no-console
-        console.log("In the axios get call");
-        this.setState({
-            error: null,
-            images: "",
-            isLoading: false,
-            pageData: [{ Type: "", Name: "", Author: "", Group: "", Reserved: "", Reserved_Until: "" }]
-        });
+        // Check if there is already content on the store state for pageData
+        const content = store.getState().pageData;
+        const historyState = history.location.state;
 
-        // Get all the images for the page
-        this.getImages(null, "allItems", "all");
+        // If the page is opened back with goBack
+        if (historyState !== undefined && historyState.pageData !== undefined) {
+            this.props.synchronizePageData(history.location.state.pageData);
+        }
+        else if (content === undefined || content.length === 0 || content["0"].Type === "") {
+            // If no content is in the state, load all the items
+            this.props.onGetContent(null, "allItems", "all");
+        }
+        else { // Otherwise load what is in the current store state
+            this.props.synchronizePageData(store.getState().pageData);
+        }
     }
 
-    public getImages(e: any, type: string, ageGroup: string) {
-        if (e !== null) { e.preventDefault(); }
-
-        // tslint:disable-next-line:no-console
-        console.log('The link was clicked.', 'Requesting: ' , type, "and", e);
-        // Get all the images for the page
-
-        /* if (type === "smart_toys") {
-            e.target.collapse('hide');
-        } */
-        const params = new URLSearchParams();
-        params.append('searchType', type);
-        params.append('ageGroup', ageGroup);
-
-        axios.get('/api/images',{
-                params
-            })
-            .then(response => {
-                // handle success
-                // tslint:disable-next-line:no-console
-                console.log("RELATED TYPE Inside the images axios", response);
-
-                if (response.data.result === "No data") {
-                    this.setState({ isLoading: false });
-                }
-                else if (response.status === 503) {
-                    this.setState({ isLoading: false });
-                }
-                else {
-                    this.setState({ pageData: response.data.result, isLoading: false });
-                }
-            })
-            .catch(error =>
-                // handle error
-                // tslint:disable-next-line:no-console
-                console.log("Error in get is:", error.response)
-            )
-            .then(() =>
-                // tslint:disable-next-line:no-console
-                console.log("state:", this.state)
-            );
-    };
+    /* public componentDidMount() {
+        // Send all the data on component load
+        if (this.props.pageData === undefined || this.props.pageData.length === 0 || this.props.pageData["0"].Type === "") {
+            this.props.onGetContent(null, "allItems", "all");
+        }
+    } */
 
     public setContent(data: any) {
         // Get all the items and set the image content
+        // tslint:disable-next-line:no-console
         let count = 0;
         const rows = [];
         for (const obj in data) {
@@ -173,12 +148,31 @@ class App extends React.Component<Props, State> {
         return rows;
     }
 
+    public openAccountPage(e: any) {
+        // Deactivate default behavior
+        if (e !== null) { e.preventDefault(); }
+        // tslint:disable-next-line:no-console
+        console.log("Calling the previous");
+
+        const currAppState = store.getState();
+        const dataToShare = {
+            'error': currAppState.error,
+            'images': currAppState.images,
+            'isLoading': true,
+            'pageData': currAppState.pageData,
+        };
+        // tslint:disable-next-line:no-console
+        console.log("Data to share is: ", dataToShare);
+        history.push('account', dataToShare);
+    }
+
     public render() {
-        const rows = this.setContent(this.state.pageData);
+        const rows = this.setContent(this.props.pageData);
+
+        // const { match, location, history } = this.props;
 
         // tslint:disable-next-line:no-console
-        // console.log("Rows are:", rows);
-
+        // console.log("Rows are:", rows, match,history, location);
         return (
             <div className="App">
                 {/* <!- Navigation Bar --> */}
@@ -204,12 +198,12 @@ class App extends React.Component<Props, State> {
                                                         <strong id="Books">Books</strong>
                                                     </a>
                                                     <div className="dropdown-menu mx-auto" aria-labelledby="navbarDropdown">
-                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getImages(e, "Books", "All") }}><i className="fas fa-child"> All</i></a>
-                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getImages(e, "Books", "0-1") }}><i className="fas fa-child"> 0-1 year</i></a>
-                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getImages(e, "Books", "1-2") }}><i className="fas fa-child"> 1-2 years</i></a>
-                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getImages(e, "Books", "2-3") }}><i className="fas fa-child"> 2-3 years</i></a>
-                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getImages(e, "Books", "3-4") }}><i className="fas fa-child"> 3-4 years</i></a>
-                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getImages(e, "Books", "4-6") }}><i className="fas fa-child"> 4-6 years</i></a>
+                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.props.onGetContent(e, "Books", "All") }}><i className="fas fa-child"> All</i></a>
+                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.props.onGetContent(e, "Books", "0-1") }}><i className="fas fa-child"> 0-1 year</i></a>
+                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.props.onGetContent(e, "Books", "1-2") }}><i className="fas fa-child"> 1-2 years</i></a>
+                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.props.onGetContent(e, "Books", "2-3") }}><i className="fas fa-child"> 2-3 years</i></a>
+                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.props.onGetContent(e, "Books", "3-4") }}><i className="fas fa-child"> 3-4 years</i></a>
+                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.props.onGetContent(e, "Books", "4-6") }}><i className="fas fa-child"> 4-6 years</i></a>
                                                     </div>
                                                 </li>
                                             </div>
@@ -220,12 +214,12 @@ class App extends React.Component<Props, State> {
                                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><strong id="Toys">Toys</strong>
                                                     </a>
                                                     <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getImages(e, "Toys", "All") }}><i className="fas fa-child"> All</i></a>
-                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getImages(e, "Toys", "0-1") }}><i className="fas fa-child"> 0-1 year</i></a>
-                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getImages(e, "Toys", "1-2") }}><i className="fas fa-child"> 1-2 years</i></a>
-                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getImages(e, "Toys", "2-3") }}><i className="fas fa-child"> 2-3 years</i></a>
-                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getImages(e, "Toys", "3-4") }}><i className="fas fa-child"> 3-4 years</i></a>
-                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getImages(e, "Toys", "4-6") }}><i className="fas fa-child"> 4-6 years</i></a>
+                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.props.onGetContent(e, "Toys", "All") }}><i className="fas fa-child"> All</i></a>
+                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.props.onGetContent(e, "Toys", "0-1") }}><i className="fas fa-child"> 0-1 year</i></a>
+                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.props.onGetContent(e, "Toys", "1-2") }}><i className="fas fa-child"> 1-2 years</i></a>
+                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.props.onGetContent(e, "Toys", "2-3") }}><i className="fas fa-child"> 2-3 years</i></a>
+                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.props.onGetContent(e, "Toys", "3-4") }}><i className="fas fa-child"> 3-4 years</i></a>
+                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.props.onGetContent(e, "Toys", "4-6") }}><i className="fas fa-child"> 4-6 years</i></a>
                                                     </div>
                                                 </li>
                                             </div>
@@ -235,18 +229,18 @@ class App extends React.Component<Props, State> {
                                                     <a className="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button"
                                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ><strong id="Puzzles">Puzzles</strong></a>
                                                     <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getImages(e, "Puzzles", "All") }}><i className="fas fa-child"> All</i></a>
-                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getImages(e, "Puzzles", "1-2") }}><i className="fas fa-child"> 1-2 years</i></a>
-                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getImages(e, "Puzzles", "2-3") }}><i className="fas fa-child"> 2-3 years</i></a>
-                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getImages(e, "Puzzles", "3-4") }}><i className="fas fa-child"> 3-4 years</i></a>
-                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getImages(e, "Puzzles", "4-6") }}><i className="fas fa-child"> 4-6 years</i></a>
+                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.props.onGetContent(e, "Puzzles", "All") }}><i className="fas fa-child"> All</i></a>
+                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.props.onGetContent(e, "Puzzles", "1-2") }}><i className="fas fa-child"> 1-2 years</i></a>
+                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.props.onGetContent(e, "Puzzles", "2-3") }}><i className="fas fa-child"> 2-3 years</i></a>
+                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.props.onGetContent(e, "Puzzles", "3-4") }}><i className="fas fa-child"> 3-4 years</i></a>
+                                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.props.onGetContent(e, "Puzzles", "4-6") }}><i className="fas fa-child"> 4-6 years</i></a>
                                                     </div>
                                                 </li>
                                             </div>
 
                                             <div className="col-6 col-sm-3 category_item">
                                                 <li className="nav-item dropdown">
-                                                    <a className="nav-link" role="button" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getImages(e,"Smart Toys", "all") }}><strong id="Smart_Toys">Smart Toys</strong></a>
+                                                    <a className="nav-link" role="button" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.props.onGetContent(e,"Smart Toys", "all") }}><strong id="Smart_Toys">Smart Toys</strong></a>
                                                 </li>
                                             </div>
                                         </div>
@@ -261,7 +255,7 @@ class App extends React.Component<Props, State> {
                                         <div className="input-group">
                                             <input type="search" className="form-control py-2 border-right-0 border search_input" placeholder="Search" aria-label="search" aria-describedby="search-form" />
                                             <div className="input-group-append">
-                                                <button className="btn search_button btn-outline-secondary border-left-0 border" type="submit"><i className="fas fa-search"/></button>
+                                                <button className="btn btn-sm search_button btn-outline-secondary border-0 border" type="submit" style={{ background: 'white' }}><i className="fas fa-search"/></button>
                                             </div>
                                         </div>
                                     </form>
@@ -269,7 +263,7 @@ class App extends React.Component<Props, State> {
                             </div>
 
                             <div className="col-12 col-sm-8 col-md-4 fawesome" >
-                                <a href="/account">
+                                <a onClick={(e) => { this.openAccountPage(e) }}>
                                     <button className="btn btn-sm login_button m-2"><i className="fas fa-user-plus"><strong id="icons"> Log in</strong></i></button>
                                 </a>
                                 {/* <!--<button className="btn btn-sm signup_button"><i className="far fa-user"> <strong id="icons"> Sign up</strong></i></button>--> */}
@@ -287,7 +281,7 @@ class App extends React.Component<Props, State> {
                 </nav>
 
                 <div className="container">
-                    <ImageList pageData={this.state.pageData} rows={rows} />
+                    <ImageList pageData={this.props.pageData} rows={rows} history={this.props.history} />
                 </div>
 
             </div>
@@ -297,19 +291,12 @@ class App extends React.Component<Props, State> {
 
 
 class ImageList extends React.Component<ImageListProps, ImageListState> {
-    public state: ImageListState;
 
     constructor(props: ImageListProps) {
         super(props);
-
-        // tslint:disable-next-line:no-console
-        // console.log("Here are the keys 2:", this.props.rows);
     }
 
     public render() {
-        // Set the Image data of the page
-        // const rows = this.setContent(this.props.pageData);
-
 
         // Send the Image List items to the Image component
         return (
@@ -319,45 +306,49 @@ class ImageList extends React.Component<ImageListProps, ImageListState> {
 }
 
 class Image extends React.Component<ImageProps, ImageState> {
+    public state: ImageState;   
+
     constructor(props: ImageProps) {
         super(props);
+        this.state = {
+            Author: this.props.Author,
+            Description: this.props.Description,
+            Group: this.props.Group,
+            Image: this.props.Image,
+            Name: this.props.Name,
+            Reserved: this.props.Reserved,
+            Reserved_Until: this.props.Reserved_Until,
+            Type: this.props.Type,
+            key: this.props.key
+        };
     }
-    /*public componentDidMount() {
+    public componentDidMount() {
         this.setState({
-            Author: this.state.Author, Group: this.state.Group,
+            Author: this.state.Author,
+            Group: this.state.Group,
             Image: this.state.Image, 
             Name: this.state.Name, Reserved: this.state.Reserved,
             Reserved_Until: this.state.Reserved_Until, Type: this.state.Type, key: this.state.key
         });
 
         // tslint:disable-next-line:no-console
-        console.log("Here are the image locs:", './images/' + this.props.Type + '/' + this.state.Group + '/' + this.state.Image);
-    }*/
-    public openProductPage(e: any, data: any) {
+        // console.log("Here are the image locs:", './images/' + this.props.Type + '/' + this.state.Group + '/' + this.state.Image);
+    }
+    public openProductPage(e: any, imageData: any) {
         // Deactivate default behavior
         if (e !== null) { e.preventDefault(); }
-
-        history.push('/productPage/' + data.Name, data );
-
         // tslint:disable-next-line:no-console
-        console.log("history", history.location);
-
-        // Call the product page URI
-        /* axios.get('/api/product')
-            .then(response => {
-                // handle success
-                // tslint:disable-next-line:no-console
-                console.log("OPENING THE PRODUCT PAGE", response);
-            })
-            .catch(error =>
-                // handle error
-                // tslint:disable-next-line:no-console
-                console.log("Error in getting the PRODUCT PAGE is:", error.response)
-            )
-            .then(() =>
-                // tslint:disable-next-line:no-console
-                console.log("state:", this.state)
-            ); */
+        console.log("Calling the product page");
+        const currAppState = store.getState();
+        const dataToShare = {
+            'error': currAppState.error,
+            'imageData': imageData,
+            'images': currAppState.images,
+            'isLoading': true,
+            'originatedPage': '/',
+            'pageData': currAppState.pageData,
+        };
+        history.push('/productPage/' + imageData.Name, dataToShare);
     }
 
     public render() {
@@ -390,4 +381,4 @@ class Image extends React.Component<ImageProps, ImageState> {
     }
 }
 
-export default App;
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

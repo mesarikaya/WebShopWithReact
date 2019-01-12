@@ -1,6 +1,7 @@
 ﻿// server/routes/index.js
 
 const contents = require(process.cwd() + '/server/routes/content.js');
+const users = require(process.cwd() + '/server/routes/user.js');
 // const article = require('./article')
 
 // Disperse router to other function specific routers

@@ -1,8 +1,14 @@
-
-body  {
-    padding-top: 4rem !important;
+.App {
+    margin-top: 7rem !important;
 }
 
+
+.input-group-text {
+    padding-top: 0rem;
+    padding-right: 0.75rem;
+    padding-bottom: 0rem;
+    padding-left: 0.75rem;
+}
 .container {
     flex-wrap: wrap;
 }
@@ -83,12 +89,6 @@ body  {
     z-index: 1;
 }
 
-.login_button {
-    background-color: transparent;
-    border-color: #dddddd;
-    border-radius: 100px;
-}
-
 .btn:hover {
     background-color: #12cbe2;
     border-color: #12cbe2;
@@ -98,6 +98,12 @@ body  {
     background-color: #FF7043;
     border-color: #FF7043;
     border-radius: 16px;
+}
+
+.login_button {
+    background-color: transparent;
+    border-color: transparent;
+    border-radius: 48px;
 }
 
 .favorites_button {
@@ -182,8 +188,8 @@ body  {
 }
 
 @media screen and (max-width: 351px) {
-    body {
-        padding-top: 12rem !important;
+    .App {
+        margin-top: 9rem !important;
     }
 
     .nav_top {
@@ -245,8 +251,8 @@ body  {
 
 @media screen and (min-width: 352px) and (max-width: 576px) {
 
-    body {
-        padding-top: 12rem !important;
+    .App {
+        margin-top: 9rem !important;
     }
 
     .box :nth-child(1) {
@@ -307,8 +313,9 @@ body  {
 }
 
 @media screen and (min-width: 577px) and (max-width: 767px) {
-    body {
-        padding-top: 12rem !important;
+
+    .App {
+        margin-top: 9rem !important;
     }
 
     .box :nth-child(1) {
@@ -350,8 +357,8 @@ body  {
 }
 
 @media screen and (min-width: 768px) and (max-width: 994px) {
-    body {
-        padding-top: 8rem !important;
+    .App {
+        margin-top: 7rem !important;
     }
 
     #Category_list {
@@ -373,8 +380,8 @@ body  {
 }
 
 @media screen and (min-width: 995px) {
-    body {
-        padding-top: 8rem !important;
+    .App {
+        margin-top: 7rem !important;
     }
 
     .search_box {

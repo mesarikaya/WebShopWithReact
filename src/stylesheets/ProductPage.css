@@ -1,6 +1,5 @@
-﻿
-body {
-    padding-top: 8rem !important;
+﻿.ProductPage {
+    margin-top: 7rem !important;
 }
 
 .container {
@@ -27,11 +26,6 @@ body {
     font-size: 15px;
     margin: 0.35rem;
     padding: 0;
-}
-
-.fa-child {
-    border-bottom: 1.5px solid black;
-    font-size: 12px;
 }
 
 .fa-heart {
@@ -94,6 +88,12 @@ body {
     border-color: #12cbe2;
 }
 
+.login_button {
+    background-color: transparent;
+    border-color: transparent;
+    border-radius: 48px;
+}
+
 .signup_button {
     background-color: #FF7043;
     border-color: #FF7043;
@@ -112,78 +112,31 @@ body {
     border-radius: 48px;
 }
 
-.box {
+.ProductPageBox {
     display: flex;
     flex-direction: row;
 }
 
-    .box :nth-child(1) {
-        order: 1;
-    }
-
-    .box :nth-child(2) {
-        order: 2;
-    }
-
-    .box :nth-child(3) {
-        order: 3;
-    }
-
-.image_add_ons {
-    position: relative;
+.ProductPageBox :nth-child(1) {
+    order: 1;
 }
 
-.add_to_cart_img:before {
-    top: 13px;
-    right: 17px;
-    position: absolute;
-    content: "\f055";
-    font-family: "FontAwesome";
-    font-size: 25px;
-    color: rgba(60, 58, 58, 0.8);
-    margin: 0;
-    z-index: 2;
+.ProductPageBox :nth-child(2) {
+    order: 4;
 }
 
-.add_to_favorites_img:before {
-    top: 40px;
-    right: 15px;
-    display: inline-block;
-    position: absolute;
-    content: "\f004";
-    font-family: "FontAwesome";
-    font-size: 25px;
-    color: rgba(60, 58, 58, 0.8);
-    margin: 0;
-    z-index: 2;
+.ProductPageBox :nth-child(3) {
+    order: 2;
 }
 
-.fawesome {
-    text-align: right;
+.ProductPageBox :nth-child(4) {
+    order: 3;
 }
 
-#Toys, #Puzzles, #Books, #Smart_Toys {
-    color: #3F51B5;
-    font-size: 14px;
-}
-
-.fa-child {
-    font-size: 12px;
-}
-
-#Category_list {
-    font-size: 16px;
-}
-
-#icons {
-    font-size: 12px;
-    color: black;
-    display: block;
-}
 
 @media screen and (max-width: 351px) {
-    body {
-        padding-top: 12rem !important;
+    .ProductPage {
+        margin-top: 12rem !important;
     }
 
     .nav_top {
@@ -192,16 +145,20 @@ body {
         justify-content: center;
     }
 
-    .box :nth-child(1) {
+    .ProductPageBox :nth-child(1) {
         order: 1;
     }
 
-    .box :nth-child(2) {
+    .ProductPageBox :nth-child(2) {
+        order: 2;
+    }
+
+    .ProductPageBox :nth-child(3) {
         order: 3;
     }
 
-    .box :nth-child(3) {
-        order: 2;
+    .ProductPageBox :nth-child(4) {
+        order: 4;
     }
 
     .navbar-brand {
@@ -217,53 +174,30 @@ body {
         min-width: 100px;
     }
 
-    #Category_list {
-        font-size: 12px;
-    }
-
-    #icons {
-        font-size: 0px;
-    }
-
-    .fawesome {
-        text-align: center;
-        justify-content: center;
-    }
-
-    #Toys, #Puzzles, #Books, #Smart_Toys {
-        font-size: 10px;
-    }
-
-    .fa-child {
-        font-size: 8px;
-    }
-
     .container {
         padding: 0px;
     }
 }
 
 @media screen and (min-width: 352px) and (max-width: 576px) {
-
-    body {
-        padding-top: 12rem !important;
+    .ProductPage {
+        margin-top: 12rem !important;
     }
-
-    .box :nth-child(1) {
+    
+    .ProductPageBox :nth-child(1) {
         order: 1;
     }
 
-    .box :nth-child(2) {
-        order: 3;
-    }
-
-    .box :nth-child(3) {
+    .ProductPageBox :nth-child(2) {
         order: 2;
     }
 
-    .nav_top {
-        text-align: center;
-        justify-content: center;
+    .ProductPageBox :nth-child(3) {
+        order: 3;
+    }
+
+    .ProductPageBox :nth-child(4) {
+        order: 4;
     }
 
     .nav_top {
@@ -279,83 +213,54 @@ body {
         min-width: 100px;
     }
 
-    #Category_list {
-        font-size: 12px;
-    }
-
-    #icons {
-        font-size: 0px;
-    }
-
-    .fawesome {
-        text-align: center;
-        justify-content: center;
-    }
-
-    #Toys, #Puzzles, #Books, #Smart_Toys {
-        font-size: 10px;
-    }
-
-    .fa-child {
-        font-size: 10px;
-    }
-
-    .images {
-        padding-left: 65px;
-        padding-right: 65px;
-    }
 }
 
 @media screen and (min-width: 577px) and (max-width: 767px) {
-    body {
-        padding-top: 12rem !important;
+    .ProductPage {
+        margin-top: 12rem !important;
     }
 
-    .box :nth-child(1) {
+    .ProductPageBox :nth-child(1) {
         order: 1;
     }
 
-    .box :nth-child(2) {
-        order: 3;
-    }
-
-    .box :nth-child(3) {
+    .ProductPageBox :nth-child(2) {
         order: 2;
     }
 
-    #Category_list {
-        font-size: 0px;
+    .ProductPageBox :nth-child(3) {
+        order: 3;
+    }
+
+    .ProductPageBox :nth-child(4) {
+        order: 4;
     }
 
     .search_input {
         min-width: 50px;
     }
 
-    .fawesome {
-        text-align: right;
-        justify-content: center;
-    }
-
-    #icons {
-        font-size: 8px;
-    }
-
-    #Toys, #Puzzles, #Books, #Smart_Toys {
-        font-size: 12px;
-    }
-
-    .fa-child {
-        font-size: 12px;
-    }
 }
 
 @media screen and (min-width: 768px) and (max-width: 994px) {
-    body {
-        padding-top: 8rem !important;
+    .ProductPage {
+        margin-top: 9rem !important;
     }
 
-    #Category_list {
-        font-size: 10px;
+    .ProductPageBox :nth-child(1) {
+        order: 1;
+    }
+
+    .ProductPageBox :nth-child(2) {
+        order: 4;
+    }
+
+    .ProductPageBox :nth-child(3) {
+        order: 2;
+    }
+
+    .ProductPageBox :nth-child(4) {
+        order: 3;
     }
 
     .search_box {
@@ -367,14 +272,27 @@ body {
         min-width: 50px;
     }
 
-    #icons {
-        font-size: 8px;
-    }
 }
 
 @media screen and (min-width: 995px) {
-    body {
-        padding-top: 8rem !important;
+    .ProductPage {
+        margin-top: 9rem !important;
+    }
+
+    .ProductPageBox :nth-child(1) {
+        order: 1;
+    }
+
+    .ProductPageBox :nth-child(2) {
+        order: 4;
+    }
+
+    .ProductPageBox :nth-child(3) {
+        order: 2;
+    }
+
+    .ProductPageBox :nth-child(4) {
+        order: 3;
     }
 
     .search_box {

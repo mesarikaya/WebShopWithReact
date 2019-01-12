@@ -1,0 +1,65 @@
+﻿<!--- main css bevaiors flow from thead App.css command Account.csss files -->
+
+.invisible {
+    visibility: collapse;
+}
+
+.progress-bar {
+    background-color: #21ce99;
+    height: 0.75vh;
+}
+
+#signup_username, #signup_password, #signup_confirm_password, #sequrity_answer, #sequrity_question {
+    text-align: center;
+}
+
+#sequrity_question {
+    text-align: center;
+}
+
+#signup_username:hover, #signup_password:hover, #signup_confirm_password:hover {
+    border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.sign-in-letter {
+    color: white;
+}
+.text-secondary {
+    color: #b82029;
+}
+
+#policy_titles {
+    color: #4aafcd;
+    font-weight: 700;
+}
+
+a:focus, a:hover {
+    color: #21ce99;
+}
+
+#information_handling_policy, #information_handling_policy2 {
+    font-size: 0.8rem;
+}
+
+.wrapword {
+    white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
+    white-space: -pre-wrap; /* Opera 4-6 */
+    white-space: -o-pre-wrap; /* Opera 7 */
+    white-space: pre-wrap; /* css-3 */
+    word-wrap: break-word; /* Internet Explorer 5.5+ */
+    word-break: break-all;
+    white-space: normal;
+}
+
+
+.btn.focus, .btn:focus {
+    outline: 0;
+    -webkit-box-shadow: 0 0 0 0px #ffffff;
+    -moz-box-shadow: 0 0 0 0px #ffffff;
+    box-shadow: 0 0 0 0px #ffffff;
+}
+
+#policy_titles:hover {
+    background-color: white;
+    border-color: #12cbe2;
+}
