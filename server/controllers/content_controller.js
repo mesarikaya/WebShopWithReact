@@ -3,7 +3,6 @@
 var contents = require('../models/content.js');
 const fs = require('fs');
 
-
 function handlePageContent() {
     // Initiate page content data as Null
     // tslint:disable-next-line:no-console
@@ -16,7 +15,7 @@ function handlePageContent() {
         // Retrieve the related age group
         let ageGroup = req.query.ageGroup;
 
-        let query = contents.find({}); // Set default serach to all images
+        let query = contents.find({}); // Set default search to all images
         if (type === null ) {
             // tslint:disable-next-line:no-console
             console.log("In the null: ", type);

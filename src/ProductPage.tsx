@@ -57,6 +57,9 @@ export function mapStateToProps(state: StoreState & ProductPageState, OwnProps: 
         images: state.images,
         isLoading: state.isLoading,
         pageData: state.pageData,
+        redirect: state.redirect,
+        userAuthorized: state.userAuthorized,
+        username: state.username
     }
 }
 
@@ -88,6 +91,9 @@ class ProductPage extends React.Component<ProductPageProps & RouteComponentProps
             isLoading: history.location.state.isLoading,
             originatedPage: history.location.state.originatedPage,
             pageData: history.location.state.pageData,
+            redirect: history.location.state.redirect,
+            userAuthorized: history.location.state.userAuthorized,
+            username: history.location.state.username
         };
     }
 
@@ -108,6 +114,9 @@ class ProductPage extends React.Component<ProductPageProps & RouteComponentProps
             'images': currAppState.images,
             'isLoading': true,
             'pageData': currAppState.pageData,
+            'redirect': currAppState.redirect,
+            'userAuthorized': currAppState.userAuthorized,
+            'username': currAppState.username
         };
         history.push(this.state.originatedPage, dataToShare);
     }

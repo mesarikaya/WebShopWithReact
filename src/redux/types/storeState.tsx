@@ -12,4 +12,7 @@ export interface StoreState {
     images: string;
     isLoading: boolean;
     pageData: ImageContent[];
+    redirect: boolean;
+    userAuthorized: boolean;
+    username: string;
 }

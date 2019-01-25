@@ -1,7 +1,10 @@
-﻿// server/routes/user.js
-
+﻿
 // Ingest the User controller
-var UserController = require(process.cwd() + '/server/controllers/user_controller.js');
+const UserController = require(process.cwd() + '/server/controllers/user_controller.js');
+const HandleSubscription = require('../config/commonfunctions/handleSubscription');
+const ErrorHandler = require('../config/commonfunctions/errorHandling');
+const jwt = require("jsonwebtoken");
+// const passport = require('../passport');
 
 // Create the routes for user account calls
 module.exports = (router, passport) => {
@@ -9,9 +12,14 @@ module.exports = (router, passport) => {
     // tslint:disable-next-line:no-console
     console.log("In user routing module");
     var userController = new UserController();
+    var handleSubscription = new HandleSubscription();
+    var errorHandler = new ErrorHandler();
 
     // Create authentication check via using passport.js    
     function ensureAuthenticated(req, res, next) {
+        // tslint:disable-next-line:no-console
+        console.log("Logout session id", session.id);
+
         // tslint:disable-next-line:no-console
         console.log("Authentications result is:", req.isAuthenticated());
         if (req.isAuthenticated()) {
@@ -19,10 +27,11 @@ module.exports = (router, passport) => {
             return next();
         }
         else {
-            //Warn the user about logged out status, and redirect to cover page
+            // Warn the user about logged out status, and redirect to cover page
             // res.redirect('/flash');
             // tslint:disable-next-line:no-console
             console.log("Authentication failed");
+            res.redirect('/');
         }
     }
 
@@ -36,17 +45,113 @@ module.exports = (router, passport) => {
             }
         );
     */
+    
+    router
+        .route('/auth')
+        .get((req, res, next) => {
+            // tslint:disable-next-line:no-console
+            console.log('===== user!!======')
+
+            // tslint:disable-next-line:no-console
+            console.log(req.user)
+            if (req.user) {
+                res.json({ user: req.user })
+            } else {
+                res.json({ user: null })
+            }
+        });
 
     // CREATE AUTHENTICATIONS FOR Google, Facebook, LinkedIn, Twitter and Github
     // Sel created authenticate
     // After sign up request, direct to home page for login
     router
         .route('/auth/sign-up')
-        .post(passport.authenticate('auth/sign-up', {
-                failureRedirect: '/',
-                successRedirect: '/',
-            })
-        );
+        .post((req, res, next) => {
+            return passport.authenticate('local-signup', (err, user) => {
+                errorHandler.sendErrorDetails(err, res);
+            })(req, res, next);
+        });
+
+    // Verify the user and redirect to startpage in case of success. In case of error send error.
+    router
+        .route('/verify')
+        .get((req, res) => {
+            // tslint:disable-next-line:no-console
+            console.log("Enter the verification side");
+
+            // tslint:disable-next-line:no-console
+            console.log("Called the GET with type:", req.query);
+
+            handleSubscription.verifyEmail(req, res);
+        });
+
+    // User sign-in
+    router
+        .route('/auth/sign-in')
+        .post((req, res, next) => {
+            return passport.authenticate('local-signin', (err, user, token) => {
+                // Check if the usser credentials are correct. 
+                // If so, send the user verification result JSON to update the app state
+
+                // Log in to the session and serialize the user
+                req.logIn(user, function (loginErr) {
+                    if (loginErr) {
+                        return res.status(500).json({ message: "Login failed with error => " + loginErr });
+                    }
+
+                    // tslint:disable-next-line:no-console
+                    console.log("Token is:", token);
+
+                    const result = errorHandler.sendErrorDetails(err, res);
+                    if (result.success) {
+
+                        // tslint:disable-next-line:no-console
+                        console.log("JWT authenticated? and user -->", user);
+
+                        return res.status(200).json({
+                            result: {
+                                message: "User signed in",
+                                token: token,
+                                userVerified: user.local_login.isVerified,
+                                username: user.local_login.email,
+                            }
+                            
+                        });
+
+                    } else {
+                        return res.status(400).json(result);
+                    }
+                });
+
+            })(req, res, next);
+        });
+
+    //LOGOUT - After logout go back to opening page
+    router
+        .route('/auth/sign-out')
+        .get(function (req, res) {
+
+            // if (req.isAuthenticated()) {
+                req.logOut();
+                // tslint:disable-next-line:no-console
+                console.log("Logging out from the user session2", req.session);
+                
+                return res.status(200).json({
+                    "result": {
+                        "message": "User signed out!",
+                        "username": "guest"
+                    }
+                });
+            // }
+
+            /* return res.status(401).json({
+                "result": {
+                    "message": "No authenticated user to log out!",
+                    "username": "guest"
+                }
+            }); */
+
+        });
 
     // After lost-password request, direct to home page for login
     router
@@ -57,23 +162,9 @@ module.exports = (router, passport) => {
             })
         );
 
-    // Verify the user and redirect to startpage in case of success. In case of error send error.
-    router
-        .route('/verify/:email/:token')
-        .get(function (req, res) {
-            formHandler.verifyEmail(req, res);
-        });
 
-    // User sign-in
-    router
-        .route('/auth/sign-in')
-        .post(passport.authenticate('auth/sign-in', { failureRedirect: '/', failureFlash: true }),
-        function (req, res) {
-                    // tslint:disable-next-line:no-console
-                    console.log("Redirecting to the user account:", '/user/' + req.user.local_login.email);
-                    res.redirect('/user/' + req.user.local_login.email);
-                }
-            );
+
+    
 
     // GOOGLE AUTHENTICATE
     router
@@ -91,8 +182,10 @@ module.exports = (router, passport) => {
     router
         .route('/auth/google/callback')
         .get(passport.authenticate('google', { failureRedirect: '/', successRedirect: '/' }),
-            function (req, res) {
-                res.redirect('/user');
+        function (req, res) {
+                // tslint:disable-next-line:no-console
+                console.log("Google sign in success");
+                res.redirect('/');
             }
         );
 
@@ -112,25 +205,6 @@ module.exports = (router, passport) => {
             }
         );
 
-    //LOGOUT - After logout go back to opening page
-    router
-        .route('/logout')
-        .get(function (req, res) {
-            req.logout();
-            res.redirect('/');
-        });
 
-    //Direct to home page
-    /*router
-        .route('/')
-        .get(function (req, res) {
-            res.render(process.cwd() + '/Public/views/cover.ejs', { messages: req.flash('info'), signupMessage: req.flash('signupMessage') });
-        });*/
 
-    //Direct to user page
-    router
-        .route('/user/:username')
-        .get(ensureAuthenticated, function (req, res) {
-            res.sendFile(process.cwd() + '/Public/views/user.html');
-        });
 };

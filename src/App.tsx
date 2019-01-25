@@ -27,7 +27,11 @@ export interface Props {
     images: string;
     isLoading: boolean;
     pageData: ImageContent[];
+    redirect: boolean;
+    userAuthorized: boolean;
+    username: string;
     onGetContent(e: any, type: string, ageGroup: string): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
+    onLogout(e: any): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
     synchronizePageData(pageData: ImageContent[]): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
 };
 
@@ -81,22 +85,26 @@ export function mapStateToProps(state: StoreState, OwnProps: Props & RouteCompon
         images: state.images,
         isLoading: state.isLoading,
         pageData: state.pageData,
+        redirect: state.redirect,
+        userAuthorized: state.userAuthorized,
+        username: state.username
     }
 }
 
 export function mapDispatchToProps(dispatch: any) {
     return {
         onGetContent: (e: any, type: string, ageGroup: string) => dispatch(actions.UpdatePageContent(e, type, ageGroup)),
+        onLogout: (e: any) => dispatch(actions.signOutLocalUser(e)),
         synchronizePageData: (pageData: ImageContent[]) => dispatch(actions.SynchronizePageData(pageData)),
     }
 }
 
 // Create App component 
 class App extends React.Component<Props & RouteComponentProps<PathProps>, StoreState> {
-  
+   
     constructor(props: Props & RouteComponentProps<PathProps> ) {
         super(props);
-
+        
     }
 
     public componentDidMount() {
@@ -106,7 +114,7 @@ class App extends React.Component<Props & RouteComponentProps<PathProps>, StoreS
 
         // If the page is opened back with goBack
         if (historyState !== undefined && historyState.pageData !== undefined) {
-            this.props.synchronizePageData(history.location.state.pageData);
+            this.props.synchronizePageData(historyState.pageData);
         }
         else if (content === undefined || content.length === 0 || content["0"].Type === "") {
             // If no content is in the state, load all the items
@@ -151,6 +159,7 @@ class App extends React.Component<Props & RouteComponentProps<PathProps>, StoreS
     public openAccountPage(e: any) {
         // Deactivate default behavior
         if (e !== null) { e.preventDefault(); }
+
         // tslint:disable-next-line:no-console
         console.log("Calling the previous");
 
@@ -160,15 +169,41 @@ class App extends React.Component<Props & RouteComponentProps<PathProps>, StoreS
             'images': currAppState.images,
             'isLoading': true,
             'pageData': currAppState.pageData,
+            'redirect': currAppState.redirect,
+            'userAuthorized': currAppState.userAuthorized,
+            'username': currAppState.username
         };
         // tslint:disable-next-line:no-console
         console.log("Data to share is: ", dataToShare);
         history.push('account', dataToShare);
     }
 
-    public render() {
-        const rows = this.setContent(this.props.pageData);
+    public modifyLoginButton() {
+        if (this.props.userAuthorized === false) {
+            return (
+                <a onClick={(e) => { this.openAccountPage(e) }}>
+                    <button className="btn btn-sm login_button m-2">
+                        <i className="fas fa-user-plus"><strong id="icons"> Log in</strong></i>
+                    </button>
+                </a>
+            );
+        } else {
+            return (
+                <a>
+                    <button className="btn btn-sm login_button m-2" onClick={(e) => { this.props.onLogout(e) }}>
+                        <i className="fas fa-user-plus"><strong id="icons"> Log out</strong></i>
+                    </button>
+                </a>
+            );
+        }
 
+    }
+
+    public render() {
+
+        const rows = this.setContent(this.props.pageData);
+        // tslint:disable-next-line:no-console
+        console.log("updating the App");
         // const { match, location, history } = this.props;
 
         // tslint:disable-next-line:no-console
@@ -263,9 +298,8 @@ class App extends React.Component<Props & RouteComponentProps<PathProps>, StoreS
                             </div>
 
                             <div className="col-12 col-sm-8 col-md-4 fawesome" >
-                                <a onClick={(e) => { this.openAccountPage(e) }}>
-                                    <button className="btn btn-sm login_button m-2"><i className="fas fa-user-plus"><strong id="icons"> Log in</strong></i></button>
-                                </a>
+
+                                {this.modifyLoginButton()}
                                 {/* <!--<button className="btn btn-sm signup_button"><i className="far fa-user"> <strong id="icons"> Sign up</strong></i></button>--> */}
 
                                 <a href="/api/images">
@@ -288,7 +322,6 @@ class App extends React.Component<Props & RouteComponentProps<PathProps>, StoreS
         );
     }
 }
-
 
 class ImageList extends React.Component<ImageListProps, ImageListState> {
 
@@ -347,6 +380,8 @@ class Image extends React.Component<ImageProps, ImageState> {
             'isLoading': true,
             'originatedPage': '/',
             'pageData': currAppState.pageData,
+            'userAuthorized': currAppState.userAuthorized,
+            'username': currAppState.username
         };
         history.push('/productPage/' + imageData.Name, dataToShare);
     }

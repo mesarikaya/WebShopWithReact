@@ -35,25 +35,48 @@ interface PathProps {
 
 export interface SignupPageProps {
     synchronizePageData(pageData: ImageContent[]): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
+    updateLocalUserAuthenticationStatus(e: any, formFields: any): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
 };
+
+interface FormFields {
+    city: string,   
+    confirm_password: string,
+    country: string,
+    email: string,
+    firstName: string,
+    houseNumber: string,
+    mobileNumber: string,
+    password: string,
+    security_answer: string,
+    streetName: string,
+    surname: string,
+    zipCode: string,
+}
 
 interface SignupPageState {
     originatedPage: string;
+    formFields: FormFields;
 };
 
 // Create mapToState and mapDispatch for Redux
 export function mapStateToProps(state: StoreState & SignupPageState, OwnProps: SignupPageProps & RouteComponentProps<PathProps>) {
     return {
         error: state.error,
+        formFields: state.formFields,
         images: state.images,
         isLoading: state.isLoading,
+        originatedPage: state.originatedPage,
         pageData: state.pageData,
+        redirect: state.redirect,
+        userAuthorized: state.userAuthorized,
+        username: state.username,
     }
 }
 
 export function mapDispatchToProps(dispatch: any) {
     return {
         synchronizePageData: (pageData: ImageContent[]) => dispatch(actions.SynchronizePageData(pageData)),
+        updateLocalUserAuthenticationStatus: (e: any, formFields: any) => dispatch(actions.UpdateLocalUserAuthenticationStatus(e, formFields))
     }
 }
 
@@ -62,12 +85,30 @@ class Signup extends React.Component<SignupPageProps & RouteComponentProps<PathP
 
     constructor(props: SignupPageProps & RouteComponentProps<PathProps>) {
         super(props);
+        
         this.state = {
             error: history.location.state.error,
+            formFields: {
+                city: "",
+                confirm_password: "",
+                country: "",
+                email: "",
+                firstName: "",
+                houseNumber: "",
+                mobileNumber: "",
+                password: "",
+                security_answer: "",
+                streetName: "",
+                surname: "",
+                zipCode: "",
+            },
             images: history.location.state.images,
             isLoading: history.location.state.isLoading,
             originatedPage: history.location.state.originatedPage,
             pageData: history.location.state.pageData,
+            redirect: history.location.state.redirect,
+            userAuthorized: history.location.state.userAuthorized,
+            username: history.location.state.username
         };
     }
 
@@ -88,11 +129,21 @@ class Signup extends React.Component<SignupPageProps & RouteComponentProps<PathP
             'images': currAppState.images,
             'isLoading': true,
             'pageData': currAppState.pageData,
+            'redirect': currAppState.redirect,
+            'userAuthorized': currAppState.userAuthorized,
+            'username': currAppState.state.username
         };
         history.push(this.state.originatedPage, dataToShare);
     }
 
-   
+    public onChange = (e: any) => {
+        // Match the named inputs to the same named props
+        const formFields = { ...this.state.formFields };
+        formFields[e.target.name] = e.target.value;
+        this.setState({
+            formFields
+        });
+    }
 
     public render() {
         return (<div className="Signup mt-5">
@@ -103,8 +154,10 @@ class Signup extends React.Component<SignupPageProps & RouteComponentProps<PathP
                     {/*<!--Search form-->*/}
                     <div className="row nav-box">
                         <div className="col-6 nav-left">
-                            <a className="navbar-brand" href="#page-top"><img className="img-fluid rounded-circle" src={Logo} alt=""
-                                style={{ maxWidth: '30px', height: '30px' }} /></a>
+                            <a className="navbar-brand" href="#page-top">
+                                <img className="img-fluid rounded-circle" src={Logo} alt=""
+                                    style={{ maxWidth: '30px', height: '30px' }} />
+                            </a>
 
                             <a href="/home">
                                 <button className="btn home_button" type="button">
@@ -130,7 +183,8 @@ class Signup extends React.Component<SignupPageProps & RouteComponentProps<PathP
                 <div className="container justify-content-center">
                     <div className="row box_ ">
                         <div className="col-12 col-sm-9 col-md-8 mx-auto">
-                            <form name="sigupForm" id="signupForm" noValidate={true} method="POST" action="/api/auth/sign-up">
+                            <form name="sigupForm" id="signupForm" noValidate={false}
+                                onSubmit={(e) => { this.props.updateLocalUserAuthenticationStatus(e, this.state.formFields); }}>
                                 <div id="accordion">
                                     <div className="card ">
                                         <div className="card-header " id="headingOne">
@@ -161,7 +215,9 @@ class Signup extends React.Component<SignupPageProps & RouteComponentProps<PathP
                                                     <div className="control-group col-10 col-sm-10 col-md-7">
                                                         <div className="form-group floating-label-form-group controls mb-0 pb-2">
                                                             <div className="input-group text-center">
-                                                                <input className="form-control py-2 border-right-0 border" id="signup_username" type="text" placeholder="Username" name="username" required={true} data-validation-required-message="Please enter username." />
+                                                                <input className="form-control py-2 border-right-0 border" id="signup_username" type="text" placeholder="Username"
+                                                                    name="email" required={true} data-validation-required-message="Please enter username."
+                                                                    onChange={(e) => { this.onChange(e) }} />
                                                                 <div className="input-group-addon userIcon" style={{ background: "white" }}>
                                                                     <div className="input-group-text border-0 border" style={{ background: "white" }}><i className="fas fa-user"/></div>
                                                                 </div>
@@ -174,7 +230,9 @@ class Signup extends React.Component<SignupPageProps & RouteComponentProps<PathP
                                                     <div className="control-group col-10 col-sm-10 col-md-7">
                                                         <div className="form-group floating-label-form-group controls">
                                                             <div className="input-group text-center">
-                                                                <input className="form-control py-2 border-right-0 border" id="signup_password" type="password" name="password" placeholder="Password" required={true} data-validation-required-message="Please enter your password." />
+                                                                <input className="form-control py-2 border-right-0 border" id="signup_password" type="password"
+                                                                    name="password" placeholder="Password" required={true} data-validation-required-message="Please enter your password."
+                                                                    onChange={(e) => { this.onChange(e) }} />
                                                                 <div className="input-group-addon passwordIcon" style={{ background: "white" }}>
                                                                     <div className="input-group-text border-0 border" style={{ background: "white" }}><i className="fas fa-key"/></div>
                                                                 </div>
@@ -183,7 +241,10 @@ class Signup extends React.Component<SignupPageProps & RouteComponentProps<PathP
                                                         </div>
                                                         <div className="form-group floating-label-form-group controls">
                                                             <div className="input-group justify-content-center">
-                                                                <input className="form-control py-2 border-right-0 border" id="signup_confirm_password" type="password" name="confirm_password" placeholder="Confirm Password" required={true} data-validation-required-message="Please reenter your password." />
+                                                                <input className="form-control py-2 border-right-0 border" id="signup_confirm_password" type="password"
+                                                                    name="confirm_password" placeholder="Confirm Password" required={true} data-validation-required-message="Please reenter your password."
+                                                                    onChange={(e) => { this.onChange(e) }}
+                                                                />
                                                                 <div className="input-group-addon passwordIcon" style={{ background: "white" }}>
                                                                     <div className="input-group-text border-0 border" style={{ background: "white" }}><i className="fas fa-key"/></div>
                                                                 </div>
@@ -194,16 +255,9 @@ class Signup extends React.Component<SignupPageProps & RouteComponentProps<PathP
                                                 </div>
                                                 <div className="row justify-content-center">
                                                     <div className="control-group col-10 col-sm-10 col-md-7 text-center">
-                                                        <div className="form-group text-center">
-                                                            <select className="form-control input-lg" id="sequrity_question" >
-                                                                <option defaultValue="sequroty question">Sequrity Question</option>
-                                                                <option value="mother's maiden name?">Mother's maiden name?</option>
-                                                                <option value="a random text?">A random text?</option>
-                                                                <option value="favorite number?">Favorite number?</option>
-                                                            </select>
-                                                        </div>
                                                         <div className="form-group">
-                                                            <input className="form-control input-lg text-center" placeholder="Sequrity Answer" name="sequrity_answer" type="text" />
+                                                            <input className="form-control input-lg text-center" placeholder="Security Answer"
+                                                                name="security_answer" type="text" onChange={(e) => { this.onChange(e) }}/>
                                                         </div>
                                                         <div id="success"/>
                                                         <div className="form form-group float-right">
@@ -226,40 +280,47 @@ class Signup extends React.Component<SignupPageProps & RouteComponentProps<PathP
 
                                                     <div className="row justify-content-center">
                                                         <div className="form-group col-md-6">
-                                                            <input type="text" className="form-control" id="inputName" placeholder="First Name" />
+                                                            <input type="text" className="form-control" id="inputName"
+                                                                placeholder="First Name" name="firstName" onChange={(e) => { this.onChange(e) }} />
                                                         </div>
                                                         <div className="form-group col-md-6">
-                                                            <input type="text" className="form-control" id="inputSurname" placeholder="Surname" />
+                                                            <input type="text" className="form-control" id="inputSurname"
+                                                                placeholder="Surname" name="surname" onChange={(e) => { this.onChange(e) }} />
                                                         </div>
                                                     </div>
 
                                                     <div className="row justify-content-center">
                                                         <div className="form-group col-md-8">
-                                                            <input type="text" className="form-control" id="inputStreet" placeholder="Street (E.g. Hoofdstraat)" />
+                                                            <input type="text" className="form-control" id="inputStreet"
+                                                                placeholder="Street (E.g. Hoofdstraat)" name="streetName" onChange={(e) => { this.onChange(e) }} />
                                                         </div>
                                                         <div className="form-group col-md-4">
-                                                            <input type="text" className="form-control" id="inputHouse_number" placeholder="House #" />
+                                                            <input type="text" className="form-control" id="inputHouse_number"
+                                                                placeholder="House #" name="houseNumber" onChange={(e) => { this.onChange(e) }} />
                                                         </div>
                                                     </div>
 
                                                     <div className="row justify-content-center">
                                                         <div className="form-group col-md-6">
-                                                            <input type="text" className="form-control" id="inputCity" placeholder="City" />
+                                                            <input type="text" className="form-control" id="inputCity"
+                                                                placeholder="City" name="city" onChange={(e) => { this.onChange(e) }} />
                                                         </div>
                                                         <div className="form-group col-md-6">
-                                                            <select id="inputCountry" className="form-control">
+                                                            <select id="inputCountry" name="country"className="form-control" onChange={(e) => { this.onChange(e) }}>
                                                                 <option defaultValue="country">Country</option>
-                                                                <option value="the netherlands">The Netherlands</option>
+                                                                <option value="The Netherlands">The Netherlands</option>
                                                             </select>
                                                         </div>
                                                     </div>
 
                                                     <div className="row justify-content-center">
                                                         <div className="form-group col-6">
-                                                            <input type="text" className="form-control" id="inputZip" placeholder="Zip/Postcode" />
+                                                            <input type="text" className="form-control" id="inputZip"
+                                                                placeholder="Zip/Postcode" name="zipCode" onChange={(e) => { this.onChange(e) }} />
                                                         </div>
                                                         <div className="form-group col-6">
-                                                            <input className="form-control" type="tel" placeholder="+31-(555)-55-5555" id="inputMobile" />
+                                                            <input className="form-control" type="tel" placeholder="+31-(555)-55-5555"
+                                                                id="inputMobile" name="mobileNumber" onChange={(e) => { this.onChange(e) }} />
                                                         </div>
                                                     </div>
                                                     <div className="form-group float-right">
@@ -276,8 +337,11 @@ class Signup extends React.Component<SignupPageProps & RouteComponentProps<PathP
                                   <a className="close font-weight-light" data-dismiss="alert" href="#">×</a>Password is too short.
                               </div>-->*/}
                                                 <div className="row justify-content-center">
-                                                    <a className="btn wrapword" data-toggle="collapse" id="policy_titles" href="#information_handling_policy" role="button" aria-expanded="false" aria-controls="information_handling_policy">
-                                                        <p>How is my information data is handled? <i className="fas fa-chevron-down" style={{ color: "#21ce99" }}/></p>
+                                                    <a className="btn wrapword" data-toggle="collapse" id="policy_titles"
+                                                        href="#information_handling_policy" role="button" aria-expanded="false"
+                                                        aria-controls="information_handling_policy">
+                                                        <p>How is my information data is handled? <i className="fas fa-chevron-down"
+                                                            style={{ color: "#21ce99" }} /></p>
                                                     </a>
                                                     <p className="collapse wrapword" id="information_handling_policy" style={{ width: "80%" }}>
                                                         All of your data is 128-bit encrypted & stored securely.
@@ -285,7 +349,9 @@ class Signup extends React.Component<SignupPageProps & RouteComponentProps<PathP
                                                     </p>
                                                 </div>
                                                 <div className="row justify-content-center">
-                                                    <a className="btn wrapword text-center" data-toggle="collapse" id="policy_titles" href="#information_handling_policy2" role="button" aria-expanded="false" aria-controls="information_handling_policy">
+                                                    <a className="btn wrapword text-center" data-toggle="collapse" id="policy_titles"
+                                                        href="#information_handling_policy2" role="button" aria-expanded="false"
+                                                        aria-controls="information_handling_policy">
                                                         <p>Will my contact info be advertised? <i className="fas fa-chevron-down" style={{ color: "#21ce99" }}/></p>
                                                     </a>
                                                     <p className="collapse wrapword text-center" id="information_handling_policy2" style={{ width: "80%" }}>
