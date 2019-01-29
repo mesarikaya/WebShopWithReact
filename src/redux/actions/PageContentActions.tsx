@@ -24,7 +24,7 @@ export interface LocalUserAuthorizationInterface {
     username: string;
 }
 
-//TODO: Modularize this code via splitting it based on User login activity
+// TODO: Modularize this code via splitting it based on User login activity
 // dispacth actions and page image vieww actions. It has grown to be very big
 
 
@@ -203,9 +203,7 @@ export function signOutLocalUser(e: any) {
     });
 };
 
-/**
- * Keep page data integrity on user page refreshes
- * */
+// Keep page data integrity on user page refreshes
 export function refreshPage() {
 
     // Get the username parameters
