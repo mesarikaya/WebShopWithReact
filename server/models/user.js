@@ -1,10 +1,10 @@
 ﻿'use strict';
-
 var mongoose = require('mongoose');
 
 //Connect to the database
 var Schema = mongoose.Schema;
 
+// Set user document schema
 var UserSchema = new Schema({
    
     local_login: {
@@ -40,4 +40,5 @@ var UserSchema = new Schema({
 
 }, { collection: 'User' });
 
+// Set the data model name specifically and export
 module.exports = mongoose.model('user', UserSchema, "Users");

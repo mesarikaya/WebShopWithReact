@@ -1,10 +1,12 @@
 ﻿//Local User registration with passport-local
-
 const User = require('../models/user');
 const randomstring = require('randomstring');
 const bcrypt = require('bcryptjs');
 const LocalStrategy = require('passport-local').Strategy;
 const HandleSubscription = require('../config/commonfunctions/handleSubscription');
+
+// TODO: Connect the standardized validation error or success message with redux dispatch
+// and share with the user
 
 module.exports = new LocalStrategy({
         passReqToCallback: true, // allows us to pass back the entire request to the callback,
@@ -15,7 +17,6 @@ module.exports = new LocalStrategy({
         // Convert email to lowercase
         email = email.toLowerCase().trim();
 
-        
         process.nextTick(function () {
 
             const handleSubscription = new HandleSubscription();
@@ -36,7 +37,6 @@ module.exports = new LocalStrategy({
                 }
                 else {// For new user
 
-                    // console.log("permalink is:", permalink);
                     var verificationToken = randomstring.generate({ length: 64 });
 
                     // Try to send an email to the user to see if email exists

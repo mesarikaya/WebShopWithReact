@@ -1,13 +1,13 @@
-﻿// server/routes/content.js
+﻿
 var ImageController = require(process.cwd() + '/server/controllers/content_controller.js');
-//const multipart = require('connect-multiparty')
-//const multipartWare = multipart()
+
+/**
+ * Page content routes via using the expressJS set route object
+ * @param {any} router
+ */
 module.exports = (router) => {
-    /**
-     * get all articles
-     */
-    // tslint:disable-next-line:no-console
-    // console.log("Trying to reach the GET");
+
+    // GET method to retrieve the images to be shown on the page
     var imageController = new ImageController();
     router
         .route('/images')
@@ -35,9 +35,5 @@ module.exports = (router) => {
                     console.log("Calling AllItems");
                     imageController.getImages(req, res, null);
                 }   
-            });
-
-    /* router('/product')
-        .get(function () { }); */
- 
+            }); 
 };

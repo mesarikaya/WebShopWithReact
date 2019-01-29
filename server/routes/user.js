@@ -34,17 +34,6 @@ module.exports = (router, passport) => {
             res.redirect('/');
         }
     }
-
-    // Create safety for attempts to reach the /user interface without authentication
-    /* router
-        .route('/flash', )
-        .get(function (req, res) {
-                // Set a flash message by passing the key, followed by the value, to req.flash().
-                // req.flash('info', 'Logged out or Unauthorized Log In Attempt. Please log in!');
-                res.redirect('/');
-            }
-        );
-    */
     
     router
         .route('/auth')
@@ -130,9 +119,8 @@ module.exports = (router, passport) => {
     router
         .route('/auth/sign-out')
         .get(function (req, res) {
-
-            // if (req.isAuthenticated()) {
                 req.logOut();
+
                 // tslint:disable-next-line:no-console
                 console.log("Logging out from the user session2", req.session);
                 
@@ -142,18 +130,9 @@ module.exports = (router, passport) => {
                         "username": "guest"
                     }
                 });
-            // }
-
-            /* return res.status(401).json({
-                "result": {
-                    "message": "No authenticated user to log out!",
-                    "username": "guest"
-                }
-            }); */
-
         });
 
-    // After lost-password request, direct to home page for login
+    // TODO: LOST PASSWORD route
     router
         .route('/auth/lost-password')
         .post(passport.authenticate('auth/lost-password', {
@@ -162,11 +141,7 @@ module.exports = (router, passport) => {
             })
         );
 
-
-
-    
-
-    // GOOGLE AUTHENTICATE
+    // TODO: GOOGLE AUTHENTICATE
     router
         .route('/auth/google')
         .get(passport.authenticate('google',
@@ -189,7 +164,7 @@ module.exports = (router, passport) => {
             }
         );
 
-    // FACEBOOK AUTHENTICATE   
+    // TODO: FACEBOOK AUTHENTICATE   
     router
         .route('/auth/facebook')
         .get(passport.authenticate('facebook',

@@ -3,7 +3,7 @@ const localSigninStrategy = require('./local-signin');
 const User = require('../models/user'); 
 const localSignupStrategy = require('./local-signup');
 
-// called on login, saves the id to session req.session.passport.user = {id:'..'}
+// Called on login, saves the id and returns with the localstorage token
 module.exports = function (passport) {
 
     // PassportJS serialize functions
@@ -38,7 +38,6 @@ module.exports = function (passport) {
     passport.use('local-signin', localSigninStrategy);
     passport.use('jwt-auth', jwtStrategy);
 
-
-
+    // TODO: ADD SOCIAL SIGN IN Strategies
 
 }

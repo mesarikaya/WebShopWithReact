@@ -1,5 +1,5 @@
 ﻿'use strict';
-
+// Set the oAuth parameters from .env file
 module.exports = {
   
     'facebookAuth': {

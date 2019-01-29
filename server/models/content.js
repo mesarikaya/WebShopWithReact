@@ -1,10 +1,10 @@
 ﻿'use strict';
-
 var mongoose = require('mongoose');
 
-//Connect to the database
+// Connect to the database
 var Schema = mongoose.Schema;
 
+// Set the page content schema
 var ContentSchema = new Schema({
    Author: String,
    Description: String,
@@ -16,4 +16,5 @@ var ContentSchema = new Schema({
    Type: String,
 }, {collection:'Content'});
 
+// Set the data model name specifically and export
 module.exports = mongoose.model('content', ContentSchema, "Contents");

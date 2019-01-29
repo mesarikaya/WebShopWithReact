@@ -1,11 +1,10 @@
 ﻿'use strict';
-
 var contents = require('../models/content.js');
-const fs = require('fs');
 
+// Service that handles the page content related functionalities
+
+// This function sets the images that needs to be shown in the web page
 function handlePageContent() {
-    // Initiate page content data as Null
-    // tslint:disable-next-line:no-console
 
     // Get page content: By Type
     this.getImages = function (req, res, type) {

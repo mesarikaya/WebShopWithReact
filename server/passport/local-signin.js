@@ -5,7 +5,12 @@ const randomstring = require('randomstring');
 const bcrypt = require('bcryptjs');
 const LocalStrategy = require('passport-local').Strategy;
 const jwt = require("jsonwebtoken");
-    
+
+// TODO: Connect the standardized validation error or success message with redux dispatch
+// and share with the user
+
+// Local user sign in passport strategy function
+// On function call it checks hashcode password validity
 module.exports = new LocalStrategy({
     passReqToCallback: true, // allows us to pass back the entire request to the callback,
     passwordField: 'password',
@@ -24,7 +29,6 @@ module.exports = new LocalStrategy({
             // if there are any errors, return the error
             if (user != null) {
                 if (err) {
-                    // req.flash('signinMessage', '*Sign-in could not be done due to Err:' + err)
                     const customErr = {
                         "message": '*Sign-in could not be done due to Err:' + err,
                         "name": "Signin Error"
@@ -44,11 +48,11 @@ module.exports = new LocalStrategy({
 
                         if (res) {
                             if (user.local_login.isVerified === true) {
+                                // Sign in the user with expiry time setup
                                 const successMsg = {
                                     "message": '*Sign-in successfull!',
                                     "name": "Signin Successfull",
                                 };
-
 
                                 const payload = {
                                     id: user.local_login.email,
@@ -56,7 +60,7 @@ module.exports = new LocalStrategy({
                                 // tslint:disable-next-line:no-console
                                 console.log("JWT env secret is is? -->", process.env.jwtsecret);
                                 jwt.sign(payload, process.env.jwtsecret, {
-                                    expiresIn: 3600
+                                    expiresIn: 6*60*10
                                 }, (jwtSignErr, token) => {
                                     // tslint:disable-next-line:no-console
                                     console.log("JWT Token is? -->", token);
@@ -72,10 +76,8 @@ module.exports = new LocalStrategy({
                                         return done(null, user, token);
                                     }
                                 });
-                                
-                                
                             }
-                            else {
+                            else { // User is not verified
                                 const customErr = {
                                     "message": '*Account is not verified!.' +
                                         'Request account verification or click on the link sent in the confirmation email.',
@@ -84,7 +86,7 @@ module.exports = new LocalStrategy({
                                 return done(customErr, false);
                             }
                         }
-                        else {
+                        else { // Password is incorrect, no result document is found after the query
                             const customErr = {
                                 "message": '*Wrong Password!.',
                                 "name": "Signin Error"
@@ -94,7 +96,7 @@ module.exports = new LocalStrategy({
                     });
                 }
             }
-            else {
+            else { // User does not exist
                 const customErr = {
                     "message": '*No such account. Please sign up!',
                     "name": "Signin Error"
