@@ -93,24 +93,6 @@ class Account extends React.Component < AccountPageProps & RouteComponentProps <
         this.props.synchronizePageData(this.state.pageData);
     }
 
-    // Action for back button - Return to the previous page
-    public goBack(e: any) {
-        // Deactivate default behavior
-        if (e !== null) { e.preventDefault(); }
-        // tslint:disable-next-line:no-console
-        console.log("Calling the previous");
-        const currAppState = store.getState();
-        const dataToShare = {
-            error: currAppState.error,
-            images: currAppState.images,
-            isLoading: true,
-            pageData: currAppState.pageData,
-            userAuthorized: currAppState.userAuthorized,
-            username: currAppState.username
-        };
-        history.push(this.state.originatedPage, dataToShare);
-    }
-
     public openSignupPage(e: any) {
         // Deactivate default behavior
         if (e !== null) { e.preventDefault(); }
@@ -154,24 +136,19 @@ class Account extends React.Component < AccountPageProps & RouteComponentProps <
                         {/*<!--Search form-->*/}
                         <div className="row nav-box">
                             <div className="col-6 nav-left">
-                                <a className="navbar-brand" href="#page-top"><img className="img-fluid rounded-circle" src={Logo} alt=""
-                                    style={{ maxWidth: '30px', height: '30px' }} /></a>
+                                <a href="/home" className="navbar-brand">
+                                    <img className="img-fluid rounded-circle" src={Logo} alt=""
+                                    style={{ maxWidth: '30px', height: '30px' }} />
+                                </a>
+                            </div>
 
+                            <div className="col-6 nav-right">
                                 <a href="/home">
                                     <button className="btn home_button" type="button">
                                         <strong id="Category_list"><i className="fas fa-home" /> Home</strong>
                                     </button>
                                 </a>
                             </div>
-
-                            <div className="col-6 nav-right">
-                                <a href="/back">
-                                    <button className="btn back_button" type="button">
-                                        <strong id="Category_list"><i className="fas fa-hand-point-left" /> Back</strong>
-                                    </button>
-                                </a>
-                            </div>
-
                         </div>
                     </div>
                 </nav>

@@ -122,17 +122,12 @@
 }
 
 .ProductPageBox :nth-child(2) {
-    order: 4;
-}
-
-.ProductPageBox :nth-child(3) {
     order: 2;
 }
 
-.ProductPageBox :nth-child(4) {
+.ProductPageBox :nth-child(3) {
     order: 3;
 }
-
 
 @media screen and (max-width: 351px) {
     .ProductPage {
@@ -155,10 +150,6 @@
 
     .ProductPageBox :nth-child(3) {
         order: 3;
-    }
-
-    .ProductPageBox :nth-child(4) {
-        order: 4;
     }
 
     .navbar-brand {
@@ -196,10 +187,6 @@
         order: 3;
     }
 
-    .ProductPageBox :nth-child(4) {
-        order: 4;
-    }
-
     .nav_top {
         text-align: center;
         justify-content: center;
@@ -232,14 +219,9 @@
         order: 3;
     }
 
-    .ProductPageBox :nth-child(4) {
-        order: 4;
-    }
-
     .search_input {
         min-width: 50px;
     }
-
 }
 
 @media screen and (min-width: 768px) and (max-width: 994px) {
@@ -252,14 +234,10 @@
     }
 
     .ProductPageBox :nth-child(2) {
-        order: 4;
-    }
-
-    .ProductPageBox :nth-child(3) {
         order: 2;
     }
 
-    .ProductPageBox :nth-child(4) {
+    .ProductPageBox :nth-child(3) {
         order: 3;
     }
 
@@ -284,14 +262,10 @@
     }
 
     .ProductPageBox :nth-child(2) {
-        order: 4;
-    }
-
-    .ProductPageBox :nth-child(3) {
         order: 2;
     }
 
-    .ProductPageBox :nth-child(4) {
+    .ProductPageBox :nth-child(3) {
         order: 3;
     }
 

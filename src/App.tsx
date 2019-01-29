@@ -102,14 +102,14 @@ class App extends React.Component<Props & RouteComponentProps<PathProps>, StoreS
         super(props);
 
         const currAppState = store.getState();
-        const pageDataJSON = (typeof (history.location.state) !== "undefined" && typeof (history.location.state.pageData) !== "undefined") ? history.location.state.pageData : currAppState.pageData;
-
+        
         // tslint:disable-next-line:no-console
         console.log("originated state is: ", typeof history.location.state);
 
         // Check if there is already content on the store state for pageData
         const content = store.getState().pageData;
         const historyState = history.location.state;
+        const pageDataJSON = (typeof (historyState) !== "undefined" && typeof (historyState.pageData) !== "undefined") ? historyState.pageData : currAppState.pageData;
 
         // tslint:disable-next-line:no-console
         console.log("App state for history state: ", historyState);
@@ -145,22 +145,14 @@ class App extends React.Component<Props & RouteComponentProps<PathProps>, StoreS
         this.props.synchronizePageData(this.state.pageData);
     }
 
-    /* public componentDidMount() {
-        // Send all the data on component load
-        if (this.props.pageData === undefined || this.props.pageData.length === 0 || this.props.pageData["0"].Type === "") {
-            this.props.onGetContent(null, "allItems", "all");
-        }
-    } */
-
     public setContent(data: any) {
         // Get all the items and set the image content
-        // tslint:disable-next-line:no-console
         let count = 0;
         const rows = [];
         for (const obj in data) {
             if (data.hasOwnProperty(obj)) {
                 count += 1;
-                if (count > 1000) { break; }
+                // if (count > 1000) { break; }
                 rows.push(<Image key={data[obj].Name + " " + count.toString()}
                     Type={data[obj].Type}
                     Name={data[obj].Name}

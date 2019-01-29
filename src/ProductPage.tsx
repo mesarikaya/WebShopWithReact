@@ -49,42 +49,54 @@ interface ProductPageState {
     originatedPage: string;
 };
 
-// Create mapToState and mapDispatch for Redux
-export function mapStateToProps(state: StoreState & ProductPageState, OwnProps: ProductPageProps & RouteComponentProps<PathProps>) {
-    return {
-        error: state.error,
-        isLoading: state.isLoading,
-        pageData: state.pageData,
-        redirect: state.redirect,
-        userAuthorized: state.userAuthorized,
-        username: state.username
-    }
-}
-
 class ProductPage extends React.Component<ProductPageProps & RouteComponentProps<PathProps>, ProductPageState> {
     public state: ProductPageState & StoreState;
 
     constructor(props: ProductPageProps & RouteComponentProps<PathProps>) {
         super(props);
+
+        const currAppState = store.getState();
+        const historyState = history.location.state;
+        const originatedPageStr = (typeof (historyState) !== "undefined" && typeof (historyState.originatedPage) !== "undefined") ? historyState.originatedPage : "/";
+        const pageDataJSON = (typeof (historyState) !== "undefined" && typeof (historyState.pageData) !== "undefined") ? historyState.pageData : currAppState.pageData;
+
+        let imageDataJSON = {
+            Author: '',
+            Description: '',
+            Group: '',
+            Image: '',
+            Name: '',
+            Reserved: '',
+            Reserved_Until: '',
+            Type: '',
+            key: ''
+        };
+
+        if (typeof (historyState) !== "undefined" && typeof (historyState.imageData) !== "undefined") {
+            imageDataJSON= {
+                Author: historyState.imageData.Author,
+                Description: historyState.imageData.Description,
+                Group: historyState.imageData.Group,
+                Image: historyState.imageData.Image,
+                Name: historyState.imageData.Name,
+                Reserved: historyState.imageData.Reserved,
+                Reserved_Until: historyState.imageData.Reserved_Until,
+                Type: historyState.imageData.Type,
+                key: historyState.imageData.key
+            }
+        }
+        // tslint:disable-next-line:no-console
+        console.log("originated state is: ", typeof historyState);
+
         this.state = {
-            error: history.location.state.error,
-            imageData: {
-                Author: history.location.state.imageData.Author,
-                Description: history.location.state.imageData.Description,
-                Group: history.location.state.imageData.Group,
-                Image: history.location.state.imageData.Image,
-                Name: history.location.state.imageData.Name,
-                Reserved: history.location.state.imageData.Reserved,
-                Reserved_Until: history.location.state.imageData.Reserved_Until,
-                Type: history.location.state.imageData.Type,
-                key: history.location.state.imageData.key
-            },
-            isLoading: history.location.state.isLoading,
-            originatedPage: history.location.state.originatedPage,
-            pageData: history.location.state.pageData,
-            redirect: history.location.state.redirect,
-            userAuthorized: history.location.state.userAuthorized,
-            username: history.location.state.username
+            error: currAppState.error,
+            imageData: imageDataJSON,
+            isLoading: true,
+            originatedPage: originatedPageStr,
+            pageData: pageDataJSON,
+            redirect: false,
+            userAuthorized: false,
+            username: "guest"
         };
     }
 
@@ -93,24 +105,6 @@ class ProductPage extends React.Component<ProductPageProps & RouteComponentProps
         this.props.synchronizePageData(this.state.pageData);
     }
 
-    // Action for back button - Return to the previous page
-    public goBack(e: any) {
-        // Deactivate default behavior
-        if (e !== null) { e.preventDefault(); }
-        // tslint:disable-next-line:no-console
-        console.log("Calling the previous");
-        const currAppState = store.getState();
-        const dataToShare = {
-            'error': currAppState.error,
-            'images': currAppState.images,
-            'isLoading': true,
-            'pageData': currAppState.pageData,
-            'redirect': currAppState.redirect,
-            'userAuthorized': currAppState.userAuthorized,
-            'username': currAppState.username
-        };
-        history.push(this.state.originatedPage, dataToShare);
-    }
     public render() {
         // Set default picture
         let picture = './images/Books/0-1/At_the_zoo.png';
@@ -127,6 +121,7 @@ class ProductPage extends React.Component<ProductPageProps & RouteComponentProps
         }
 
         return (
+        
         <div className="ProductPage mt-5">
            {/*<!-- Navigation Bar -->*/}
             <nav className="navbar navbar-light bg-light fixed-top">
@@ -135,27 +130,20 @@ class ProductPage extends React.Component<ProductPageProps & RouteComponentProps
                     {/* <!- Search Form --> */}
                     <div className="row ProductPageBox">
                             
-                            <div className="col-6 col-sm-6 col-md-3 align-self-center">
+                       <div className="col-6 col-sm-6 col-md-4 align-self-center">
+                            <a className="navbar-brand" href="/home">
+                                <img className="img-fluid rounded-circle" src={Logo} alt=""
+                                        style={{ maxWidth: '30px', height: '30px' }} />
+                            </a>
 
-                            <a className="navbar-brand" href="#page-top"><img className="img-fluid rounded-circle" src={Logo} alt=""
-                                style={{ maxWidth: '30px', height: '30px' }} /></a>
-
-                                <a href="/home">
+                            <a href="/home">
                                 <button className="btn home_button" type="button">
                                     <strong><i className="fas fa-home"/></strong>
                                 </button>
                             </a>
-                        </div>
+                       </div>
 
-                        <div className="col-6 col-sm-6 col-md-1 align-self-center">
-                                <a href="/back">
-                                    <button className="btn back_button float-right" onClick={(e) => { this.goBack(e) }}>
-                                        <strong><i className="fas fa-hand-point-left" /></strong>
-                                </button>
-                            </a>
-                        </div>
-
-                        <div className="col-12 col-sm-12 col-md-4 d-flex search_box text-center">
+                       <div className="col-12 col-sm-12 col-md-4 d-flex search_box text-center">
                             <section className="search_form" id="search_form">
                                 <form className="form-inline my-2 my-lg-0">
                                     <div className="input-group">
@@ -166,9 +154,9 @@ class ProductPage extends React.Component<ProductPageProps & RouteComponentProps
                                     </div>
                                 </form>
                             </section>
-                        </div>
+                       </div>
 
-                        <div className="col-12 col-sm-12 col-md-4 fawesome text-center" >
+                       <div className="col-12 col-sm-12 col-md-4 fawesome text-center" >
                             <a href="/account">
                                 <button className="btn btn-sm login_button m-2"><i className="fas fa-user-plus"><strong id="icons"> Log in</strong></i></button>
                             </a>
@@ -180,11 +168,12 @@ class ProductPage extends React.Component<ProductPageProps & RouteComponentProps
                             <a href="/myorders">
                                 <button className="btn btn-sm myorders_button"><i className="fas fa-shopping-basket" id="orders"><strong id="icons"> My Orders</strong></i></button>
                             </a>
-                        </div>
+                       </div>
                     </div>
                 </div>
             </nav>
 
+            {/*<!-- Container for Selected image details -->*/}
             <div className="container ">
                 <div className="row">
                     <div className="col-12 col-sm-4 col-md-4 text-center p-2">
@@ -221,6 +210,18 @@ class ProductPage extends React.Component<ProductPageProps & RouteComponentProps
 export function mapDispatchToProps(dispatch: any) {
     return {
         synchronizePageData: (pageData: ImageContent[]) => dispatch(actions.SynchronizePageData(pageData)),
+    }
+}
+
+// Create mapToState and mapDispatch for Redux
+export function mapStateToProps(state: StoreState & ProductPageState, OwnProps: ProductPageProps & RouteComponentProps<PathProps>) {
+    return {
+        error: state.error,
+        isLoading: state.isLoading,
+        pageData: state.pageData,
+        redirect: state.redirect,
+        userAuthorized: state.userAuthorized,
+        username: state.username
     }
 }
 
