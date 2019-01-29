@@ -10,8 +10,8 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
-import Logo from '.././src/images/Logo.png';
-import '.././src/stylesheets/Account.css';
+import Logo from './images/Logo.png';
+import './stylesheets/Account.css';
 
 library.add(faUser);
 library.add(faKey);
@@ -19,8 +19,8 @@ library.add(faKey);
 // Import necessary code from other modules
 import { store } from './redux/store';
 
-import * as actions from '.././src/redux/actions/PageContentActions';
-import { ImageContent, StoreState } from '.././src/redux/types/storeState';
+import * as actions from './redux/actions/PageContentActions';
+import { ImageContent, StoreState } from './redux/types/storeState';
 
 import createBrowserHistory from 'history/createBrowserHistory';
 import { Dispatch } from 'redux';

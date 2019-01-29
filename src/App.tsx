@@ -7,20 +7,23 @@ import { Dispatch } from "redux";
 
 // Import bootstrap css
 import 'bootstrap/dist/css/bootstrap.min.css';
+// Import stylesheets, basic image and font awesome
 import 'font-awesome/css/font-awesome.min.css';
-import Logo from '.././src/images/Logo.png';
-import '.././src/stylesheets/App.css';
+import Logo from './images/Logo.png';
+import './stylesheets/App.css';
 
+// Creaate history variable to be able to go back and forth within routes
 import createBrowserHistory from 'history/createBrowserHistory';
 const history = createBrowserHistory({ forceRefresh: true });
 
-// Import necessary code from other modules
-import * as actions from '.././src/redux/actions/PageContentActions';
-import { ImageContent, StoreState } from '.././src/redux/types/storeState';
+// Import necessary Redux store state interface and actions from other modules
+import * as actions from './redux/actions/PageContentActions';
+import { ImageContent, StoreState } from './redux/types/storeState';
 
+// Import the final set store shape from Redux
 import { store } from './redux/store';
 
-// CREATE Prop and State interfaces
+/** CREATE Prop and State interfaces to use in the component */
 // Set the default Props
 export interface Props {
     error: any;
@@ -91,20 +94,11 @@ export function mapStateToProps(state: StoreState, OwnProps: Props & RouteCompon
     }
 }
 
-export function mapDispatchToProps(dispatch: any) {
-    return {
-        onGetContent: (e: any, type: string, ageGroup: string) => dispatch(actions.UpdatePageContent(e, type, ageGroup)),
-        onLogout: (e: any) => dispatch(actions.signOutLocalUser(e)),
-        synchronizePageData: (pageData: ImageContent[]) => dispatch(actions.SynchronizePageData(pageData)),
-    }
-}
-
 // Create App component 
 class App extends React.Component<Props & RouteComponentProps<PathProps>, StoreState> {
    
     constructor(props: Props & RouteComponentProps<PathProps> ) {
         super(props);
-        
     }
 
     public componentDidMount() {
@@ -204,10 +198,7 @@ class App extends React.Component<Props & RouteComponentProps<PathProps>, StoreS
         const rows = this.setContent(this.props.pageData);
         // tslint:disable-next-line:no-console
         console.log("updating the App");
-        // const { match, location, history } = this.props;
 
-        // tslint:disable-next-line:no-console
-        // console.log("Rows are:", rows, match,history, location);
         return (
             <div className="App">
                 {/* <!- Navigation Bar --> */}
@@ -363,9 +354,6 @@ class Image extends React.Component<ImageProps, ImageState> {
             Name: this.state.Name, Reserved: this.state.Reserved,
             Reserved_Until: this.state.Reserved_Until, Type: this.state.Type, key: this.state.key
         });
-
-        // tslint:disable-next-line:no-console
-        // console.log("Here are the image locs:", './images/' + this.props.Type + '/' + this.state.Group + '/' + this.state.Image);
     }
     public openProductPage(e: any, imageData: any) {
         // Deactivate default behavior
@@ -413,6 +401,15 @@ class Image extends React.Component<ImageProps, ImageState> {
                 <a className="add_to_favorites_img" href="/add_to_favorites" />
             </div>
         );
+    }
+}
+
+// Set functions to use in Redux Dispatch
+export function mapDispatchToProps(dispatch: any) {
+    return {
+        onGetContent: (e: any, type: string, ageGroup: string) => dispatch(actions.UpdatePageContent(e, type, ageGroup)),
+        onLogout: (e: any) => dispatch(actions.signOutLocalUser(e)),
+        synchronizePageData: (pageData: ImageContent[]) => dispatch(actions.SynchronizePageData(pageData)),
     }
 }
 

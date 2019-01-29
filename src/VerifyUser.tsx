@@ -10,7 +10,7 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 // import Logo from '.././src/images/Logo.png';
-import '.././src/stylesheets/Signup.css';
+import './stylesheets/Signup.css';
 
 // import * as queryString from 'query-string';
 
@@ -24,8 +24,8 @@ library.add(faKey);
 // Import necessary code from other modules
 // import { store } from './redux/store';
 
-import * as actions from '.././src/redux/actions/PageContentActions';
-import { ImageContent, StoreState } from '.././src/redux/types/storeState';
+import * as actions from './redux/actions/PageContentActions';
+import { ImageContent, StoreState } from './redux/types/storeState';
 
 // import createBrowserHistory from 'history/createBrowserHistory';
 import { Dispatch } from 'redux';

@@ -3,18 +3,20 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from "react-router";
 import { Route, Switch, withRouter } from 'react-router-dom';
-import * as actions from '.././src/redux/actions/PageContentActions';
-import { ImageContent, StoreState } from '.././src/redux/types/storeState';
+import * as actions from './redux/actions/PageContentActions';
+import { ImageContent, StoreState } from './redux/types/storeState';
 
 import { Dispatch } from "redux";
 
 // Import the presentational components
+
 import Account from './Account';
 import App from './App';
 import './index.css';
-import ProductPage from './ProductPage';
+import ProductPage from './ProductPage';    
 import Signup from './Signup';
 import VerifyUser from './VerifyUser';
+
 
 export interface Props {
     error: string;

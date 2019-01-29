@@ -4,17 +4,16 @@ import { RouteComponentProps } from "react-router";
 import { withRouter } from 'react-router-dom';
 
 // Import bootstrap css
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
-import Logo from '.././src/images/Logo.png';
-import '.././src/stylesheets/ProductPage.css';
+import Logo from './images/Logo.png';
+import './stylesheets/ProductPage.css';
 
 // Import necessary code from other modules
 import { store } from './redux/store';
 
-import * as actions from '.././src/redux/actions/PageContentActions';
-import { ImageContent, StoreState } from '.././src/redux/types/storeState';
+import * as actions from './redux/actions/PageContentActions';
+import { ImageContent, StoreState } from './redux/types/storeState';
 
 import createBrowserHistory from 'history/createBrowserHistory';
 import { Dispatch } from 'redux';
@@ -60,12 +59,6 @@ export function mapStateToProps(state: StoreState & ProductPageState, OwnProps: 
         redirect: state.redirect,
         userAuthorized: state.userAuthorized,
         username: state.username
-    }
-}
-
-export function mapDispatchToProps(dispatch: any) {
-    return {
-        synchronizePageData: (pageData: ImageContent[]) => dispatch(actions.SynchronizePageData(pageData)),
     }
 }
 
@@ -224,6 +217,12 @@ class ProductPage extends React.Component<ProductPageProps & RouteComponentProps
             </div>
         </div>      
       )
+    }
+}
+
+export function mapDispatchToProps(dispatch: any) {
+    return {
+        synchronizePageData: (pageData: ImageContent[]) => dispatch(actions.SynchronizePageData(pageData)),
     }
 }
 

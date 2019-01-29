@@ -14914,7 +14914,6 @@
     <Compile Include="node_modules\yargs\node_modules\cliui\index.js" />
     <Compile Include="node_modules\yargs\node_modules\strip-ansi\index.js" />
     <Compile Include="node_modules\yargs\yargs.js" />
-    <Compile Include="routes\indesadx.js" />
     <Compile Include="server.js" />
     <Compile Include="server\controllers\content_controller.js">
       <SubType>Code</SubType>
@@ -22147,6 +22146,132 @@
     <Content Include="package-lock.json" />
     <Content Include="package.json" />
     <Content Include="public\favicon.ico" />
+    <Content Include="public\images\Books\0-1\At_the_zoo.png" />
+    <Content Include="public\images\Books\0-1\Baby_Love.png" />
+    <Content Include="public\images\Books\0-1\happy_baby_words.png" />
+    <Content Include="public\images\Books\0-1\I_can.png" />
+    <Content Include="public\images\Books\0-1\I_hear.png" />
+    <Content Include="public\images\Books\0-1\Maxs_First_Word.png" />
+    <Content Include="public\images\Books\0-1\Moo_Baa_La_La_La.png" />
+    <Content Include="public\images\Books\0-1\Pictivities.png" />
+    <Content Include="public\images\Books\0-1\The_Very_Hungry_Caterpillar.png" />
+    <Content Include="public\images\Books\0-1\WEE_WILLIE_WINKIE.png" />
+    <Content Include="public\images\Books\1-2\Barnyard_Dance.png" />
+    <Content Include="public\images\Books\1-2\Goodnight_Moon.png" />
+    <Content Include="public\images\Books\1-2\numbers_colors_shapes.png" />
+    <Content Include="public\images\Books\1-2\Pat_the_bunny.png" />
+    <Content Include="public\images\Books\1-2\Snowmen_at_work.png" />
+    <Content Include="public\images\Books\1-2\Solar_System.png" />
+    <Content Include="public\images\Books\1-2\VROOM_It_is_Color_Time.png" />
+    <Content Include="public\images\Books\2-3\Clifford_The_Firehouse_Fog.png" />
+    <Content Include="public\images\Books\2-3\Find_a_Pumpkin.png" />
+    <Content Include="public\images\Books\2-3\Happy_Birthday_Little_Pookie.png" />
+    <Content Include="public\images\Books\2-3\Little_Blue_Truck.png" />
+    <Content Include="public\images\Books\2-3\Otis.png" />
+    <Content Include="public\images\Books\2-3\Pete_the_cat.png" />
+    <Content Include="public\images\Books\2-3\We_are_going_on_a_Bear_Hunt.png" />
+    <Content Include="public\images\Books\3-4\A Fish Out of Water.png" />
+    <Content Include="public\images\Books\3-4\ALFIE_Gets_in_First.png" />
+    <Content Include="public\images\Books\3-4\Big_Honey_Hunt.png" />
+    <Content Include="public\images\Books\3-4\Diary_of_a_Wombat.png" />
+    <Content Include="public\images\Books\3-4\Green_Eggs_and_Ham.png" />
+    <Content Include="public\images\Books\3-4\Nursery_Rhymes.png" />
+    <Content Include="public\images\Books\3-4\Possum_Magic.png" />
+    <Content Include="public\images\Books\3-4\The CAT in the HAT.png" />
+    <Content Include="public\images\Books\3-4\WHOEVER YOU ARE.png" />
+    <Content Include="public\images\Books\4-6\CREEKFINDING A TRUE STORY.png" />
+    <Content Include="public\images\Books\4-6\Fantastic Mr. Fox.png" />
+    <Content Include="public\images\Books\4-6\Happy to be Happy.png" />
+    <Content Include="public\images\Books\4-6\Ouce Dice Trice.png" />
+    <Content Include="public\images\Books\4-6\Something for Christmas.png" />
+    <Content Include="public\images\Books\4-6\The Falcon Shield.png" />
+    <Content Include="public\images\Books\4-6\The Funny Bunny Factory.png" />
+    <Content Include="public\images\Books\4-6\The Tale of Kitty_in_Boots.png" />
+    <Content Include="public\images\Books\4-6\What the Fun.png" />
+    <Content Include="public\images\Logo.png" />
+    <Content Include="public\images\Puzzles\1-2\Around the Farm.png" />
+    <Content Include="public\images\Puzzles\1-2\COLORFUL FISH.png" />
+    <Content Include="public\images\Puzzles\1-2\Construction.png" />
+    <Content Include="public\images\Puzzles\1-2\Numbers.png" />
+    <Content Include="public\images\Puzzles\1-2\PETS.png" />
+    <Content Include="public\images\Puzzles\1-2\Shapes.png" />
+    <Content Include="public\images\Puzzles\1-2\Sing Along Nursery Rhymes.png" />
+    <Content Include="public\images\Puzzles\2-3\FARM SOUND BLOCKS.png" />
+    <Content Include="public\images\Puzzles\2-3\FISH BOWL JUMBO KNOB.png" />
+    <Content Include="public\images\Puzzles\2-3\FOREST FRIENDS.png" />
+    <Content Include="public\images\Puzzles\2-3\Garden Friends.png" />
+    <Content Include="public\images\Puzzles\2-3\OUR WORLD.png" />
+    <Content Include="public\images\Puzzles\2-3\PETS.png" />
+    <Content Include="public\images\Puzzles\3-4\Barnyard Greetings.png" />
+    <Content Include="public\images\Puzzles\3-4\Caribbean Smile.png" />
+    <Content Include="public\images\Puzzles\3-4\Create Your Own Puzzle.png" />
+    <Content Include="public\images\Puzzles\3-4\FROLICKING HORSES JIGSAW.png" />
+    <Content Include="public\images\Puzzles\3-4\GARDEN TRADITIONS.png" />
+    <Content Include="public\images\Puzzles\3-4\New Neighbors.png" />
+    <Content Include="public\images\Puzzles\4-6\Porch Pals.png" />
+    <Content Include="public\images\Puzzles\4-6\Pup and Friend.png" />
+    <Content Include="public\images\Puzzles\4-6\Puppy Wagon.png" />
+    <Content Include="public\images\Puzzles\4-6\Sleeping Cat.png" />
+    <Content Include="public\images\Puzzles\4-6\Sunrise Farm.png" />
+    <Content Include="public\images\Puzzles\4-6\The Blue Country House.png" />
+    <Content Include="public\images\Smart Toys\Anki Cosmo.png" />
+    <Content Include="public\images\Smart Toys\Code &amp; Go Robot Mouse Activity Set.png" />
+    <Content Include="public\images\Smart Toys\Code a Pillar.png" />
+    <Content Include="public\images\Smart Toys\Cubetto.png" />
+    <Content Include="public\images\Smart Toys\Dash.png" />
+    <Content Include="public\images\Smart Toys\Deluxe Eco Robotics.png" />
+    <Content Include="public\images\Smart Toys\Makeblock mBot Smart Robot Kit.png" />
+    <Content Include="public\images\Smart Toys\Miposaur.png" />
+    <Content Include="public\images\Smart Toys\Osmo Coding Jam.png" />
+    <Content Include="public\images\Smart Toys\Sphero Orbotix.png" />
+    <Content Include="public\images\Smart Toys\Sphero Star Wars BB-8 App Controlled Robot.png" />
+    <Content Include="public\images\Smart Toys\WowWee MiP.png" />
+    <Content Include="public\images\Toys\0-1\Ambi Toys Activity Case.png" />
+    <Content Include="public\images\Toys\0-1\Haba Wonder Dice.png" />
+    <Content Include="public\images\Toys\0-1\Mon Doudou Corolle Miss Floral Bloom 24cm_9.5in.png" />
+    <Content Include="public\images\Toys\0-1\Mon Doudou Corolle Princess Pink Cotton Flower 30cm_12in.png" />
+    <Content Include="public\images\Toys\0-1\Plan Toys Baby Car.png" />
+    <Content Include="public\images\Toys\0-1\Plan Toys Bunny Rattle.png" />
+    <Content Include="public\images\Toys\0-1\Plan Toys Roller Rattle.png" />
+    <Content Include="public\images\Toys\0-1\Yookidoo Crawl and Go Snail.png" />
+    <Content Include="public\images\Toys\0-1\Yookidoo Gymotion Activity Gym.png" />
+    <Content Include="public\images\Toys\0-1\Yookidoo Gymotion Robo Playland.png" />
+    <Content Include="public\images\Toys\1-2\Baby Annabell - My first baby Annabell doll.png" />
+    <Content Include="public\images\Toys\1-2\Beatrix Potter - Peter Rabbit xylophone.png" />
+    <Content Include="public\images\Toys\1-2\Bigjigs - Click blocks Basic game.png" />
+    <Content Include="public\images\Toys\1-2\Bright Starts - 3-in-1 Step and Ride Lion.png" />
+    <Content Include="public\images\Toys\1-2\Early Learning Centre - Dinosaur hopper.png" />
+    <Content Include="public\images\Toys\1-2\Early Learning Centre - Multi-coloured sand and water table.png" />
+    <Content Include="public\images\Toys\1-2\Little Tikes - First slide pink.png" />
+    <Content Include="public\images\Toys\1-2\Mega Bloks - 65 piece Block Buddies main street friends block playset.png" />
+    <Content Include="public\images\Toys\1-2\Mookie - Lawnmower game.png" />
+    <Content Include="public\images\Toys\1-2\Zuru - 4-in-1 Shop n Cook Walker.png" />
+    <Content Include="public\images\Toys\2-3\2-in-1 Food Truck.png" />
+    <Content Include="public\images\Toys\2-3\Classic Doll Baby.png" />
+    <Content Include="public\images\Toys\2-3\Gas and Go Mower.png" />
+    <Content Include="public\images\Toys\2-3\Jeep Wrangler Toddler to Twin Bed.png" />
+    <Content Include="public\images\Toys\2-3\Princess Horse &amp; Carriage.png" />
+    <Content Include="public\images\Toys\2-3\Tikes Place.png" />
+    <Content Include="public\images\Toys\2-3\Tire Twister Lights.png" />
+    <Content Include="public\images\Toys\2-3\Waffle Block Steam Train.png" />
+    <Content Include="public\images\Toys\2-3\Waffle Blocks Castle.png" />
+    <Content Include="public\images\Toys\3-4\Birds in a Nest Sorting Set.png" />
+    <Content Include="public\images\Toys\3-4\Factory Building set.png" />
+    <Content Include="public\images\Toys\3-4\Sand &amp; Water Fine Motor.png" />
+    <Content Include="public\images\Toys\3-4\Serve it up.png" />
+    <Content Include="public\images\Toys\3-4\Smart Scoops Maths Activity Set.png" />
+    <Content Include="public\images\Toys\3-4\Smart Sounds Play House.png" />
+    <Content Include="public\images\Toys\3-4\Solar Lantern.png" />
+    <Content Include="public\images\Toys\3-4\Veggie Farm Sorting.png" />
+    <Content Include="public\images\Toys\4-6\ALEX Toys Artist Studio Super Art Table with Paper Roll.png" />
+    <Content Include="public\images\Toys\4-6\Confetti Guitar.png" />
+    <Content Include="public\images\Toys\4-6\Crayons.png" />
+    <Content Include="public\images\Toys\4-6\Eco Recycled Crayons.png" />
+    <Content Include="public\images\Toys\4-6\Intex Dinoland Play Center.png" />
+    <Content Include="public\images\Toys\4-6\Kidoozie Hop &amp; Squeak Pogo Jumper.png" />
+    <Content Include="public\images\Toys\4-6\Lego - Princess Castle.png" />
+    <Content Include="public\images\Toys\4-6\Magna-Tiles Clear Colors 100 Piece Set.png" />
+    <Content Include="public\images\Toys\4-6\Wooden Bead Set.png" />
     <Content Include="public\index.html" />
     <Content Include="public\manifest.json" />
     <Content Include="README.md" />
@@ -22167,22 +22292,49 @@
     <Content Include="src\images\Books\1-2\Snowmen_at_work.png" />
     <Content Include="src\images\Books\1-2\Solar_System.png" />
     <Content Include="src\images\Books\1-2\VROOM_It_is_Color_Time.png" />
+    <Content Include="src\images\Books\2-3\A Fish Out of Water.png">
+      <SubType>Content</SubType>
+      <DependentUpon>src\images\Books\2-3\We_are_going_on_a_Bear_Hunt.png</DependentUpon>
+    </Content>
+    <Content Include="src\images\Books\2-3\ALFIE_Gets_in_First.png">
+      <SubType>Content</SubType>
+      <DependentUpon>src\images\Books\2-3\We_are_going_on_a_Bear_Hunt.png</DependentUpon>
+    </Content>
+    <Content Include="src\images\Books\2-3\Big_Honey_Hunt.png">
+      <SubType>Content</SubType>
+      <DependentUpon>src\images\Books\2-3\We_are_going_on_a_Bear_Hunt.png</DependentUpon>
+    </Content>
     <Content Include="src\images\Books\2-3\Clifford_The_Firehouse_Fog.png" />
+    <Content Include="src\images\Books\2-3\Diary_of_a_Wombat.png">
+      <SubType>Content</SubType>
+      <DependentUpon>src\images\Books\2-3\We_are_going_on_a_Bear_Hunt.png</DependentUpon>
+    </Content>
     <Content Include="src\images\Books\2-3\Find_a_Pumpkin.png" />
+    <Content Include="src\images\Books\2-3\Green_Eggs_and_Ham.png">
+      <SubType>Content</SubType>
+      <DependentUpon>src\images\Books\2-3\We_are_going_on_a_Bear_Hunt.png</DependentUpon>
+    </Content>
     <Content Include="src\images\Books\2-3\Happy_Birthday_Little_Pookie.png" />
-    <Content Include="src\images\Books\2-3\Little_Blue_Truck.png.png" />
+    <Content Include="src\images\Books\2-3\Little_Blue_Truck.png" />
+    <Content Include="src\images\Books\2-3\Nursery_Rhymes.png">
+      <SubType>Content</SubType>
+      <DependentUpon>src\images\Books\2-3\We_are_going_on_a_Bear_Hunt.png</DependentUpon>
+    </Content>
     <Content Include="src\images\Books\2-3\Otis.png" />
     <Content Include="src\images\Books\2-3\Pete_the_cat.png" />
+    <Content Include="src\images\Books\2-3\Possum_Magic.png">
+      <SubType>Content</SubType>
+      <DependentUpon>src\images\Books\2-3\We_are_going_on_a_Bear_Hunt.png</DependentUpon>
+    </Content>
+    <Content Include="src\images\Books\2-3\The CAT in the HAT.png">
+      <SubType>Content</SubType>
+      <DependentUpon>src\images\Books\2-3\We_are_going_on_a_Bear_Hunt.png</DependentUpon>
+    </Content>
     <Content Include="src\images\Books\2-3\We_are_going_on_a_Bear_Hunt.png" />
-    <Content Include="src\images\Books\3-4\A Fish Out of Water.png" />
-    <Content Include="src\images\Books\3-4\ALFIE_Gets_in_First.png" />
-    <Content Include="src\images\Books\3-4\Big_Honey_Hunt.png" />
-    <Content Include="src\images\Books\3-4\Diary_of_a_Wombat.png" />
-    <Content Include="src\images\Books\3-4\Green_Eggs_and_Ham.png" />
-    <Content Include="src\images\Books\3-4\Nursery_Rhymes.png" />
-    <Content Include="src\images\Books\3-4\Possum_Magic.png" />
-    <Content Include="src\images\Books\3-4\The CAT in the HAT.png" />
-    <Content Include="src\images\Books\3-4\WHOEVER YOU ARE.png" />
+    <Content Include="src\images\Books\2-3\WHOEVER YOU ARE.png">
+      <SubType>Content</SubType>
+      <DependentUpon>src\images\Books\2-3\We_are_going_on_a_Bear_Hunt.png</DependentUpon>
+    </Content>
     <Content Include="src\images\Books\4-6\CREEKFINDING A TRUE STORY.png" />
     <Content Include="src\images\Books\4-6\Fantastic Mr. Fox.png" />
     <Content Include="src\images\Books\4-6\Happy to be Happy.png" />
@@ -22289,12 +22441,30 @@
     <Content Include="tslint.json" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="public\images\" />
+    <Folder Include="public\images\Books\" />
+    <Folder Include="public\images\Books\0-1\" />
+    <Folder Include="public\images\Books\1-2\" />
+    <Folder Include="public\images\Books\2-3\" />
+    <Folder Include="public\images\Books\3-4\" />
+    <Folder Include="public\images\Books\4-6\" />
+    <Folder Include="public\images\Puzzles\" />
+    <Folder Include="public\images\Puzzles\1-2\" />
+    <Folder Include="public\images\Puzzles\2-3\" />
+    <Folder Include="public\images\Puzzles\3-4\" />
+    <Folder Include="public\images\Puzzles\4-6\" />
+    <Folder Include="public\images\Smart Toys\" />
+    <Folder Include="public\images\Toys\" />
+    <Folder Include="public\images\Toys\0-1\" />
+    <Folder Include="public\images\Toys\1-2\" />
+    <Folder Include="public\images\Toys\2-3\" />
+    <Folder Include="public\images\Toys\3-4\" />
+    <Folder Include="public\images\Toys\4-6\" />
     <Folder Include="server\config\" />
     <Folder Include="node_modules\%40types\prop-types\" />
     <Folder Include="node_modules\%40types\react-redux\" />
     <Folder Include="node_modules\%40types\react-router-dom\" />
     <Folder Include="server\" />
-    <Folder Include="routes\" />
     <Folder Include="node_modules\%40babel\" />
     <Folder Include="node_modules\%40babel\code-frame\" />
     <Folder Include="node_modules\%40babel\code-frame\lib\" />
@@ -25766,17 +25936,30 @@
     <Folder Include="src\images\Books\2-3\" />
     <Folder Include="src\images\Books\3-4\" />
     <Folder Include="src\images\Books\4-6\" />
+    <Folder Include="src\images\Books\4-6\" />
+    <Folder Include="src\images\Puzzles\" />
     <Folder Include="src\images\Puzzles\" />
     <Folder Include="src\images\Puzzles\1-2\" />
+    <Folder Include="src\images\Puzzles\1-2\" />
+    <Folder Include="src\images\Puzzles\2-3\" />
     <Folder Include="src\images\Puzzles\2-3\" />
     <Folder Include="src\images\Puzzles\3-4\" />
+    <Folder Include="src\images\Puzzles\3-4\" />
+    <Folder Include="src\images\Puzzles\4-6\" />
     <Folder Include="src\images\Puzzles\4-6\" />
     <Folder Include="src\images\Smart Toys\" />
+    <Folder Include="src\images\Smart Toys\" />
+    <Folder Include="src\images\Toys\" />
     <Folder Include="src\images\Toys\" />
     <Folder Include="src\images\Toys\0-1\" />
+    <Folder Include="src\images\Toys\0-1\" />
+    <Folder Include="src\images\Toys\1-2\" />
     <Folder Include="src\images\Toys\1-2\" />
     <Folder Include="src\images\Toys\2-3\" />
+    <Folder Include="src\images\Toys\2-3\" />
     <Folder Include="src\images\Toys\3-4\" />
+    <Folder Include="src\images\Toys\3-4\" />
+    <Folder Include="src\images\Toys\4-6\" />
     <Folder Include="src\images\Toys\4-6\" />
     <Folder Include="src\redux\" />
     <Folder Include="src\redux\actions\" />
@@ -26256,13 +26439,11 @@
     <TypeScriptCompile Include="src\container.tsx" />
     <TypeScriptCompile Include="src\index.tsx" />
     <TypeScriptCompile Include="src\ProductPage.tsx" />
-    <TypeScriptCompile Include="src\redux\actions\LocalUserAutorizationActions.tsx" />
     <TypeScriptCompile Include="src\redux\actions\PageContentActions.tsx" />
     <TypeScriptCompile Include="src\redux\constants\PageContentConstants.tsx" />
     <TypeScriptCompile Include="src\redux\reducers\combinedReducers.tsx">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="src\redux\reducers\UserContentReducer.tsx" />
     <TypeScriptCompile Include="src\redux\reducers\PageContent.tsx" />
     <TypeScriptCompile Include="src\redux\store.tsx" />
     <TypeScriptCompile Include="src\redux\types\storeState.tsx" />

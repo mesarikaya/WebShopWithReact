@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
-//  BrowserRouter as Router, 
+
 import {  Route } from 'react-router-dom';
 
 import { ConnectedRouter } from 'react-router-redux';

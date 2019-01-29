@@ -12,10 +12,12 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const path = require("path");
-
 const router = express.Router();
-//Introduce packages for oAuth
+
+// Introduce passportjs for local storage token management
 const passport = require('passport');
+
+// Create Mongoose connection with existing mongodb schema
 const mongoose = require('mongoose');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const url = process.env.MONGODB_URI || "mongodb://localhost:27017/sharing_app";
@@ -30,46 +32,30 @@ try {
     throw new Error("Error in connecting the database server");
 }
 
-// Create a store tp put the mongodb store in and make it a part of session
-var store = new MongoDBStore(
-    {
-        uri: url,
-    }
-);
-
 let port = 5000 || process.env.PORT;
 
 /** set up Oauth package to the app and load the Environment variables */
 require('dotenv').load();
 
 /** set up middlewares */
+// Set cors availability
 const corsOptions = { credentials: true, origin: 'http://localhost:3000' };
 app.use("*",cors(corsOptions));
+
+// Add helmet to protect for general attacks
 app.use(helmet());
+
+// Add body parser for proper body parsing for posting
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-/* app.use(cookieParser(process.env.cookieParsersecret));
-
-// Set the session
-var sessionMiddleware = session({
-    cookie: {
-        maxAge: new Date(Date.now() + 60 * 1000),
-        secure: "auto",
-    },
-    resave: false,
-    saveUninitialized: false,
-    secret: process.env.cookieParsersecret,
-    store: store
-});
-
-
-app.use(sessionMiddleware); */
 
 // Initialize passport and session
 app.use(passport.initialize());
-app.use(passport.session());
 
+// Serialize and deserialize the local storage session
 require('./server/passport/index')(passport);
+
+// Set all the /api/* routes extension for the nodejs backend server calls
 app.use('/api', router);
 
 /** set up routes {API Endpoints} */
