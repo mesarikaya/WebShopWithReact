@@ -55,7 +55,6 @@ interface VerifUserPageState {
 export function mapStateToProps(state: StoreState & VerifUserPageState, OwnProps: VerifyUserPageProps & RouteComponentProps<PathProps>) {
     return {
         error: state.error,
-        images: state.images,
         isLoading: state.isLoading,
         pageData: state.pageData,
         redirect: state.redirect,
@@ -78,7 +77,6 @@ class VerifyUser extends React.Component<VerifyUserPageProps & RouteComponentPro
         super(props);
         this.state = {
             error: '',
-            images: '',
             isLoading: true,
             pageData: [{ Type: "", Name: "", Author: "", Group: "", Reserved: "", Reserved_Until: "" }],
             redirect: false,

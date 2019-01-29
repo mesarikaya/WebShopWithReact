@@ -8,12 +8,13 @@ import logoutUser from '../helperFunctions/logoutUser';
  * Use the Redux dispatch method to check if the decoded message is valid
  * If valid then update the user status to logged in unless the token is not verified
  * @param {any} dispatch
+ * @param {any} pageData
  * @param {any} token
  * @param {any} username
  * @param {any} userAuthorized
  * @param {any} redirect
  */
-const verify = (dispatch, token, username, userAuthorized, redirect) => {
+const verify = (dispatch, pageData, token, username, userAuthorized, redirect) => {
 
     jwt.verify(token, "jwtauthsecretthatnobodyshouldpip", (err, decoded) => {
         if (err) {
@@ -35,7 +36,7 @@ const verify = (dispatch, token, username, userAuthorized, redirect) => {
             userAuthorized = !isEmpty(decoded);
             redirect = true;
             username = decoded.id;
-            dispatch({ type: 'UPDATE_LOCAL_USER_AUTHORIZATION', redirect, username, userAuthorized });
+            dispatch({ type: 'UPDATE_LOCAL_USER_AUTHORIZATION', pageData, redirect, username, userAuthorized });
 
             // Check if the expiration time is up for the token
             // If expired log out the user again

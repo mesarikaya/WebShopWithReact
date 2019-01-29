@@ -15,6 +15,7 @@ export function updatePageReducer(state: any, action: UpdatePageContentAction): 
             })
         case UPDATE_LOCAL_USER_AUTHORIZATION: // Update user login status and redirect command
             return Object.assign({}, state, {
+                pageData: [...action.pageData],
                 redirect: action.redirect,
                 userAuthorized: action.userAuthorized,
                 username: action.username

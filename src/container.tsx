@@ -7,7 +7,7 @@ import { Dispatch } from "redux";
 import * as actions from './redux/actions/PageContentActions';
 import { ImageContent, StoreState } from './redux/types/storeState';
 
-// Import the presentational components
+// Import the presentational components for this container
 import Account from './Account';
 import App from './App';
 import ProductPage from './ProductPage';    
@@ -15,12 +15,14 @@ import Signup from './Signup';
 import './stylesheets/index.css';
 import VerifyUser from './VerifyUser';
 
+// Import the final set store shape from Redux
+import { store } from './redux/store';
+
 export interface Props {
     error: string;
-    images: string;
     isLoading: boolean;
     pageData: ImageContent[];
-    onRefresh(): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
+    onRefresh(pageData: ImageContent[]): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
 };
 
 // These props are provided by the router
@@ -30,23 +32,16 @@ interface PathProps {
     match: any;
 }
 
-export function mapDispatchToProps(dispatch: any) {
-    return {
-        onRefresh: () => dispatch(actions.refreshPage()),
-    }
-}
-
 class Container extends React.Component<Props & RouteComponentProps<PathProps>, StoreState> {
     public state: StoreState;
 
     constructor(props: Props & RouteComponentProps<PathProps>) {
         super(props);
-
+        const currAppState = store.getState();
         this.state = {
-            error: "",
-            images: "",
+            error: currAppState.error,
             isLoading: true,
-            pageData: [{ Type: "", Name: "", Author: "", Group: "", Reserved: "", Reserved_Until: "" }],    
+            pageData: currAppState.pageData,    
             redirect: false,
             userAuthorized: false,
             username: "guest"
@@ -54,8 +49,8 @@ class Container extends React.Component<Props & RouteComponentProps<PathProps>, 
     }
 
     public componentDidMount() {
-       // update login status on page refresh
-       this.props.onRefresh();
+        // update login status on page refresh
+        this.props.onRefresh(this.state.pageData);
     }
 
     public render() {
@@ -77,9 +72,14 @@ class Container extends React.Component<Props & RouteComponentProps<PathProps>, 
 export function mapStateToProps(state: StoreState, OwnProps: Props & RouteComponentProps<PathProps>) {
     return {
         error: state.error,
-        images: state.images,
         isLoading: state.isLoading,
         pageData: state.pageData,
+    }
+}
+
+export function mapDispatchToProps(dispatch: any) {
+    return {
+        onRefresh: (pageData: ImageContent[]) => dispatch(actions.refreshPage(pageData)),
     }
 }
 

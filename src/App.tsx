@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { RouteComponentProps } from "react-router";
 import { withRouter } from 'react-router-dom';
 import { Dispatch } from "redux";
+
 // Import necessary Redux store state interface and actions from other modules
 import * as actions from './redux/actions/PageContentActions';
 import { ImageContent, StoreState } from './redux/types/storeState';
@@ -27,7 +28,6 @@ import { store } from './redux/store';
 // Set the default Props
 export interface Props {
     error: any;
-    images: string;
     isLoading: boolean;
     pageData: ImageContent[];
     redirect: boolean;
@@ -35,6 +35,7 @@ export interface Props {
     username: string;
     onGetContent(e: any, type: string, ageGroup: string): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
     onLogout(e: any): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
+    onRefresh(pageData: ImageContent[]): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
     synchronizePageData(pageData: ImageContent[]): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
 };
 
@@ -85,7 +86,6 @@ interface ImageState {
 export function mapStateToProps(state: StoreState, OwnProps: Props & RouteComponentProps<PathProps>) {
     return {
         error: state.error,
-        images: state.images,
         isLoading: state.isLoading,
         pageData: state.pageData,
         redirect: state.redirect,
@@ -96,15 +96,34 @@ export function mapStateToProps(state: StoreState, OwnProps: Props & RouteCompon
 
 // Create App component 
 class App extends React.Component<Props & RouteComponentProps<PathProps>, StoreState> {
-   
-    constructor(props: Props & RouteComponentProps<PathProps> ) {
-        super(props);
-    }
+    public state: StoreState;
 
-    public componentDidMount() {
+    constructor(props: Props & RouteComponentProps<PathProps>) {
+        super(props);
+
+        const currAppState = store.getState();
+        const pageDataJSON = (typeof (history.location.state) !== "undefined" && typeof (history.location.state.pageData) !== "undefined") ? history.location.state.pageData : currAppState.pageData;
+
+        // tslint:disable-next-line:no-console
+        console.log("originated state is: ", typeof history.location.state);
+
         // Check if there is already content on the store state for pageData
         const content = store.getState().pageData;
         const historyState = history.location.state;
+
+        // tslint:disable-next-line:no-console
+        console.log("App state for history state: ", historyState);
+
+        // tslint:disable-next-line:no-console
+        console.log("App state for content state: ", content);
+        this.state = {
+            error: currAppState.error,
+            isLoading: true,
+            pageData: pageDataJSON,
+            redirect: false,
+            userAuthorized: false,
+            username: "guest"
+        };
 
         // If the page is opened back with goBack
         if (historyState !== undefined && historyState.pageData !== undefined) {
@@ -115,8 +134,15 @@ class App extends React.Component<Props & RouteComponentProps<PathProps>, StoreS
             this.props.onGetContent(null, "allItems", "all");
         }
         else { // Otherwise load what is in the current store state
-            this.props.synchronizePageData(store.getState().pageData);
+            this.props.synchronizePageData(content);
         }
+        
+    }
+
+    public componentDidMount() {
+
+        // Send all the store data on component load
+        this.props.synchronizePageData(this.state.pageData);
     }
 
     /* public componentDidMount() {
@@ -159,13 +185,14 @@ class App extends React.Component<Props & RouteComponentProps<PathProps>, StoreS
 
         const currAppState = store.getState();
         const dataToShare = {
-            'error': currAppState.error,
-            'images': currAppState.images,
-            'isLoading': true,
-            'pageData': currAppState.pageData,
-            'redirect': currAppState.redirect,
-            'userAuthorized': currAppState.userAuthorized,
-            'username': currAppState.username
+            error: currAppState.error,
+            images: currAppState.images,
+            isLoading: true,
+            originatedPage: history.location.pathname,
+            pageData: currAppState.pageData,
+            redirect: currAppState.redirect,
+            userAuthorized: currAppState.userAuthorized,
+            username: currAppState.username
         };
         // tslint:disable-next-line:no-console
         console.log("Data to share is: ", dataToShare);
@@ -409,6 +436,7 @@ export function mapDispatchToProps(dispatch: any) {
     return {
         onGetContent: (e: any, type: string, ageGroup: string) => dispatch(actions.UpdatePageContent(e, type, ageGroup)),
         onLogout: (e: any) => dispatch(actions.signOutLocalUser(e)),
+        onRefresh: (pageData: ImageContent[]) => dispatch(actions.refreshPage(pageData)),
         synchronizePageData: (pageData: ImageContent[]) => dispatch(actions.SynchronizePageData(pageData)),
     }
 }

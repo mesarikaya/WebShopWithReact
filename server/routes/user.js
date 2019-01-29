@@ -17,8 +17,6 @@ module.exports = (router, passport) => {
 
     // Create authentication check via using passport.js    
     function ensureAuthenticated(req, res, next) {
-        // tslint:disable-next-line:no-console
-        console.log("Logout session id", session.id);
 
         // tslint:disable-next-line:no-console
         console.log("Authentications result is:", req.isAuthenticated());
@@ -28,19 +26,18 @@ module.exports = (router, passport) => {
         }
         else {
             // Warn the user about logged out status, and redirect to cover page
-            // res.redirect('/flash');
             // tslint:disable-next-line:no-console
             console.log("Authentication failed");
             res.redirect('/');
         }
     }
-    
+
+    // On page refresh route
     router
         .route('/auth')
         .get((req, res, next) => {
-            // tslint:disable-next-line:no-console
-            console.log('===== user!!======')
 
+            // Check if the user is available in the header
             // tslint:disable-next-line:no-console
             console.log(req.user)
             if (req.user) {
@@ -50,8 +47,8 @@ module.exports = (router, passport) => {
             }
         });
 
-    // CREATE AUTHENTICATIONS FOR Google, Facebook, LinkedIn, Twitter and Github
-    // Sel created authenticate
+    // CREATE AUTHENTICATIONS FOR Local Sign in
+    // Set created authenticate
     // After sign up request, direct to home page for login
     router
         .route('/auth/sign-up')
@@ -79,7 +76,7 @@ module.exports = (router, passport) => {
         .route('/auth/sign-in')
         .post((req, res, next) => {
             return passport.authenticate('local-signin', (err, user, token) => {
-                // Check if the usser credentials are correct. 
+                // Check if the user credentials are correct. 
                 // If so, send the user verification result JSON to update the app state
 
                 // Log in to the session and serialize the user
@@ -179,7 +176,4 @@ module.exports = (router, passport) => {
                 res.redirect('/');
             }
         );
-
-
-
 };

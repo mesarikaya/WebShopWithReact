@@ -53,7 +53,6 @@ interface ProductPageState {
 export function mapStateToProps(state: StoreState & ProductPageState, OwnProps: ProductPageProps & RouteComponentProps<PathProps>) {
     return {
         error: state.error,
-        images: state.images,
         isLoading: state.isLoading,
         pageData: state.pageData,
         redirect: state.redirect,
@@ -80,7 +79,6 @@ class ProductPage extends React.Component<ProductPageProps & RouteComponentProps
                 Type: history.location.state.imageData.Type,
                 key: history.location.state.imageData.key
             },
-            images: history.location.state.images,
             isLoading: history.location.state.isLoading,
             originatedPage: history.location.state.originatedPage,
             pageData: history.location.state.pageData,

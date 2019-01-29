@@ -9,7 +9,6 @@
 
 export interface StoreState {
     error: string;
-    images: string;
     isLoading: boolean;
     pageData: ImageContent[];
     redirect: boolean;

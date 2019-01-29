@@ -6,7 +6,6 @@ import verifyTokenandDispatch from '../helperFunctions/verifyToken';
 import { ImageContent } from '../types/storeState';
 import { UpdatePageContentAction } from './PageContentActions';
 
-
 // Set the API url for back end calls
 const url = process.env.NODE_ENV === 'production' ? "/api/" : "http://localhost:5000/api/";
 
@@ -18,6 +17,7 @@ export interface UpdatePageContentInterface {
 }
 
 export interface LocalUserAuthorizationInterface {
+    pageData: ImageContent[];
     type: constants.UPDATE_LOCAL_USER_AUTHORIZATION;
     redirect: boolean;
     userAuthorized: boolean;
@@ -86,10 +86,10 @@ export function UpdatePageContent(e: any, type: string, ageGroup: string) {
  * On go back actions synchronize the page data
  * @param content
  */
-export function SynchronizePageData(content: ImageContent[]) {
+export function SynchronizePageData(datatoShare: any) {
     // Get the content for the page
     const isLoading = false;
-    const pageData = content;
+    const pageData = datatoShare;
 
     return ((dispatch: Dispatch<UpdatePageContentInterface>) => {
         dispatch({ type: 'UPDATE_PAGE_CONTENT', pageData, isLoading });
@@ -135,7 +135,7 @@ export function UpdateLocalUserAuthenticationStatus(e: any, formState: any) {
  * @param e
  * @param formState
  */
-export function signInLocalUser(e: any, formState: any) {
+export function signInLocalUser(e: any, formState: any, pageData: ImageContent[]) {
     if (e !== null) { e.preventDefault(); }
 
     // Initialize the data to send with Post request
@@ -159,7 +159,7 @@ export function signInLocalUser(e: any, formState: any) {
 
             if (response.status === 200 && response.data.result.userVerified) {
                 const token = response.data.result.token;
-                verifyTokenandDispatch(dispatch, token, username, userAuthorized, redirect);
+                verifyTokenandDispatch(dispatch, pageData, token, username, userAuthorized, redirect);
 
                 // TODO: Create success message to share with the user
             }
@@ -204,7 +204,7 @@ export function signOutLocalUser(e: any) {
 };
 
 // Keep page data integrity on user page refreshes
-export function refreshPage() {
+export function refreshPage(pageData: ImageContent[]) {
 
     // Get the username parameters
     const username = "guest";
@@ -222,7 +222,7 @@ export function refreshPage() {
                     // If the token exists set the user to the page data again
                     const token = localStorage.jwtToken;
                     // it will first login and then log out if time is expired
-                    verifyTokenandDispatch(dispatch, token, username, userAuthorized, redirect); 
+                    verifyTokenandDispatch(dispatch, pageData, token, username, userAuthorized, redirect); 
                     // TODO: Create success message to share with the user
                 }
             }

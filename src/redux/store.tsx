@@ -31,8 +31,8 @@ import { UpdatePageContentAction } from './actions/PageContentActions';
 
 const initialState = {
     error: "",
-    images: "",
     isLoading: false,
+    originatedPage: "/",
     pageData: [{ Type: "", Name: "", Author: "", Group: "", Reserved: "", Reserved_Until: "" }],
     redirect: false,
     userAuthorized: false,

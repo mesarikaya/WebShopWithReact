@@ -63,7 +63,6 @@ export function mapStateToProps(state: StoreState & SignupPageState, OwnProps: S
     return {
         error: state.error,
         formFields: state.formFields,
-        images: state.images,
         isLoading: state.isLoading,
         originatedPage: state.originatedPage,
         pageData: state.pageData,
@@ -85,9 +84,9 @@ class Signup extends React.Component<SignupPageProps & RouteComponentProps<PathP
 
     constructor(props: SignupPageProps & RouteComponentProps<PathProps>) {
         super(props);
-        
+        const currAppState = store.getState();
         this.state = {
-            error: history.location.state.error,
+            error: currAppState.error,
             formFields: {
                 city: "",
                 confirm_password: "",
@@ -102,13 +101,12 @@ class Signup extends React.Component<SignupPageProps & RouteComponentProps<PathP
                 surname: "",
                 zipCode: "",
             },
-            images: history.location.state.images,
-            isLoading: history.location.state.isLoading,
-            originatedPage: history.location.state.originatedPage,
-            pageData: history.location.state.pageData,
-            redirect: history.location.state.redirect,
-            userAuthorized: history.location.state.userAuthorized,
-            username: history.location.state.username
+            isLoading: currAppState.isLoading,
+            originatedPage: currAppState.originatedPage,
+            pageData: currAppState.pageData,
+            redirect: currAppState.redirect,
+            userAuthorized: currAppState.userAuthorized,
+            username: currAppState.username
         };
     }
 

@@ -35,11 +35,11 @@ interface PathProps {
 }
 
 export interface AccountPageProps {
-    originatedPage: string;
     formFields: FormFields;
+    originatedPage: string;
     redirect: boolean
     userAuthorized: boolean;
-    signInLocalUser(e: any, formFields: any): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
+    signInLocalUser(e: any, formFields: any, pageData: ImageContent[]): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
     synchronizePageData(pageData: ImageContent[]): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
 };
 
@@ -50,56 +50,46 @@ interface FormFields {
 }
 
 interface AccountPageState {
-    originatedPage: string;
+    error: string;
     formFields: FormFields;
+    isLoading: boolean;
+    originatedPage: string;
+    pageData: ImageContent[];
     redirect: boolean;
+    userAuthorized: boolean;
+    username: string;
 };
 
-// Create mapToState and mapDispatch for Redux
-export function mapStateToProps(state: StoreState & AccountPageState, OwnProps:AccountPageProps & RouteComponentProps<PathProps>) {
-    return {
-        error: state.error,
-        formFields: state.formFields,
-        images: state.images,
-        isLoading: state.isLoading,
-        pageData: state.pageData,
-        redirect: state.redirect,
-        userAuthorized: state.userAuthorized,
-        username: state.username,
-    }
-}
-
-export function mapDispatchToProps(dispatch: any) {
-    return {
-        signInLocalUser: (e: any, formFields: any) => dispatch(actions.signInLocalUser(e, formFields)),
-        synchronizePageData: (pageData: ImageContent[]) => dispatch(actions.SynchronizePageData(pageData)),
-    }
-}
 
 class Account extends React.Component < AccountPageProps & RouteComponentProps < PathProps >, AccountPageState > {
     public state: AccountPageState & StoreState;
 
     constructor(props: AccountPageProps & RouteComponentProps<PathProps>) {
         super(props);
+
         const currAppState = store.getState();
+        const originatedPageStr = (typeof (history.location.state) !== "undefined" && typeof(history.location.state.originatedPage) !== "undefined") ? history.location.state.originatedPage : "/";
+        const pageDataJSON = (typeof (history.location.state) !== "undefined" && typeof(history.location.state.pageData) !== "undefined") ? history.location.state.pageData : currAppState.pageData;
+        // tslint:disable-next-line:no-console
+        console.log("originated state is: ", typeof history.location.state);
+
         this.state = {
             error: currAppState.error,
             formFields: {
                 email: "",
-                password: ""
+                password: "",
             },
-            images: currAppState.images,
-            isLoading: currAppState.isLoading,
-            originatedPage: currAppState.originatedPage,
-            pageData: currAppState.pageData,
+            isLoading: true,
+            originatedPage: originatedPageStr,
+            pageData: pageDataJSON,
             redirect: false,
-            userAuthorized: currAppState.userAuthorized,
-            username: currAppState.username
+            userAuthorized: false,
+            username: "guest"
         };
     }
 
     public componentDidMount() {
-        // Send all the data on component load
+        // Send all the store data on component load
         this.props.synchronizePageData(this.state.pageData);
     }
 
@@ -111,12 +101,12 @@ class Account extends React.Component < AccountPageProps & RouteComponentProps <
         console.log("Calling the previous");
         const currAppState = store.getState();
         const dataToShare = {
-            'error': currAppState.error,
-            'images': currAppState.images,
-            'isLoading': true,
-            'pageData': currAppState.pageData,
-            'userAuthorized': currAppState.userAuthorized,
-            'username': currAppState.username
+            error: currAppState.error,
+            images: currAppState.images,
+            isLoading: true,
+            pageData: currAppState.pageData,
+            userAuthorized: currAppState.userAuthorized,
+            username: currAppState.username
         };
         history.push(this.state.originatedPage, dataToShare);
     }
@@ -149,8 +139,7 @@ class Account extends React.Component < AccountPageProps & RouteComponentProps <
 
     public render() {
         const signedInRedirect = this.props.userAuthorized && this.props.redirect;
-        // tslint:disable-next-line:no-console
-        console.log("in redux", this.state.userAuthorized, this.state.redirect);
+       
         if (signedInRedirect) {
             // tslint:disable-next-line:no-console
             console.log("in redux", this.state.userAuthorized, this.state.redirect);
@@ -203,7 +192,7 @@ class Account extends React.Component < AccountPageProps & RouteComponentProps <
                                         <div className="row justify-content-center">
                                             <form className="needs-validation" noValidate={false} name="loginForm" id="contactForm"
                                                 onSubmit={(e) => {
-                                                    this.props.signInLocalUser(e, this.state.formFields);
+                                                    this.props.signInLocalUser(e, this.state.formFields, this.state.pageData);
                                                 }}>
                                                 <div className="control-group">
                                                     <div className="form-group floating-label-form-group controls mb-0 pb-2">
@@ -301,6 +290,26 @@ class Account extends React.Component < AccountPageProps & RouteComponentProps <
                 </section>
             </div>);
         }
+    }
+}
+
+// Create mapToState and mapDispatch for Redux
+export function mapStateToProps(state: StoreState & AccountPageState, OwnProps: AccountPageProps & RouteComponentProps<PathProps>) {
+    return {
+        error: state.error,
+        formFields: state.formFields,
+        isLoading: state.isLoading,
+        pageData: state.pageData,
+        redirect: state.redirect,
+        userAuthorized: state.userAuthorized,
+        username: state.username,
+    }
+}
+
+export function mapDispatchToProps(dispatch: any) {
+    return {
+        signInLocalUser: (e: any, formFields: any, pageData: ImageContent[]) => dispatch(actions.signInLocalUser(e, formFields, pageData)),
+        synchronizePageData: (pageData: ImageContent[]) => dispatch(actions.SynchronizePageData(pageData)),
     }
 }
 
