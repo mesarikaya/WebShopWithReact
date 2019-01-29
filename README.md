@@ -9,6 +9,7 @@
 - Local sign-in functionality with PassportJS JWT strategy
 	- Expirable Local Storage to control user login and logouts
 - Typescript to provide static typing for better control of data and its types
+- Bootstrap4 and page breaks used page views for responsive design
 
 # Views
 ## Standard home page direction for guests
