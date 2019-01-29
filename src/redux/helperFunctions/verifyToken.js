@@ -1,13 +1,18 @@
 ﻿import { Dispatch } from "redux";
-
 import setAuthToken from '../helperFunctions/setAuthToken';
-
 import isEmpty  from '../helperFunctions/isEmpty';
-
 import jwt from 'jsonwebtoken';
-
 import logoutUser from '../helperFunctions/logoutUser';
 
+/**
+ * Use the Redux dispatch method to check if the decoded message is valid
+ * If valid then update the user status to logged in unless the token is not verified
+ * @param {any} dispatch
+ * @param {any} token
+ * @param {any} username
+ * @param {any} userAuthorized
+ * @param {any} redirect
+ */
 const verify = (dispatch, token, username, userAuthorized, redirect) => {
 
     jwt.verify(token, "jwtauthsecretthatnobodyshouldpip", (err, decoded) => {
@@ -19,9 +24,7 @@ const verify = (dispatch, token, username, userAuthorized, redirect) => {
         } else {
             // If token is successfully verified, we can send the autorized data 
             // tslint:disable-next-line:no-console
-            console.log('ERROR: Could not connect to the protected route with', process.env);
-            // tslint:disable-next-line:no-console
-            console.log('SUCCESS: Connected to protected route');
+            console.log('SUCCESS: Connected to the protected route');
             localStorage.setItem('jwtToken', token);
             setAuthToken(token);
 

@@ -1,20 +1,16 @@
-﻿import * as constants from '../constants/PageContentConstants';
-
-import axios from 'axios';
+﻿import axios from 'axios';
 import { Dispatch } from "redux";
-
+import * as constants from '../constants/PageContentConstants';
+import logoutUser from '../helperFunctions/logoutUser';
+import verifyTokenandDispatch from '../helperFunctions/verifyToken';
 import { ImageContent } from '../types/storeState';
 import { UpdatePageContentAction } from './PageContentActions';
 
+
+// Set the API url for back end calls
 const url = process.env.NODE_ENV === 'production' ? "/api/" : "http://localhost:5000/api/";
 
-import logoutUser from '../helperFunctions/logoutUser';
-
-import verifyTokenandDispatch from '../helperFunctions/verifyToken';
-
-// import jwtDecode from 'jwt-decode';
-// import jwt from 'jsonwebtoken';
-
+/** Set action interfaces */
 export interface UpdatePageContentInterface {
     type: constants.UPDATE_PAGE_CONTENT;
     isLoading: boolean;
@@ -28,8 +24,19 @@ export interface LocalUserAuthorizationInterface {
     username: string;
 }
 
+//TODO: Modularize this code via splitting it based on User login activity
+// dispacth actions and page image vieww actions. It has grown to be very big
+
+
+// Create a general Action for the provided action interfaces
 export type UpdatePageContentAction = UpdatePageContentInterface & LocalUserAuthorizationInterface;
 
+/**
+ * Make GET request and dipatch the image data to be shown via redux  
+ * @param e
+ * @param type
+ * @param ageGroup
+ */
 export function UpdatePageContent(e: any, type: string, ageGroup: string) {
     if (e !== null) { e.preventDefault(); }
 
@@ -49,11 +56,9 @@ export function UpdatePageContent(e: any, type: string, ageGroup: string) {
                 params,
                 'withCredentials': true
             }).then((response) => {
-            // handle success
-            // tslint:disable-next-line:no-console
-            console.log("CALLING FROM THE REDUX ACTIONS, response is:", response);
+
+            // Depending on response status, reset the data
             isLoading = true;
-            dispatch({ type: 'UPDATE_PAGE_CONTENT', pageData, isLoading });
             if (response.data.result === "No data") {
                 isLoading = false;
                 pageData = [{ Type: "", Name: "", Author: "", Group: "", Reserved: "", Reserved_Until: "" }];
@@ -66,9 +71,6 @@ export function UpdatePageContent(e: any, type: string, ageGroup: string) {
                 isLoading = false;
                 pageData = response.data.result;
             }
-            // tslint:disable-next-line:no-console
-            console.log("pageData is from within the action: ", pageData);
-
             dispatch({ type: 'UPDATE_PAGE_CONTENT', pageData, isLoading });
         })
         .catch(error => {
@@ -80,7 +82,10 @@ export function UpdatePageContent(e: any, type: string, ageGroup: string) {
     });
 };
 
-
+/**
+ * On go back actions synchronize the page data
+ * @param content
+ */
 export function SynchronizePageData(content: ImageContent[]) {
     // Get the content for the page
     const isLoading = false;
@@ -91,17 +96,17 @@ export function SynchronizePageData(content: ImageContent[]) {
     });
 };
 
+/**
+ * Get the entered sign up form state and send a POST request to the database
+ * This
+ * @param e
+ * @param formState
+ */
 export function UpdateLocalUserAuthenticationStatus(e: any, formState: any) {
     if (e !== null) { e.preventDefault(); }
 
     // Initialize the data to send with Post request
     const data = formState;
-
-    // Get the username parameters
-    /* const username = "test";
-    const userAuthorized = true;
-    const pageData = [{ Type: "test", Name: "test", Author: "test", Group: "test", Reserved: "test", Reserved_Until: "test" }];
-    */
 
     return ((dispatch: Dispatch<LocalUserAuthorizationInterface>) => {
         return (axios.post(`${url}auth/sign-up`, data, {
@@ -109,20 +114,27 @@ export function UpdateLocalUserAuthenticationStatus(e: any, formState: any) {
                 'content-type': 'application/json'
                     // 'application/x-www-form-urlencoded',
             }
-        }).then((response) => {
-            // handle success
+        }).then((response) => { // No dispatch is needed on success for now, maybe add
             // tslint:disable-next-line:no-console
             console.log("POST METHOD CALLING FROM THE REDUX USE LOG IN ACTIONS, response is:", response);
-            // dispatch({ type: 'UPDATE_LOCAL_USER_AUTHORIZATION', username, userAuthorized, pageData  });
+
+            // TODO: Create success message to share with the user
         }).catch(error => {
             // handle error
             // tslint:disable-next-line:no-console
             console.log("Error in post is:", error.response);
+
+            // TODO: Create a dispatch for error message to share with the user
             throw (error);
         }));
       });
 };
 
+/**
+ * Get the signin form state and check the credentails in the backend
+ * @param e
+ * @param formState
+ */
 export function signInLocalUser(e: any, formState: any) {
     if (e !== null) { e.preventDefault(); }
 
@@ -133,9 +145,7 @@ export function signInLocalUser(e: any, formState: any) {
     const username = "";
     const userAuthorized = false;
     const redirect = false;
-    // const pageData = [{ Type: "test", Name: "test", Author: "test", Group: "test", Reserved: "test", Reserved_Until: "test" }];
-    
-
+   
     return ((dispatch: Dispatch<LocalUserAuthorizationInterface>) => {
         return (axios.post(`${url}auth/sign-in`, data, {
             headers: {
@@ -143,23 +153,30 @@ export function signInLocalUser(e: any, formState: any) {
                 'withCredentials': true
             }
         }).then((response) => {
-            // handle success
+            
             // tslint:disable-next-line:no-console
             console.log("REDUX USE LOG IN ACTIONS, response is:", response);
 
             if (response.status === 200 && response.data.result.userVerified) {
                 const token = response.data.result.token;
                 verifyTokenandDispatch(dispatch, token, username, userAuthorized, redirect);
+
+                // TODO: Create success message to share with the user
             }
         }).catch(error => {
-                // handle error
                 // tslint:disable-next-line:no-console
                 console.log("Error in post is:", error.response);
+
+                // TODO: Create error message to share with the user
                 throw (error);
         }));
     });
 };
 
+/**
+ * Sig out the user with a GET request
+ * @param e
+ */
 export function signOutLocalUser(e: any) {
     if (e !== null) { e.preventDefault(); }
 
@@ -173,17 +190,22 @@ export function signOutLocalUser(e: any) {
                 // tslint:disable-next-line:no-console
                 console.log("Log out the user");
                 logoutUser(dispatch);
+                // TODO: Create success message to share with the user
             }
+            // TODO: Create error message to share with the user
         }).catch(error => {
-            // handle error
             // tslint:disable-next-line:no-console
             console.log("Error in GET is:", error.response);
+
+            // TODO: Create error message to share with the user
             throw (error);
         }));
     });
 };
 
-
+/**
+ * Keep page data integrity on user page refreshes
+ * */
 export function refreshPage() {
 
     // Get the username parameters
@@ -196,20 +218,22 @@ export function refreshPage() {
             'withCredentials': true
         }
         ).then((response) => {
-            // handle success
-            
+           
             if (response.status === 200) {
                 if (localStorage.jwtToken) {
                     // If the token exists set the user to the page data again
                     const token = localStorage.jwtToken;
                     // it will first login and then log out if time is expired
                     verifyTokenandDispatch(dispatch, token, username, userAuthorized, redirect); 
+                    // TODO: Create success message to share with the user
                 }
             }
+            // TODO: Create error message to share with the user
         }).catch(error => {
-            // handle error
             // tslint:disable-next-line:no-console
             console.log("Error in GET for page refresh is:", error.response);
+
+            // TODO: Create error message to share with the user
             throw (error);
         }));
     });

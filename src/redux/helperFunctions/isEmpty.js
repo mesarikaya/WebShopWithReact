@@ -1,4 +1,8 @@
-﻿const isEmpty = (value) => {
+﻿/**
+ * To check if an object or literal is empty
+ * @param {any} value
+ */
+const isEmpty = (value) => {
     return (
         value === undefined ||
         value === null ||

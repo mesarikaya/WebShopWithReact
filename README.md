@@ -53,8 +53,9 @@ to the main page and the current state of the store is presented. If not, it sta
 
 # ToDo List
 - Add social login strategies
-- Create Favorites and shoppoing Basket modal views as a presentational component
+- Create Favorites and shopping Basket modal views as a presentational component
 - Enable on click favorites and basket update
 - For guest users disable the favorites and baskets
 - Create a sample payment page for checkout (Not a real one)
+- Couple the already created validation messages to the views inside error prop
 - Deploy to Heroku

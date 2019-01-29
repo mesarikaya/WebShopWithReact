@@ -1,7 +1,10 @@
 ﻿import setAuthToken from '../helperFunctions/setAuthToken';
-
 import { Dispatch } from "redux";
 
+/**
+ *  Remove the jwtToken and dispatch redux action to update login status
+ * @param {any} dispatch
+ */
 const logout = (dispatch) => {
     // Delete the local storage token
     localStorage.removeItem('jwtToken');
