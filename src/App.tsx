@@ -4,9 +4,13 @@ import { connect } from 'react-redux';
 import { RouteComponentProps } from "react-router";
 import { withRouter } from 'react-router-dom';
 import { Dispatch } from "redux";
+// Import necessary Redux store state interface and actions from other modules
+import * as actions from './redux/actions/PageContentActions';
+import { ImageContent, StoreState } from './redux/types/storeState';
 
 // Import bootstrap css
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 // Import stylesheets, basic image and font awesome
 import 'font-awesome/css/font-awesome.min.css';
 import Logo from './images/Logo.png';
@@ -15,10 +19,6 @@ import './stylesheets/App.css';
 // Creaate history variable to be able to go back and forth within routes
 import createBrowserHistory from 'history/createBrowserHistory';
 const history = createBrowserHistory({ forceRefresh: true });
-
-// Import necessary Redux store state interface and actions from other modules
-import * as actions from './redux/actions/PageContentActions';
-import { ImageContent, StoreState } from './redux/types/storeState';
 
 // Import the final set store shape from Redux
 import { store } from './redux/store';

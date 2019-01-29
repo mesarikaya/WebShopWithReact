@@ -10,7 +10,7 @@ import { ConnectedRouter } from 'react-router-redux';
 
 import Container from './container';
 
-import './index.css';
+import './stylesheets/index.css';
 
 import {  history, store } from './redux/store';
 

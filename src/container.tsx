@@ -3,20 +3,17 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from "react-router";
 import { Route, Switch, withRouter } from 'react-router-dom';
+import { Dispatch } from "redux";
 import * as actions from './redux/actions/PageContentActions';
 import { ImageContent, StoreState } from './redux/types/storeState';
 
-import { Dispatch } from "redux";
-
 // Import the presentational components
-
 import Account from './Account';
 import App from './App';
-import './index.css';
 import ProductPage from './ProductPage';    
 import Signup from './Signup';
+import './stylesheets/index.css';
 import VerifyUser from './VerifyUser';
-
 
 export interface Props {
     error: string;
@@ -33,21 +30,12 @@ interface PathProps {
     match: any;
 }
 
-export function mapStateToProps(state: StoreState, OwnProps: Props & RouteComponentProps<PathProps>) {
-    return {
-        error: state.error,
-        images: state.images,
-        isLoading: state.isLoading,
-        pageData: state.pageData,
-    }
-}
-
 export function mapDispatchToProps(dispatch: any) {
     return {
         onRefresh: () => dispatch(actions.refreshPage()),
     }
 }
-// const history = createBrowserHistory();
+
 class Container extends React.Component<Props & RouteComponentProps<PathProps>, StoreState> {
     public state: StoreState;
 
@@ -85,4 +73,14 @@ class Container extends React.Component<Props & RouteComponentProps<PathProps>, 
         );
     }
 }
+
+export function mapStateToProps(state: StoreState, OwnProps: Props & RouteComponentProps<PathProps>) {
+    return {
+        error: state.error,
+        images: state.images,
+        isLoading: state.isLoading,
+        pageData: state.pageData,
+    }
+}
+
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Container));

@@ -14956,7 +14956,9 @@
     <Compile Include="src\redux\helperFunctions\verifyToken.js">
       <SubType>Code</SubType>
     </Compile>
-    <Content Include=".env" />
+    <Content Include=".env">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include=".gitignore" />
     <Content Include="node_modules\%40babel\code-frame\package.json" />
     <Content Include="node_modules\%40babel\code-frame\README.md" />
@@ -22432,8 +22434,7 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="src\stylesheets\App.css" />
-    <Content Include="src\index.css" />
-    <Content Include="src\logo.svg" />
+    <Content Include="src\stylesheets\index.css" />
     <Content Include="src\stylesheets\ProductPage.css" />
     <Content Include="tsconfig.json" />
     <Content Include="tsconfig.prod.json" />
