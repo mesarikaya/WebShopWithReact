@@ -177,7 +177,7 @@ export function signInLocalUser(e: any, formState: any, pageData: ImageContent[]
  * Sig out the user with a GET request
  * @param e
  */
-export function signOutLocalUser(e: any) {
+export function signOutLocalUser(e: any, pageData: ImageContent[]) {
     if (e !== null) { e.preventDefault(); }
 
     return ((dispatch: Dispatch<LocalUserAuthorizationInterface>) => {
@@ -189,7 +189,7 @@ export function signOutLocalUser(e: any) {
             if (response.status === 200) {
                 // tslint:disable-next-line:no-console
                 console.log("Log out the user");
-                logoutUser(dispatch);
+                logoutUser(dispatch, pageData);
                 // TODO: Create success message to share with the user
             }
             // TODO: Create error message to share with the user

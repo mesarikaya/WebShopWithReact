@@ -5,17 +5,17 @@ import { RouteComponentProps } from "react-router";
 import { withRouter } from 'react-router-dom';
 import { Dispatch } from "redux";
 
-// Import necessary Redux store state interface and actions from other modules
-import * as actions from './redux/actions/PageContentActions';
-import { ImageContent, StoreState } from './redux/types/storeState';
-
-// Import bootstrap css
+// Import necessary Redux store state interface, actions, bootstrap.css, stylesheets, basic image and font awesome
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-// Import stylesheets, basic image and font awesome
 import 'font-awesome/css/font-awesome.min.css';
 import Logo from './images/Logo.png';
+import * as actions from './redux/actions/PageContentActions';
+import { ImageContent, StoreState } from './redux/types/storeState';
 import './stylesheets/App.css';
+
+// Import the presentational components for this container  
+import Image from './Image';
+import ImageList from './ImageList';
 
 // Creaate history variable to be able to go back and forth within routes
 import createBrowserHistory from 'history/createBrowserHistory';
@@ -34,7 +34,7 @@ export interface Props {
     userAuthorized: boolean;
     username: string;
     onGetContent(e: any, type: string, ageGroup: string): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
-    onLogout(e: any): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
+    onLogout(e: any, pageData: ImageContent[]): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
     onRefresh(pageData: ImageContent[]): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
     synchronizePageData(pageData: ImageContent[]): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
 };
@@ -46,54 +46,6 @@ interface PathProps {
     match: any;
 }
 
-interface ImageListProps {
-    pageData: ImageContent[];
-    rows: any;
-    history: any;
-};
-
-interface ImageListState {
-    pageData: ImageContent[];
-    rows: any;
-    history: any;
-};
-
-export interface ImageProps {
-    Author: string;
-    Description: string;
-    Group: string;
-    Image: string;
-    key: string;
-    Name: string;
-    Reserved: string;
-    Reserved_Until: string;
-    Type: string;  
-};
-
-interface ImageState {
-    Author: string;
-    Description: string;
-    Group: string;
-    Image: string;
-    key: string;
-    Name: string;
-    Reserved: string;
-    Reserved_Until: string;
-    Type: string; 
-};
-
-// Create mapToState and mapDispatch for Redux
-export function mapStateToProps(state: StoreState, OwnProps: Props & RouteComponentProps<PathProps>) {
-    return {
-        error: state.error,
-        isLoading: state.isLoading,
-        pageData: state.pageData,
-        redirect: state.redirect,
-        userAuthorized: state.userAuthorized,
-        username: state.username
-    }
-}
-
 // Create App component 
 class App extends React.Component<Props & RouteComponentProps<PathProps>, StoreState> {
     public state: StoreState;
@@ -101,48 +53,32 @@ class App extends React.Component<Props & RouteComponentProps<PathProps>, StoreS
     constructor(props: Props & RouteComponentProps<PathProps>) {
         super(props);
 
-        const currAppState = store.getState();
-        
-        // tslint:disable-next-line:no-console
-        console.log("originated state is: ", typeof history.location.state);
-
         // Check if there is already content on the store state for pageData
-        const content = store.getState().pageData;
-        const historyState = history.location.state;
-        const pageDataJSON = (typeof (historyState) !== "undefined" && typeof (historyState.pageData) !== "undefined") ? historyState.pageData : currAppState.pageData;
+        const currAppState = store.getState();
 
         // tslint:disable-next-line:no-console
-        console.log("App state for history state: ", historyState);
-
-        // tslint:disable-next-line:no-console
-        console.log("App state for content state: ", content);
+        console.log("App state for content state: ", currAppState);
         this.state = {
             error: currAppState.error,
             isLoading: true,
-            pageData: pageDataJSON,
+            pageData: currAppState.pageData,
             redirect: false,
             userAuthorized: false,
             username: "guest"
         };
 
-        // If the page is opened back with goBack
-        if (historyState !== undefined && historyState.pageData !== undefined) {
-            this.props.synchronizePageData(historyState.pageData);
-        }
-        else if (content === undefined || content.length === 0 || content["0"].Type === "") {
+        // Check if there is any data in the store. If not, show all the content
+        const content = currAppState.pageData;
+        if (content === undefined || content.length === 0 || content["0"].Type === "") {
             // If no content is in the state, load all the items
             this.props.onGetContent(null, "allItems", "all");
         }
-        else { // Otherwise load what is in the current store state
-            this.props.synchronizePageData(content);
-        }
-        
     }
 
     public componentDidMount() {
 
-        // Send all the store data on component load
-        this.props.synchronizePageData(this.state.pageData);
+        // update login status on page refresh
+        this.props.onRefresh(this.state.pageData);
     }
 
     public setContent(data: any) {
@@ -172,23 +108,7 @@ class App extends React.Component<Props & RouteComponentProps<PathProps>, StoreS
         // Deactivate default behavior
         if (e !== null) { e.preventDefault(); }
 
-        // tslint:disable-next-line:no-console
-        console.log("Calling the previous");
-
-        const currAppState = store.getState();
-        const dataToShare = {
-            error: currAppState.error,
-            images: currAppState.images,
-            isLoading: true,
-            originatedPage: history.location.pathname,
-            pageData: currAppState.pageData,
-            redirect: currAppState.redirect,
-            userAuthorized: currAppState.userAuthorized,
-            username: currAppState.username
-        };
-        // tslint:disable-next-line:no-console
-        console.log("Data to share is: ", dataToShare);
-        history.push('account', dataToShare);
+        history.push('account');
     }
 
     public modifyLoginButton() {
@@ -203,7 +123,7 @@ class App extends React.Component<Props & RouteComponentProps<PathProps>, StoreS
         } else {
             return (
                 <a>
-                    <button className="btn btn-sm login_button m-2" onClick={(e) => { this.props.onLogout(e) }}>
+                    <button className="btn btn-sm login_button m-2" onClick={(e) => { this.props.onLogout(e, this.state.pageData) }}>
                         <i className="fas fa-user-plus"><strong id="icons"> Log out</strong></i>
                     </button>
                 </a>
@@ -310,8 +230,7 @@ class App extends React.Component<Props & RouteComponentProps<PathProps>, StoreS
                             <div className="col-12 col-sm-8 col-md-4 fawesome" >
 
                                 {this.modifyLoginButton()}
-                                {/* <!--<button className="btn btn-sm signup_button"><i className="far fa-user"> <strong id="icons"> Sign up</strong></i></button>--> */}
-
+                                
                                 <a href="/api/images">
                                     <button className="btn btn-sm favorites_button"><i className="fas fa-heart"><strong id="icons"> Favorites</strong></i></button>
                                 </a>
@@ -333,93 +252,15 @@ class App extends React.Component<Props & RouteComponentProps<PathProps>, StoreS
     }
 }
 
-class ImageList extends React.Component<ImageListProps, ImageListState> {
-
-    constructor(props: ImageListProps) {
-        super(props);
-    }
-
-    public render() {
-
-        // Send the Image List items to the Image component
-        return (
-            <div className="row images" >{this.props.rows}</div>
-        );
-    }
-}
-
-class Image extends React.Component<ImageProps, ImageState> {
-    public state: ImageState;   
-
-    constructor(props: ImageProps) {
-        super(props);
-        this.state = {
-            Author: this.props.Author,
-            Description: this.props.Description,
-            Group: this.props.Group,
-            Image: this.props.Image,
-            Name: this.props.Name,
-            Reserved: this.props.Reserved,
-            Reserved_Until: this.props.Reserved_Until,
-            Type: this.props.Type,
-            key: this.props.key
-        };
-    }
-    public componentDidMount() {
-        this.setState({
-            Author: this.state.Author,
-            Group: this.state.Group,
-            Image: this.state.Image, 
-            Name: this.state.Name, Reserved: this.state.Reserved,
-            Reserved_Until: this.state.Reserved_Until, Type: this.state.Type, key: this.state.key
-        });
-    }
-    public openProductPage(e: any, imageData: any) {
-        // Deactivate default behavior
-        if (e !== null) { e.preventDefault(); }
-        // tslint:disable-next-line:no-console
-        console.log("Calling the product page");
-        const currAppState = store.getState();
-        const dataToShare = {
-            'error': currAppState.error,
-            'imageData': imageData,
-            'images': currAppState.images,
-            'isLoading': true,
-            'originatedPage': '/',
-            'pageData': currAppState.pageData,
-            'userAuthorized': currAppState.userAuthorized,
-            'username': currAppState.username
-        };
-        history.push('/productPage/' + imageData.Name, dataToShare);
-    }
-
-    public render() {
-        // Set default picture
-        let picture = './images/Books/0-1/At_the_zoo.png';
-
-        // Get teh appropriate picture dynamically
-        if (this.props.Type === "Smart Toys") {
-            if (typeof this.props.Type !== 'undefined' && typeof this.props.Image !== 'undefined') {
-                picture = './images/' + this.props.Type + '/' + this.props.Image;
-            }
-        } else {
-            if (typeof this.props.Type !== 'undefined' && typeof this.props.Group !== 'undefined' && typeof this.props.Image !== 'undefined') {
-                picture = './images/' + this.props.Type + '/' + this.props.Group + '/' + this.props.Image;
-            }
-        }
-
-        // tslint:disable-next-line:no-console
-        // console.log("Here are the final images!!!!!!:", defaultPicture);
-        return (
-            
-            <div className="col-12 col-sm-6 col-md-3 text-center p-2 image_add_ons">
-                <a className="" onClick={(e) => { this.openProductPage(e, this.props) }}>
-                    <img className="img-fluid rounded" src={require(`${picture}`)} alt="test" />
-                </a>
-                <a className="add_to_cart_img" href="/add_to_basket" />
-                <a className="add_to_favorites_img" href="/add_to_favorites" />
-            </div>
-        );
+// Create mapToState and mapDispatch for Redux
+export function mapStateToProps(state: StoreState, OwnProps: Props & RouteComponentProps<PathProps>) {
+    return {
+        error: state.error,
+        isLoading: state.isLoading,
+        pageData: state.pageData,
+        redirect: state.redirect,
+        userAuthorized: state.userAuthorized,
+        username: state.username
     }
 }
 
@@ -427,7 +268,7 @@ class Image extends React.Component<ImageProps, ImageState> {
 export function mapDispatchToProps(dispatch: any) {
     return {
         onGetContent: (e: any, type: string, ageGroup: string) => dispatch(actions.UpdatePageContent(e, type, ageGroup)),
-        onLogout: (e: any) => dispatch(actions.signOutLocalUser(e)),
+        onLogout: (e: any, pageData: ImageContent[]) => dispatch(actions.signOutLocalUser(e, pageData)),
         onRefresh: (pageData: ImageContent[]) => dispatch(actions.refreshPage(pageData)),
         synchronizePageData: (pageData: ImageContent[]) => dispatch(actions.SynchronizePageData(pageData)),
     }

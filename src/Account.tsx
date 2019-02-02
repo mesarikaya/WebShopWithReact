@@ -68,11 +68,7 @@ class Account extends React.Component < AccountPageProps & RouteComponentProps <
         super(props);
 
         const currAppState = store.getState();
-        const originatedPageStr = (typeof (history.location.state) !== "undefined" && typeof(history.location.state.originatedPage) !== "undefined") ? history.location.state.originatedPage : "/";
-        const pageDataJSON = (typeof (history.location.state) !== "undefined" && typeof(history.location.state.pageData) !== "undefined") ? history.location.state.pageData : currAppState.pageData;
-        // tslint:disable-next-line:no-console
-        console.log("originated state is: ", typeof history.location.state);
-
+        
         this.state = {
             error: currAppState.error,
             formFields: {
@@ -80,10 +76,10 @@ class Account extends React.Component < AccountPageProps & RouteComponentProps <
                 password: "",
             },
             isLoading: true,
-            originatedPage: originatedPageStr,
-            pageData: pageDataJSON,
-            redirect: false,
-            userAuthorized: false,
+            originatedPage: currAppState.originatedPage,
+            pageData: currAppState.pageData,
+            redirect: currAppState.redirect,
+            userAuthorized: currAppState.userAuthorized,
             username: "guest"
         };
     }
@@ -96,18 +92,7 @@ class Account extends React.Component < AccountPageProps & RouteComponentProps <
     public openSignupPage(e: any) {
         // Deactivate default behavior
         if (e !== null) { e.preventDefault(); }
-        // tslint:disable-next-line:no-console
-        console.log("Calling the previous");
-        const currAppState = store.getState();
-        const dataToShare = {
-            'error': currAppState.error,
-            'images': currAppState.images,
-            'isLoading': true,
-            'pageData': currAppState.pageData,
-            'userAuthorized': currAppState.userAuthorized,
-            'username': currAppState.username
-        };
-        history.push('/signup', dataToShare);
+        history.push('/signup');
     }
 
     public onChange = (e: any) => {

@@ -1,6 +1,6 @@
 ﻿import * as React from 'react';
 import { connect } from 'react-redux';
-import { RouteComponentProps } from "react-router";
+import { Redirect, RouteComponentProps } from "react-router";
 import { withRouter } from 'react-router-dom';
 
 // Import bootstrap css
@@ -40,13 +40,18 @@ interface PathProps {
 }
 
 export interface ProductPageProps {
+    goToAccountPage: boolean;
     imageData: ImageData;
+    userAuthorized: boolean;
+    onLogout(e: any, pageData: ImageContent[]): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
     synchronizePageData(pageData: ImageContent[]): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
 };
 
 interface ProductPageState {
+    goToAccountPage: boolean;
     imageData: ImageData;
     originatedPage: string;
+    userAuthorized: boolean;
 };
 
 class ProductPage extends React.Component<ProductPageProps & RouteComponentProps<PathProps>, ProductPageState> {
@@ -90,6 +95,7 @@ class ProductPage extends React.Component<ProductPageProps & RouteComponentProps
 
         this.state = {
             error: currAppState.error,
+            goToAccountPage: false,
             imageData: imageDataJSON,
             isLoading: true,
             originatedPage: originatedPageStr,
@@ -105,110 +111,141 @@ class ProductPage extends React.Component<ProductPageProps & RouteComponentProps
         this.props.synchronizePageData(this.state.pageData);
     }
 
-    public render() {
-        // Set default picture
-        let picture = './images/Books/0-1/At_the_zoo.png';
-
-        // Get teh appropriate picture dynamically
-        if (this.state.imageData.Type === "Smart Toys") {
-            if (typeof this.state.imageData.Type !== 'undefined' && typeof this.state.imageData.Image !== 'undefined') {
-                picture = './images/' + this.state.imageData.Type + '/' + this.state.imageData.Image;
-            }
+    public modifyLoginButton() {
+        if (this.props.userAuthorized === false) {
+            return (
+                <a onClick={(e) => { this.openAccountPage(e) }}>
+                    <button className="btn btn-sm login_button m-2">
+                        <i className="fas fa-user-plus"><strong id="icons"> Log in</strong></i>
+                    </button>
+                </a>
+            );
         } else {
-            if (typeof this.state.imageData.Type !== 'undefined' && typeof this.state.imageData.Group !== 'undefined' && typeof this.state.imageData.Image !== 'undefined') {
-                picture = './images/' + this.state.imageData.Type + '/' + this.state.imageData.Group + '/' + this.state.imageData.Image;
+            return (
+                <a>
+                    <button className="btn btn-sm login_button m-2" onClick={(e) => { this.props.onLogout(e, this.state.pageData) }}>
+                        <i className="fas fa-user-plus"><strong id="icons"> Log out</strong></i>
+                    </button>
+                </a>
+            );
+        }
+    }
+
+    public openAccountPage(e: any) {
+        // Deactivate default behavior
+        if (e !== null) { e.preventDefault(); }
+
+        this.setState({ goToAccountPage: true });
+    }
+
+    public render() {
+        if (this.state.goToAccountPage) {
+            return (<Redirect to='/account' />);
+        } else {
+            // Set default picture
+            let picture = './images/Books/0-1/At_the_zoo.png';
+
+            // Get the appropriate picture dynamically
+            if (this.state.imageData.Type === "Smart Toys") {
+                if (typeof this.state.imageData.Type !== 'undefined' && typeof this.state.imageData.Image !== 'undefined') {
+                    picture = './images/' + this.state.imageData.Type + '/' + this.state.imageData.Image;
+                }
+            } else {
+                if (typeof this.state.imageData.Type !== 'undefined' && typeof this.state.imageData.Group !== 'undefined' && typeof this.state.imageData.Image !== 'undefined') {
+                    picture = './images/' + this.state.imageData.Type + '/' + this.state.imageData.Group + '/' + this.state.imageData.Image;
+                }
             }
+
+            return (
+                <div className="ProductPage mt-5">
+                    {/*<!-- Navigation Bar -->*/}
+                    <nav className="navbar navbar-light bg-light fixed-top">
+
+                        <div className="container pt-3">
+                            {/* <!- Search Form --> */}
+                            <div className="row ProductPageBox">
+
+                                <div className="col-6 col-sm-6 col-md-4 align-self-center">
+                                    <a className="navbar-brand" href="/home">
+                                        <img className="img-fluid rounded-circle" src={Logo} alt=""
+                                            style={{ maxWidth: '30px', height: '30px' }} />
+                                    </a>
+
+                                    <a href="/home">
+                                        <button className="btn home_button" type="button">
+                                            <strong><i className="fas fa-home" /></strong>
+                                        </button>
+                                    </a>
+                                </div>
+
+                                <div className="col-12 col-sm-12 col-md-4 d-flex search_box text-center">
+                                    <section className="search_form" id="search_form">
+                                        <form className="form-inline my-2 my-lg-0">
+                                            <div className="input-group">
+                                                <input type="search" className="form-control py-2 border-right-0 border search_input" placeholder="Search" aria-label="search" aria-describedby="search-form" />
+                                                <div className="input-group-append">
+                                                    <button className="btn btn-sm search_button btn-outline-secondary border-left-0 border" type="submit"><i className="fas fa-search" /></button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </section>
+                                </div>
+
+                                <div className="col-12 col-sm-12 col-md-4 fawesome text-center" >
+
+                                    {this.modifyLoginButton()}
+
+                                    <a href="/api/images">
+                                        <button className="btn btn-sm favorites_button"><i className="fas fa-heart"><strong id="icons"> Favorites</strong></i></button>
+                                    </a>
+                                    <a href="/myorders">
+                                        <button className="btn btn-sm myorders_button"><i className="fas fa-shopping-basket" id="orders"><strong id="icons"> My Orders</strong></i></button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+
+                    {/*<!-- Container for Selected image details -->*/}
+                    <div className="container ">
+                        <div className="row">
+                            <div className="col-12 col-sm-4 col-md-4 text-center p-2">
+                                <a>
+                                    <img className="img-fluid rounded mb-3" src={require(`${picture}`)} alt="testing" />
+                                </a>
+                            </div>
+                            <div className="col-12 col-sm-8 col-md-8">
+                                <h4 className="text-center mb-3" id="product_name">{this.state.imageData.Name}</h4>
+                                <div className="product_details">
+                                    <p> <strong>Author:</strong> <span id="Author">{this.state.imageData.Author}</span></p>
+                                    <p> <strong>Age Group:</strong> <span id="Age_Group">{this.state.imageData.Group}</span></p>
+                                    <p> <strong>Description:</strong> <span id="Description">{this.state.imageData.Description}</span></p>
+                                </div>
+
+                                <div className="row justify-content-center">
+                                    <a className="mr-5" href="/add_to_basket">
+                                        <button className="btn btn-sm add_to_basket_button">
+                                            <i className="fas fa-cart-plus icon_big"><strong className="text-center" id="icons"> Add to basket </strong></i>
+                                        </button>
+                                    </a>
+                                    <a href="/add_to_favorites">
+                                        <button className="btn btn-sm favorites_button"><i className="fas fa-heart icon_big"><strong id="icons"> Add to Favorites</strong></i></button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )
         }
 
-        return (
-        
-        <div className="ProductPage mt-5">
-           {/*<!-- Navigation Bar -->*/}
-            <nav className="navbar navbar-light bg-light fixed-top">
 
-                <div className="container pt-3">
-                    {/* <!- Search Form --> */}
-                    <div className="row ProductPageBox">
-                            
-                       <div className="col-6 col-sm-6 col-md-4 align-self-center">
-                            <a className="navbar-brand" href="/home">
-                                <img className="img-fluid rounded-circle" src={Logo} alt=""
-                                        style={{ maxWidth: '30px', height: '30px' }} />
-                            </a>
-
-                            <a href="/home">
-                                <button className="btn home_button" type="button">
-                                    <strong><i className="fas fa-home"/></strong>
-                                </button>
-                            </a>
-                       </div>
-
-                       <div className="col-12 col-sm-12 col-md-4 d-flex search_box text-center">
-                            <section className="search_form" id="search_form">
-                                <form className="form-inline my-2 my-lg-0">
-                                    <div className="input-group">
-                                        <input type="search" className="form-control py-2 border-right-0 border search_input" placeholder="Search" aria-label="search" aria-describedby="search-form" />
-                                        <div className="input-group-append">
-                                            <button className="btn btn-sm search_button btn-outline-secondary border-left-0 border" type="submit"><i className="fas fa-search" /></button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </section>
-                       </div>
-
-                       <div className="col-12 col-sm-12 col-md-4 fawesome text-center" >
-                            <a href="/account">
-                                <button className="btn btn-sm login_button m-2"><i className="fas fa-user-plus"><strong id="icons"> Log in</strong></i></button>
-                            </a>
-                            {/* <!--<button className="btn btn-sm signup_button"><i className="far fa-user"> <strong id="icons"> Sign up</strong></i></button>--> */}
-
-                            <a href="/api/images">
-                                <button className="btn btn-sm favorites_button"><i className="fas fa-heart"><strong id="icons"> Favorites</strong></i></button>
-                            </a>
-                            <a href="/myorders">
-                                <button className="btn btn-sm myorders_button"><i className="fas fa-shopping-basket" id="orders"><strong id="icons"> My Orders</strong></i></button>
-                            </a>
-                       </div>
-                    </div>
-                </div>
-            </nav>
-
-            {/*<!-- Container for Selected image details -->*/}
-            <div className="container ">
-                <div className="row">
-                    <div className="col-12 col-sm-4 col-md-4 text-center p-2">
-                        <a>
-                            <img className="img-fluid rounded mb-3" src={require(`${picture}`)} alt="testing" />
-                        </a>
-                    </div>
-                    <div className="col-12 col-sm-8 col-md-8">
-                        <h4 className="text-center mb-3" id="product_name">{this.state.imageData.Name}</h4>
-                        <div className="product_details">
-                                <p> <strong>Author:</strong> <span id="Author">{this.state.imageData.Author}</span></p>
-                                <p> <strong>Age Group:</strong> <span id="Age_Group">{this.state.imageData.Group}</span></p>
-                                <p> <strong>Description:</strong> <span id="Description">{this.state.imageData.Description}</span></p>
-                        </div>
-
-                        <div className="row justify-content-center">
-                            <a className="mr-5" href="/add_to_basket">
-                                <button className="btn btn-sm add_to_basket_button">
-                                    <i className="fas fa-cart-plus icon_big"><strong className="text-center" id="icons"> Add to basket </strong></i>
-                                </button>
-                            </a>
-                            <a href="/add_to_favorites">
-                                <button className="btn btn-sm favorites_button"><i className="fas fa-heart icon_big"><strong id="icons"> Add to Favorites</strong></i></button>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>      
-      )
     }
 }
 
 export function mapDispatchToProps(dispatch: any) {
     return {
+        onLogout: (e: any, pageData: ImageContent[]) => dispatch(actions.signOutLocalUser(e, pageData)),
         synchronizePageData: (pageData: ImageContent[]) => dispatch(actions.SynchronizePageData(pageData)),
     }
 }
