@@ -25,7 +25,7 @@ class HamburgerMenu extends React.Component<Props> {
     public render() {
 
         return (
-            <div className="HamburgerMenu">
+            <React.Fragment >
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <strong id="Category_list">Categories</strong>
                     <i className="fa fa-bars" />
@@ -90,7 +90,7 @@ class HamburgerMenu extends React.Component<Props> {
                     </ul>
                 </div>
                 {/* <!-- End of the hamburger menu --> */}
-            </div>
+           </React.Fragment >
         );
     }
 }
@@ -103,4 +103,4 @@ export function mapDispatchToProps(dispatch: any) {
     }
 }
 
-export default connect(mapDispatchToProps)(HamburgerMenu);
+export default connect(null, mapDispatchToProps)(HamburgerMenu);

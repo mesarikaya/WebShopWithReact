@@ -81,7 +81,7 @@ class Navbar extends React.Component<Props> {
     public render() {
 
         return (
-            <div className="Navbar">
+            <React.Fragment>
                 {/* <!- Navigation Bar --> */}
                 <nav className="navbar navbar-light bg-light fixed-top">
 
@@ -90,10 +90,8 @@ class Navbar extends React.Component<Props> {
                         <div className="row box">
                             <div className="col-12 col-sm-4 col-md-4 pt-2 nav_top">
                                 <a className="navbar-brand" ><img className="img-fluid rounded-circle img_logo" src={Logo} alt="" style={{ maxWidth: '30px', height: '30px' }} /></a>
-                                
                                 {/* <!- Menu Items or Home button--> */}
                                 {this.setMenuItemListOrHomeButton()}
-                                
                                 {/* <!-- End of the hamburger menu --> */}
                             </div>
 
@@ -137,7 +135,7 @@ class Navbar extends React.Component<Props> {
                         </div>
                     </div>
                 </nav>
-            </div>
+            </React.Fragment>
         );
     }
 }
