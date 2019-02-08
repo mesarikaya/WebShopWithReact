@@ -38,7 +38,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="server\config\oauth.js" />
-    <Compile Include="server\config\passport.js" />
     <Compile Include="node_modules\%40babel\code-frame\lib\index.js" />
     <Compile Include="node_modules\%40babel\highlight\lib\index.js" />
     <Compile Include="node_modules\%40babel\highlight\node_modules\chalk\index.js" />
@@ -22277,6 +22276,13 @@
     <Content Include="public\index.html" />
     <Content Include="public\manifest.json" />
     <Content Include="README.md" />
+    <Content Include="snapshots\Capture1.PNG" />
+    <Content Include="snapshots\Capture2.PNG" />
+    <Content Include="snapshots\Capture3.PNG" />
+    <Content Include="snapshots\Capture4.PNG" />
+    <Content Include="snapshots\Capture5.PNG" />
+    <Content Include="snapshots\Capture6.PNG" />
+    <Content Include="snapshots\Capture7.PNG" />
     <Content Include="src\images\Books\0-1\At_the_zoo.png" />
     <Content Include="src\images\Books\0-1\Baby_Love.png" />
     <Content Include="src\images\Books\0-1\happy_baby_words.png" />
@@ -25927,6 +25933,7 @@
     <Folder Include="server\controllers\" />
     <Folder Include="server\passport\" />
     <Folder Include="server\routes\" />
+    <Folder Include="snapshots\" />
     <Folder Include="src\" />
     <Folder Include="public\" />
     <Folder Include="node_modules\" />
@@ -26432,6 +26439,8 @@
     <TypeScriptCompile Include="node_modules\uri-js\src\util.ts" />
     <TypeScriptCompile Include="node_modules\whatwg-encoding\node_modules\iconv-lite\lib\index.d.ts" />
     <TypeScriptCompile Include="node_modules\worker-farm\index.d.ts" />
+    <TypeScriptCompile Include="src\Image.tsx" />
+    <TypeScriptCompile Include="src\ImageList.tsx" />
     <TypeScriptCompile Include="src\App.test.tsx" />
     <TypeScriptCompile Include="src\App.tsx" />
     <TypeScriptCompile Include="src\Account.tsx">

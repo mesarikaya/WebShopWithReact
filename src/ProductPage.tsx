@@ -158,19 +158,14 @@ class ProductPage extends React.Component<ProductPageProps & RouteComponentProps
 
             return (
                 <div className="ProductPage mt-5">
-                    {/*<!-- Navigation Bar -->*/}
+                    {/* <!- Navigation Bar --> */}
                     <nav className="navbar navbar-light bg-light fixed-top">
 
                         <div className="container pt-3">
                             {/* <!- Search Form --> */}
-                            <div className="row ProductPageBox">
-
-                                <div className="col-6 col-sm-6 col-md-4 align-self-center">
-                                    <a className="navbar-brand" href="/home">
-                                        <img className="img-fluid rounded-circle" src={Logo} alt=""
-                                            style={{ maxWidth: '30px', height: '30px' }} />
-                                    </a>
-
+                            <div className="row box">
+                                <div className="col-12 col-sm-4 col-md-4 pt-2 nav_top">
+                                    <a className="navbar-brand" ><img className="img-fluid rounded-circle img_logo" src={Logo} alt="" style={{ maxWidth: '30px', height: '30px' }} /></a>
                                     <a href="/home">
                                         <button className="btn home_button" type="button">
                                             <strong><i className="fas fa-home" /></strong>
@@ -178,20 +173,20 @@ class ProductPage extends React.Component<ProductPageProps & RouteComponentProps
                                     </a>
                                 </div>
 
-                                <div className="col-12 col-sm-12 col-md-4 d-flex search_box text-center">
+                                <div className="col-12 col-sm-12 col-md-4 d-flex search_box">
                                     <section className="search_form" id="search_form">
                                         <form className="form-inline my-2 my-lg-0">
                                             <div className="input-group">
                                                 <input type="search" className="form-control py-2 border-right-0 border search_input" placeholder="Search" aria-label="search" aria-describedby="search-form" />
                                                 <div className="input-group-append">
-                                                    <button className="btn btn-sm search_button btn-outline-secondary border-left-0 border" type="submit"><i className="fas fa-search" /></button>
+                                                    <button className="btn btn-sm search_button btn-outline-secondary border-0 border" type="submit" style={{ background: 'white' }}><i className="fas fa-search" /></button>
                                                 </div>
                                             </div>
                                         </form>
                                     </section>
                                 </div>
 
-                                <div className="col-12 col-sm-12 col-md-4 fawesome text-center" >
+                                <div className="col-12 col-sm-8 col-md-4 fawesome" >
 
                                     {this.modifyLoginButton()}
 
@@ -199,9 +194,10 @@ class ProductPage extends React.Component<ProductPageProps & RouteComponentProps
                                         <button className="btn btn-sm favorites_button"><i className="fas fa-heart"><strong id="icons"> Favorites</strong></i></button>
                                     </a>
                                     <a href="/myorders">
-                                        <button className="btn btn-sm myorders_button"><i className="fas fa-shopping-basket" id="orders"><strong id="icons"> My Orders</strong></i></button>
+                                        <button className="btn btn-sm myorders_button"><i className="fas fa-shopping-basket" id="orders"><strong id="icons"> My Basket</strong></i></button>
                                     </a>
                                 </div>
+
                             </div>
                         </div>
                     </nav>

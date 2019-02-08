@@ -4,9 +4,16 @@ var mongoose = require('mongoose');
 //Connect to the database
 var Schema = mongoose.Schema;
 
+// Create Favorites schema
+var favoritesSchema = new Schema({
+    productDecription: 'string',
+    productName: 'string'
+});
+
 // Set user document schema
 var UserSchema = new Schema({
-   
+
+    favorites: [favoritesSchema],
     local_login: {
         city: String,
         country: String,
@@ -39,6 +46,8 @@ var UserSchema = new Schema({
     }
 
 }, { collection: 'User' });
+
+
 
 // Set the data model name specifically and export
 module.exports = mongoose.model('user', UserSchema, "Users");
