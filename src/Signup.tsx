@@ -62,6 +62,7 @@ interface SignupPageState {
 export function mapStateToProps(state: StoreState & SignupPageState, OwnProps: SignupPageProps & RouteComponentProps<PathProps>) {
     return {
         error: state.error,
+        favorites: state.favorites,
         formFields: state.formFields,
         isLoading: state.isLoading,
         originatedPage: state.originatedPage,
@@ -87,6 +88,7 @@ class Signup extends React.Component<SignupPageProps & RouteComponentProps<PathP
         const currAppState = store.getState();
         this.state = {
             error: currAppState.error,
+            favorites: currAppState.favorites,
             formFields: {
                 city: "",
                 confirm_password: "",
@@ -123,13 +125,14 @@ class Signup extends React.Component<SignupPageProps & RouteComponentProps<PathP
         console.log("Calling the previous");
         const currAppState = store.getState();
         const dataToShare = {
-            'error': currAppState.error,
-            'images': currAppState.images,
-            'isLoading': true,
-            'pageData': currAppState.pageData,
-            'redirect': currAppState.redirect,
-            'userAuthorized': currAppState.userAuthorized,
-            'username': currAppState.state.username
+            error: currAppState.error,
+            favorites: currAppState.favorites,
+            images: currAppState.images,
+            isLoading: true,
+            pageData: currAppState.pageData,
+            redirect: currAppState.redirect,
+            userAuthorized: currAppState.userAuthorized,
+            username: currAppState.state.username
         };
         history.push(this.state.originatedPage, dataToShare);
     }

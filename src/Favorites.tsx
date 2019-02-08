@@ -49,7 +49,7 @@ interface PathProps {
 }
 
 // Create App component 
-class App extends React.Component<Props & RouteComponentProps<PathProps>, StoreState> {
+class Favorites extends React.Component<Props & RouteComponentProps<PathProps>, StoreState> {
     public state: StoreState;
 
     constructor(props: Props & RouteComponentProps<PathProps>) {
@@ -177,4 +177,4 @@ export function mapDispatchToProps(dispatch: any) {
     }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Favorites));

@@ -5,7 +5,7 @@ import { RouteComponentProps } from "react-router";
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { Dispatch } from "redux";
 import * as actions from './redux/actions/PageContentActions';
-import { ImageContent, StoreState } from './redux/types/storeState';
+import { FavoritesData, ImageContent, StoreState } from './redux/types/storeState';
 
 // Import the presentational components for this container
 import Account from './Account';
@@ -20,6 +20,7 @@ import { store } from './redux/store';
 
 export interface Props {
     error: string;
+    favorites: FavoritesData[];
     isLoading: boolean;
     pageData: ImageContent[];
     onRefresh(pageData: ImageContent[]): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
@@ -40,6 +41,7 @@ class Container extends React.Component<Props & RouteComponentProps<PathProps>, 
         const currAppState = store.getState();
         this.state = {
             error: currAppState.error,
+            favorites: currAppState.favorites,
             isLoading: true,
             pageData: currAppState.pageData,    
             redirect: false,
@@ -72,6 +74,7 @@ class Container extends React.Component<Props & RouteComponentProps<PathProps>, 
 export function mapStateToProps(state: StoreState, OwnProps: Props & RouteComponentProps<PathProps>) {
     return {
         error: state.error,
+        favorites: state.favorites,
         isLoading: state.isLoading,
         pageData: state.pageData,
     }

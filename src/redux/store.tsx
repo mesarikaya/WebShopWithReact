@@ -57,14 +57,14 @@ const saveState = (state:any) => {
 const loadState = () => {
     try {
         // Load the data saved in localStorage, against the key 'app_state'
-        const serialisedState = window.localStorage.getItem('app_state');
+        const serializedState = window.localStorage.getItem('app_state');
 
         // Passing undefined to createStore will result in our app getting the default state
         // If no data is saved, return undefined
-        if (!serialisedState) { return undefined; }
+        if (!serializedState) { return undefined; }
 
         // De-serialise the saved state, and return it.
-        return JSON.parse(serialisedState);
+        return JSON.parse(serializedState);
     } catch (err) {
         // Return undefined if localStorage is not available, 
         // or data could not be de-serialised, 
@@ -74,12 +74,20 @@ const loadState = () => {
 };
 
 /**
- * This is where you create the app store
+ * Create the app store
  */
 let initialState = loadState();
 if (typeof (initialState) === "undefined") {
     initialState = {
         error: "",
+        favorites: [
+            {
+                contentId: "5bdb18887010fc071d43625b",
+                image: 'Moo_Baa_La_La_La.png',
+                productDescription: "Serious silliness for all ages. Artist Sandra Boynton is back and better than ever with completely redrawn versions of her multi-million selling board books. These whimsical and hilarious books, featuring nontraditional texts and her famous animal characters, have been printed on thick board pages, and are sure to educate and entertain children of all ages.",
+                productName: "Moo, Baa, La La La!",
+            }
+        ],
         isLoading: false,
         originatedPage: "/",
         pageData: [{ Type: "", Name: "", Author: "", Group: "", Reserved: "", Reserved_Until: "" }],

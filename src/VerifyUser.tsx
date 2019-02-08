@@ -77,6 +77,14 @@ class VerifyUser extends React.Component<VerifyUserPageProps & RouteComponentPro
         super(props);
         this.state = {
             error: '',
+            favorites: [
+                {
+                    contentId: "",
+                    image: "",
+                    productDescription: "",
+                    productName: ""
+                }
+            ],
             isLoading: true,
             pageData: [{ Type: "", Name: "", Author: "", Group: "", Reserved: "", Reserved_Until: "" }],
             redirect: false,

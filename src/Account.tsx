@@ -71,6 +71,7 @@ class Account extends React.Component < AccountPageProps & RouteComponentProps <
         
         this.state = {
             error: currAppState.error,
+            favorites: currAppState.favorites,
             formFields: {
                 email: "",
                 password: "",
@@ -259,6 +260,7 @@ class Account extends React.Component < AccountPageProps & RouteComponentProps <
 export function mapStateToProps(state: StoreState & AccountPageState, OwnProps: AccountPageProps & RouteComponentProps<PathProps>) {
     return {
         error: state.error,
+        favorites: state.favorites,
         formFields: state.formFields,
         isLoading: state.isLoading,
         pageData: state.pageData,

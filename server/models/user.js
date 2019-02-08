@@ -6,6 +6,8 @@ var Schema = mongoose.Schema;
 
 // Create Favorites schema
 var favoritesSchema = new Schema({
+    contentId: 'string',
+    image: 'string',
     productDecription: 'string',
     productName: 'string'
 });

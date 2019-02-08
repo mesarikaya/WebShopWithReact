@@ -6,11 +6,13 @@ import { withRouter } from 'react-router-dom';
 // Import bootstrap css
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
-import Logo from './images/Logo.png';
 import './stylesheets/ProductPage.css';
 
 // Import necessary code from other modules
 import { store } from './redux/store';
+
+// Import the presentational components for this container  
+import Navbar from './Navbar';
 
 import * as actions from './redux/actions/PageContentActions';
 import { ImageContent, StoreState } from './redux/types/storeState';
@@ -42,6 +44,7 @@ interface PathProps {
 export interface ProductPageProps {
     goToAccountPage: boolean;
     imageData: ImageData;
+    pageData: ImageContent[];
     userAuthorized: boolean;
     onLogout(e: any, pageData: ImageContent[]): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
     synchronizePageData(pageData: ImageContent[]): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
@@ -95,6 +98,7 @@ class ProductPage extends React.Component<ProductPageProps & RouteComponentProps
 
         this.state = {
             error: currAppState.error,
+            favorites: currAppState.favorites,
             goToAccountPage: false,
             imageData: imageDataJSON,
             isLoading: true,
@@ -159,48 +163,7 @@ class ProductPage extends React.Component<ProductPageProps & RouteComponentProps
             return (
                 <div className="ProductPage mt-5">
                     {/* <!- Navigation Bar --> */}
-                    <nav className="navbar navbar-light bg-light fixed-top">
-
-                        <div className="container pt-3">
-                            {/* <!- Search Form --> */}
-                            <div className="row box">
-                                <div className="col-12 col-sm-4 col-md-4 pt-2 nav_top">
-                                    <a className="navbar-brand" ><img className="img-fluid rounded-circle img_logo" src={Logo} alt="" style={{ maxWidth: '30px', height: '30px' }} /></a>
-                                    <a href="/home">
-                                        <button className="btn home_button" type="button">
-                                            <strong><i className="fas fa-home" /></strong>
-                                        </button>
-                                    </a>
-                                </div>
-
-                                <div className="col-12 col-sm-12 col-md-4 d-flex search_box">
-                                    <section className="search_form" id="search_form">
-                                        <form className="form-inline my-2 my-lg-0">
-                                            <div className="input-group">
-                                                <input type="search" className="form-control py-2 border-right-0 border search_input" placeholder="Search" aria-label="search" aria-describedby="search-form" />
-                                                <div className="input-group-append">
-                                                    <button className="btn btn-sm search_button btn-outline-secondary border-0 border" type="submit" style={{ background: 'white' }}><i className="fas fa-search" /></button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </section>
-                                </div>
-
-                                <div className="col-12 col-sm-8 col-md-4 fawesome" >
-
-                                    {this.modifyLoginButton()}
-
-                                    <a href="/api/images">
-                                        <button className="btn btn-sm favorites_button"><i className="fas fa-heart"><strong id="icons"> Favorites</strong></i></button>
-                                    </a>
-                                    <a href="/myorders">
-                                        <button className="btn btn-sm myorders_button"><i className="fas fa-shopping-basket" id="orders"><strong id="icons"> My Basket</strong></i></button>
-                                    </a>
-                                </div>
-
-                            </div>
-                        </div>
-                    </nav>
+                    <Navbar showCategories={false} pageData={this.props.pageData} userAuthorized={this.props.userAuthorized} />
 
                     {/*<!-- Container for Selected image details -->*/}
                     <div className="container ">
