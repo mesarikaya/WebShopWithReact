@@ -10,12 +10,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 // import Logo from './images/Logo.png';
 import * as actions from './redux/actions/PageContentActions';
-import { FavoritesData, ImageContent, StoreState } from './redux/types/storeState';
-import './stylesheets/App.css';
+import { ImageContent, StoreState } from './redux/types/storeState';
+import './stylesheets/Favorites.css';
 
 // Import the presentational components for this container  
-import Image from './Image';
-import ImageList from './ImageList';
+import FavoritesImages from './FavoritesImages';
+// import ImageList from './ImageList';
 import Navbar from './Navbar';
 
 // Creaate history variable to be able to go back and forth within routes
@@ -29,10 +29,11 @@ import { store } from './redux/store';
 // Set the default Props
 export interface Props {
     error: any;
-    favorites: FavoritesData[];
+    favorites: ImageContent[];
     isLoading: boolean;
     pageData: ImageContent[];
     redirect: boolean;
+    rows: any;
     userAuthorized: boolean;
     username: string;
     onGetContent(e: any, type: string, ageGroup: string): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
@@ -86,21 +87,21 @@ class Favorites extends React.Component<Props & RouteComponentProps<PathProps>, 
 
     public setContent(data: any) {
         // Get all the items and set the image content
-        let count = 0;
         const rows = [];
         for (const obj in data) {
             if (data.hasOwnProperty(obj)) {
-                count += 1;
-                // if (count > 1000) { break; }
-                rows.push(<Image key={data[obj].Name + " " + count.toString()}
-                    Type={data[obj].Type}
-                    Name={data[obj].Name}
+                rows.push(<FavoritesImages
+                    key={data[obj]._id.toString()}
                     Author={data[obj].Author}
+                    Description={data[obj].Description.substring(0,150)+"..."}
                     Group={data[obj].Group}
+                    Image={data[obj].Image}
+                    ImageId={data[obj].ImageId}
+                    Name={data[obj].Name}
                     Reserved={data[obj].Reserved}
                     Reserved_Until={data[obj].Reserved_Until}
-                    Image={data[obj].Image}
-                    Description={data[obj].Description}
+                    Type={data[obj].Type}
+                    UserId={this.props.username}
                 />);
             }
         }
@@ -126,7 +127,8 @@ class Favorites extends React.Component<Props & RouteComponentProps<PathProps>, 
         } else {
             return (
                 <a>
-                    <button className="btn btn-sm login_button m-2" onClick={(e) => { this.props.onLogout(e, this.state.pageData) }}>
+                    <button className="btn btn-sm login_button m-2"
+                        onClick={(e) => { this.props.onLogout(e, this.state.pageData) }}>
                         <i className="fas fa-user-plus"><strong id="icons"> Log out</strong></i>
                     </button>
                 </a>
@@ -136,17 +138,20 @@ class Favorites extends React.Component<Props & RouteComponentProps<PathProps>, 
 
     public render() {
 
-        const rows = this.setContent(this.props.pageData);
+        const rows = this.setContent(this.props.favorites);
         // tslint:disable-next-line:no-console
         console.log("updating the App");
 
         return (
-            <div className="App">
+            <div className="Favorites">
                 {/* <!- Navigation Bar --> */}
-                <Navbar showCategories={true} pageData={this.props.pageData} userAuthorized={this.props.userAuthorized}/>
-                
-                <div className="container">
-                    <ImageList pageData={this.props.pageData} rows={rows} history={this.props.history} />
+                <Navbar showCategories={true} pageData={this.props.pageData}
+                    userAuthorized={this.props.userAuthorized} />
+
+                <div className="container pt-5">
+                    <div className="row cardsRow justify-content-around" >
+                        {rows}
+                    </div>
                 </div>
 
             </div>

@@ -17,18 +17,6 @@ interface ImageListState {
     history: any;
 };
 
-export interface ImageProps {
-    Author: string;
-    Description: string;
-    Group: string;
-    Image: string;
-    key: string;
-    Name: string;
-    Reserved: string;
-    Reserved_Until: string;
-    Type: string;  
-};
-
 class ImageList extends React.Component<ImageListProps, ImageListState> {
 
     constructor(props: ImageListProps) {

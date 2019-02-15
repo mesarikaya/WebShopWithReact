@@ -10,7 +10,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 // import Logo from './images/Logo.png';
 import * as actions from './redux/actions/PageContentActions';
-import { FavoritesData, ImageContent, StoreState } from './redux/types/storeState';
+import { ImageContent, StoreState } from './redux/types/storeState';
 import './stylesheets/App.css';
 
 // Import the presentational components for this container  
@@ -29,7 +29,7 @@ import { store } from './redux/store';
 // Set the default Props
 export interface Props {
     error: any;
-    favorites: FavoritesData[];
+    favorites: ImageContent[];
     isLoading: boolean;
     pageData: ImageContent[];
     redirect: boolean;
@@ -86,21 +86,23 @@ class App extends React.Component<Props & RouteComponentProps<PathProps>, StoreS
 
     public setContent(data: any) {
         // Get all the items and set the image content
-        let count = 0;
+        // tslint:disable-next-line:no-console
+        console.log("Set page data is: ", data);
         const rows = [];
         for (const obj in data) {
             if (data.hasOwnProperty(obj)) {
-                count += 1;
-                // if (count > 1000) { break; }
-                rows.push(<Image key={data[obj].Name + " " + count.toString()}
-                    Type={data[obj].Type}
-                    Name={data[obj].Name}
+                rows.push(<Image
+                    key={data[obj]._id.toString()}
                     Author={data[obj].Author}
+                    Description={data[obj].Description}
                     Group={data[obj].Group}
+                    Image={data[obj].Image}
+                    ImageId={data[obj]._id}
+                    Name={data[obj].Name}
                     Reserved={data[obj].Reserved}
                     Reserved_Until={data[obj].Reserved_Until}
-                    Image={data[obj].Image}
-                    Description={data[obj].Description}
+                    Type={data[obj].Type}
+                    UserId={this.props.username}
                 />);
             }
         }

@@ -16,6 +16,11 @@ export interface UpdatePageContentInterface {
     pageData: ImageContent[];
 }
 
+export interface UpdateFavoritesInterface {
+    favoritesData: ImageContent[];
+    type: constants.UPDATE_FAVORITES;
+}
+
 export interface LocalUserAuthorizationInterface {
     pageData: ImageContent[];
     type: constants.UPDATE_LOCAL_USER_AUTHORIZATION;
@@ -29,7 +34,7 @@ export interface LocalUserAuthorizationInterface {
 
 
 // Create a general Action for the provided action interfaces
-export type UpdatePageContentAction = UpdatePageContentInterface & LocalUserAuthorizationInterface;
+export type UpdatePageContentAction = UpdateFavoritesInterface & UpdatePageContentInterface & LocalUserAuthorizationInterface;
 
 /**
  * Make GET request and dipatch the image data to be shown via redux  
@@ -48,7 +53,7 @@ export function UpdatePageContent(e: any, type: string, ageGroup: string) {
     params.append('searchType', type);
     params.append('ageGroup', ageGroup);
     let isLoading = true;
-    let pageData = [{ Type: "", Name: "", Author: "", Group: "", Reserved: "", Reserved_Until: "" }];
+    let pageData = [{ Author: "", Description: "", Group: "", Image: "", ImageId: "", Name: "", Reserved: "", Reserved_Until: "", Type: "" }];
 
     return ((dispatch: Dispatch<UpdatePageContentInterface>) => {
 
@@ -61,11 +66,11 @@ export function UpdatePageContent(e: any, type: string, ageGroup: string) {
             isLoading = true;
             if (response.data.result === "No data") {
                 isLoading = false;
-                pageData = [{ Type: "", Name: "", Author: "", Group: "", Reserved: "", Reserved_Until: "" }];
+                pageData = [{ Author: "", Description: "", Group: "", Image: "", ImageId: "", Name: "", Reserved: "", Reserved_Until: "", Type: "" }];
             }
             else if (response.status === 503) {
                 isLoading = false;
-                pageData = [{ Type: "", Name: "", Author: "", Group: "", Reserved: "", Reserved_Until: "" }];
+                pageData = [{ Author: "", Description: "", Group: "", Image: "", ImageId: "", Name: "", Reserved: "", Reserved_Until: "", Type: "" }];
             }
             else {
                 isLoading = false;
@@ -77,6 +82,79 @@ export function UpdatePageContent(e: any, type: string, ageGroup: string) {
             // handle error
             // tslint:disable-next-line:no-console
             console.log("Error in get is:", error.response);
+            throw (error);
+        }));
+    });
+};
+
+/**
+ * Make a GET Request to add the clicked product to the user favorites
+ * @param e
+ * @param props Properties of the image
+ */
+export function modifyFavorites(e: any, props: any, action: boolean) {
+    if (e !== null) { e.preventDefault(); }
+    // tslint:disable-next-line:no-console
+    console.log("MODIFY FAVORITES DISPATCH PROPS", props);
+
+    // Initialize the data to send with Post request
+    const params = new URLSearchParams();
+    params.append("UserId", props.UserId);
+    params.append('Author', props.Author);
+    params.append('Description', props.Description);
+    params.append('Group', props.Group);
+    params.append('Image', props.Image);
+    params.append('ImageId', props.ImageId);
+    params.append('Name', props.Name);
+    params.append('Reserved', props.Reserved);
+    params.append('ReservedUntil', props.Reserved_Until);
+    params.append('Type', props.Type);
+    if (action) {
+        params.append('action', "add");
+    } else {
+        params.append('action', "delete");
+    }
+    
+    let favoritesData = [{
+        Author: '',
+        Description: '',
+        Group: '',
+        Image: '',
+        ImageId: '',
+        Name: '',
+        Reserved: '',
+        Reserved_Until: '',
+        Type: ''
+    }];
+
+    return ((dispatch: Dispatch<UpdateFavoritesInterface>) => {
+        return (axios.post(`${url}modifyFavorites`, null, {
+            headers: {
+                'content-type': 'application/json'
+            },
+            params,
+            'withCredentials': true,
+        }).then((response) => {
+            // No dispatch is needed on success for now, maybe add
+            // tslint:disable-next-line:no-console
+            console.log("POST METHOD CALLING FROM THE REDUX FOR ADD TO FAVORITES, response is:", response);
+            if (response.status === 200) {
+                favoritesData = response.data.result;
+            }
+            if (favoritesData !== [{
+                Author: '', Description: '', Group: '',
+                Image: '', ImageId: '', Name: '', Reserved: '',
+                Reserved_Until: '',Type: ''
+            }]) {
+                dispatch({ type: 'UPDATE_FAVORITES', favoritesData });
+            }
+            // TODO: Create success message to share with the user
+        }).catch(error => {
+            // handle error
+            // tslint:disable-next-line:no-console
+            console.log("Error in post is:", error.response);
+
+            // TODO: Create a dispatch for error message to share with the user
             throw (error);
         }));
     });

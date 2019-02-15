@@ -83,11 +83,6 @@
     border-radius: 100px;
 }
 
-.btn:hover {
-    background-color: #12cbe2;
-    border-color: #12cbe2;
-}
-
 .login_button {
     background-color: transparent;
     border-color: transparent;

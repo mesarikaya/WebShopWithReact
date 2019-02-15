@@ -1,21 +1,17 @@
 // Import necessary packages
+// Import necessary packages
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from "redux";
-
-// Creaate history variable to be able to go back and forth within routes
-import createBrowserHistory from 'history/createBrowserHistory';
-const history = createBrowserHistory({ forceRefresh: true });
-
-// Import the final set store and actions from Redux
-import * as actions from './redux/actions/PageContentActions';
-import { store } from './redux/store';
 import { ImageContent } from './redux/types/storeState';
 
 /** CREATE Prop and State interfaces to use in the component */
 // Set the default Props
-type ImageProps = ImageContent;
-type ImageState = ImageContent;
+type FavoriteImageProps = ImageContent;
+type FavoriteImageState = ImageContent;
+
+// Import the final set store and actions from Redux
+import * as actions from './redux/actions/PageContentActions';
 
 export interface ImageExtraProps {
     UserId: string;
@@ -26,10 +22,10 @@ export interface ImageExtraState {
     UserId: string;
 };
 
-class Image extends React.Component<ImageProps & ImageExtraProps, ImageState & ImageExtraState> {
-    public state: ImageState & ImageExtraState;   
+class FavoritesImages extends React.Component<FavoriteImageProps & ImageExtraProps, FavoriteImageState & ImageExtraState> {
+    public state: FavoriteImageState & ImageExtraState;   
 
-    constructor(props: ImageProps & ImageExtraProps) {
+    constructor(props: FavoriteImageProps & ImageExtraProps) {
         super(props);
         this.state = {
             Author: this.props.Author,
@@ -58,30 +54,6 @@ class Image extends React.Component<ImageProps & ImageExtraProps, ImageState & I
             UserId: this.props.UserId
         });
     }
-    public openProductPage(e: any, imageData: any) {
-        // Deactivate default behavior
-        if (e !== null) { e.preventDefault(); }
-
-        // Call product page with the product details
-        // TODO change this to an axios CALL
-        const currAppState = store.getState();
-
-        const dataToShare = {
-            error: currAppState.error,
-            favorites: currAppState.favorites,
-            'imageData': imageData,
-            images: currAppState.images,
-            isLoading: true,
-            originatedPage: '/',
-            pageData: currAppState.pageData,
-            userAuthorized: currAppState.userAuthorized,
-            username: currAppState.username
-        };
-
-        // tslint:disable-next-line:no-console
-        console.log("Here are the final images!!!!!!:", dataToShare);
-        history.push('/productPage/' + imageData.ImageId, dataToShare);
-    }
 
     public render() {
         // Set default picture
@@ -102,13 +74,37 @@ class Image extends React.Component<ImageProps & ImageExtraProps, ImageState & I
         // tslint:disable-next-line:no-console
         // console.log("Here are the final images!!!!!!:", defaultPicture);
         return (
-            
-            <div className="col-12 col-sm-6 col-md-3 text-center p-2 image_add_ons">
-                <a className="" onClick={(e) => { this.openProductPage(e, this.state) }}>
-                    <img className="img-fluid rounded" src={require(`${picture}`)} alt="test" />
-                </a>
-                <a className="add_to_cart_img" />
-                <a className="add_to_favorites_img" onClick={(e) => { this.props.modifyFavorites(e, this.props, true) }} />
+            <div id="card">
+                <div id="hero-container">
+                    <img className="img-fluid rounded favoriteImages" src={require(`${picture}`)}
+                        alt="Product photo" style={{ height: '250px' }}/>
+                </div>
+                <div id="card-content">
+                    <div id="card-info">
+                        <h2 id="category">{this.props.Type}</h2>
+                        <div id="rating">
+                            <a href="/api/images" id="favoritesImage">
+                                <button className="btn btn-sm favorites_button">
+                                    <i className="far fa-heart favoriteInActive"
+                                        style={{ color: '#f1356b', fontSize: '15px' }}
+                                        onClick={(e) => { this.props.modifyFavorites(e, this.props, false) }}>
+                                        <strong id="icons"> Favorites</strong>
+                                    </i>
+                                </button>
+                            </a>
+                            <a href="/myorders">
+                                <button className="btn btn-sm myorders_button">
+                                    <i className="fas fa-shopping-basket" id="orders"
+                                        style={{ color: '#ff6000', fontSize: '16px' }}>
+                                        <strong id="icons"> Add</strong>
+                                    </i>
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                    <h2 id="title">{this.props.Name}</h2>
+                    <p id="description">{this.props.Description}</p>
+                </div>
             </div>
         );
     }
@@ -117,8 +113,8 @@ class Image extends React.Component<ImageProps & ImageExtraProps, ImageState & I
 // Set functions to use in Redux Dispatch
 export function mapDispatchToProps(dispatch: any) {
     return {
-        modifyFavorites: (e: any, props: any, action: boolean) => dispatch(actions.modifyFavorites(e, props, true))
+        modifyFavorites: (e: any, props: any, action: boolean) => dispatch(actions.modifyFavorites(e, props, action))
     }
 }
 
-export default connect(null, mapDispatchToProps)(Image);
+export default connect(null, mapDispatchToProps)(FavoritesImages);

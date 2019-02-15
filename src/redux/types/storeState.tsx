@@ -1,13 +1,9 @@
-﻿export interface FavoritesData {
-    contentId: string,
-    image: string,
-    productDescription: string,
-    productName: string
-};
-
-export interface ImageContent {
+﻿export interface ImageContent {
     Author: string;
+    Description: string;
     Group: string;
+    Image: string;
+    ImageId: string;
     Name: string;
     Reserved: string;
     Reserved_Until: string;
@@ -16,7 +12,7 @@ export interface ImageContent {
 
 export interface StoreState {
     error: string;
-    favorites: FavoritesData[]; 
+    favorites: ImageContent[]; 
     isLoading: boolean;
     pageData: ImageContent[];
     redirect: boolean;

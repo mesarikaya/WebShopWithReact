@@ -82,15 +82,31 @@ if (typeof (initialState) === "undefined") {
         error: "",
         favorites: [
             {
-                contentId: "5bdb18887010fc071d43625b",
-                image: 'Moo_Baa_La_La_La.png',
-                productDescription: "Serious silliness for all ages. Artist Sandra Boynton is back and better than ever with completely redrawn versions of her multi-million selling board books. These whimsical and hilarious books, featuring nontraditional texts and her famous animal characters, have been printed on thick board pages, and are sure to educate and entertain children of all ages.",
-                productName: "Moo, Baa, La La La!",
+                Author: "a",
+                Description: "Serious silliness for all ages. Artist Sandra Boynton is back and better than ever with completely redrawn versions of her multi-million selling board books. These whimsical and hilarious books, featuring nontraditional texts and her famous animal characters, have been printed on thick board pages, and are sure to educate and entertain children of all ages.",
+                Group: "0-1",
+                Image: './images/Books/0-1/Moo_Baa_La_La_La.png',
+                ImageId: "5bdb18887010fc071d43625b",
+                Name: "Moo, Baa, La La La!",
+                Reserved: "",
+                Reserved_Until: "",
+                Type: "Book"
+            },
+            {
+                Author: "a",
+                Description: "Serious silliness for all ages. Artist Sandra Boynton is back and better than ever with completely redrawn versions of her multi-million selling board books. These whimsical and hilarious books, featuring nontraditional texts and her famous animal characters, have been printed on thick board pages, and are sure to educate and entertain children of all ages.",
+                Group: "0-1",
+                Image: './images/Books/0-1/Moo_Baa_La_La_La.png',
+                ImageId: "5bdb18887010fc071d43625b",
+                Name: "Moo, Baa, La La La!",
+                Reserved: "",
+                Reserved_Until: "",
+                Type: "Book"
             }
         ],
         isLoading: false,
         originatedPage: "/",
-        pageData: [{ Type: "", Name: "", Author: "", Group: "", Reserved: "", Reserved_Until: "" }],
+        pageData: [{Author: "", Description: "", Group: "", Image: "", ImageId: "", Name: "", Reserved: "", Reserved_Until: "", Type: "" }],
         redirect: false,
         userAuthorized: false,
         username: "guest"

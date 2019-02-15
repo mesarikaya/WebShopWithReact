@@ -5,11 +5,12 @@ import { RouteComponentProps } from "react-router";
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { Dispatch } from "redux";
 import * as actions from './redux/actions/PageContentActions';
-import { FavoritesData, ImageContent, StoreState } from './redux/types/storeState';
+import { ImageContent, StoreState } from './redux/types/storeState';
 
 // Import the presentational components for this container
 import Account from './Account';
 import App from './App';
+import Favorites from './Favorites';
 import ProductPage from './ProductPage';    
 import Signup from './Signup';
 import './stylesheets/index.css';
@@ -20,7 +21,7 @@ import { store } from './redux/store';
 
 export interface Props {
     error: string;
-    favorites: FavoritesData[];
+    favorites: ImageContent[];
     isLoading: boolean;
     pageData: ImageContent[];
     onRefresh(pageData: ImageContent[]): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
@@ -61,6 +62,7 @@ class Container extends React.Component<Props & RouteComponentProps<PathProps>, 
             <Switch>
                 <Route exact={true} path="/" component={App}/>
                 <Route path="/account" component={Account} />
+                <Route path="/favorites" component={Favorites} />
                 <Route path="/productPage/:id" component={ProductPage} />
                 <Route path="/signup" component={Signup} />
                 <Route path="/user/profile" component={App} />

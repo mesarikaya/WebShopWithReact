@@ -22,17 +22,7 @@ import { Dispatch } from 'redux';
 
 const history = createBrowserHistory({ forceRefresh: true });
 
-export interface ImageData {
-    Author: string;
-    Description: string;
-    Group: string;
-    Image: string;
-    key: string;
-    Name: string;
-    Reserved: string;
-    Reserved_Until: string;
-    Type: string;
-};
+type ImageData = ImageContent;
 
 // These props are provided by the router
 interface PathProps {
@@ -46,6 +36,7 @@ export interface ProductPageProps {
     imageData: ImageData;
     pageData: ImageContent[];
     userAuthorized: boolean;
+    modifyFavorites(e: any, props: any, action: boolean): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
     onLogout(e: any, pageData: ImageContent[]): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
     synchronizePageData(pageData: ImageContent[]): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
 };
@@ -73,10 +64,12 @@ class ProductPage extends React.Component<ProductPageProps & RouteComponentProps
             Description: '',
             Group: '',
             Image: '',
+            ImageId: '',
             Name: '',
             Reserved: '',
             Reserved_Until: '',
             Type: '',
+            UserId: '',
             key: ''
         };
 
@@ -86,10 +79,12 @@ class ProductPage extends React.Component<ProductPageProps & RouteComponentProps
                 Description: historyState.imageData.Description,
                 Group: historyState.imageData.Group,
                 Image: historyState.imageData.Image,
+                ImageId: historyState.imageData.ImageId,
                 Name: historyState.imageData.Name,
                 Reserved: historyState.imageData.Reserved,
                 Reserved_Until: historyState.imageData.Reserved_Until,
                 Type: historyState.imageData.Type,
+                UserId: historyState.imageData.UserId,
                 key: historyState.imageData.key
             }
         }
@@ -188,7 +183,7 @@ class ProductPage extends React.Component<ProductPageProps & RouteComponentProps
                                         </button>
                                     </a>
                                     <a href="/add_to_favorites">
-                                        <button className="btn btn-sm favorites_button"><i className="fas fa-heart icon_big"><strong id="icons"> Add to Favorites</strong></i></button>
+                                        <button className="btn btn-sm favorites_button" onClick={(e) => { this.props.modifyFavorites(e, this.state.imageData, true) }}><i className="fas fa-heart icon_big"><strong id="icons"> Add to Favorites</strong></i></button>
                                     </a>
                                 </div>
                             </div>
@@ -204,6 +199,7 @@ class ProductPage extends React.Component<ProductPageProps & RouteComponentProps
 
 export function mapDispatchToProps(dispatch: any) {
     return {
+        modifyFavorites: (e: any, props: any, action: boolean) => dispatch(actions.modifyFavorites(e, props, action)),
         onLogout: (e: any, pageData: ImageContent[]) => dispatch(actions.signOutLocalUser(e, pageData)),
         synchronizePageData: (pageData: ImageContent[]) => dispatch(actions.SynchronizePageData(pageData)),
     }
@@ -213,6 +209,7 @@ export function mapDispatchToProps(dispatch: any) {
 export function mapStateToProps(state: StoreState & ProductPageState, OwnProps: ProductPageProps & RouteComponentProps<PathProps>) {
     return {
         error: state.error,
+        favorites: state.favorites,
         isLoading: state.isLoading,
         pageData: state.pageData,
         redirect: state.redirect,

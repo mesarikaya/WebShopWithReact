@@ -39,7 +39,7 @@ module.exports = (router, passport) => {
 
             // Check if the user is available in the header
             // tslint:disable-next-line:no-console
-            console.log(req.user)
+            // console.log(req.user)
             if (req.user) {
                 res.json({ user: req.user })
             } else {
@@ -136,7 +136,8 @@ module.exports = (router, passport) => {
                 failureRedirect: '/',
                 successRedirect: '/',
             })
-        );
+    );
+
 
     // TODO: GOOGLE AUTHENTICATE
     router
@@ -175,5 +176,12 @@ module.exports = (router, passport) => {
             function (req, res) {
                 res.redirect('/');
             }
-        );
+    );
+
+    // Add the image to user favorites
+    router
+        .route('/modifyFavorites')
+        .post   (function (req, res) {
+            userController.modifyFavorites(req, res);
+        });
 };

@@ -6,10 +6,15 @@ var Schema = mongoose.Schema;
 
 // Create Favorites schema
 var favoritesSchema = new Schema({
-    contentId: 'string',
-    image: 'string',
-    productDecription: 'string',
-    productName: 'string'
+    Author: String,
+    Description: String,
+    Group: String,
+    Image: String,
+    ImageId: String,
+    Name: String,
+    Reserved: String,
+    Reserved_Until: String,
+    Type: String
 });
 
 // Set user document schema

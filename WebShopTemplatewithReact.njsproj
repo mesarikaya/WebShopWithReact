@@ -22442,6 +22442,9 @@
     <Content Include="src\stylesheets\App.css" />
     <Content Include="src\stylesheets\index.css" />
     <Content Include="src\stylesheets\ProductPage.css" />
+    <Content Include="src\stylesheets\Favorites.css">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="tsconfig.json" />
     <Content Include="tsconfig.prod.json" />
     <Content Include="tsconfig.test.json" />
@@ -26439,6 +26442,10 @@
     <TypeScriptCompile Include="node_modules\uri-js\src\util.ts" />
     <TypeScriptCompile Include="node_modules\whatwg-encoding\node_modules\iconv-lite\lib\index.d.ts" />
     <TypeScriptCompile Include="node_modules\worker-farm\index.d.ts" />
+    <TypeScriptCompile Include="src\Favorites.tsx" />
+    <TypeScriptCompile Include="src\HamburgerMenu.tsx" />
+    <TypeScriptCompile Include="src\FavoritesImages.tsx" />
+    <TypeScriptCompile Include="src\Navbar.tsx" />
     <TypeScriptCompile Include="src\Image.tsx" />
     <TypeScriptCompile Include="src\ImageList.tsx" />
     <TypeScriptCompile Include="src\App.test.tsx" />

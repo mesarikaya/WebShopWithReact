@@ -21,6 +21,7 @@ const verify = (dispatch, pageData, token, username, userAuthorized, redirect) =
             // If error send Forbidden (403)
             // tslint:disable-next-line:no-console
             console.log('ERROR: Could not connect to the protected route', err);
+            logoutUser(dispatch, pageData);
 
         } else {
             // If token is successfully verified, we can send the autorized data 
@@ -42,7 +43,7 @@ const verify = (dispatch, pageData, token, username, userAuthorized, redirect) =
             // If expired log out the user again
             const currentTime = Date.now() / 1000;
             if (decoded.exp < currentTime) {
-                logoutUser(dispatch);
+                logoutUser(dispatch, pageData);
             }
         }
     });

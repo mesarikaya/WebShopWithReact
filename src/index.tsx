@@ -3,7 +3,6 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
-
 import {  Route } from 'react-router-dom';
 
 import { ConnectedRouter } from 'react-router-redux';
@@ -12,7 +11,7 @@ import Container from './container';
 
 import './stylesheets/index.css';
 
-import {  history, store } from './redux/store';
+import { history, store } from './redux/store';
 
 import registerServiceWorker from './registerServiceWorker';
 

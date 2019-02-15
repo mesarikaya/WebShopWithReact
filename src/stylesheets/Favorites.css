@@ -1,0 +1,99 @@
+﻿@import url("https://fonts.googleapis.com/css?family=Karla|Rubik:700,900");
+
+#card {
+    margin: 2em;
+    max-width: 300px;
+    min-width: 200px;
+    height: 500px;
+    background-color: #f2f2f2;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+    border-bottom: 0.5em solid #66cc66;
+}
+
+#hero-container {
+    position: relative;
+
+}
+
+.material-icons {
+    color: #66cc66;
+}
+
+.material-icons.md-48 {
+    font-size: 1em;
+}
+
+.img-fluid {
+    max-width: 100%;
+    z-index: 1;
+    border: 1px solid rgba(0,0,0,.15);
+}
+
+#bookmark {
+    padding-top: 0.2em;
+    padding-right: 0.2em;
+    position: absolute;
+    display: block;
+    right: 0;
+    top: 0;
+    opacity: 0.3;
+    font-size: 2.5em;
+    color: #f2f2f2;
+}
+
+
+#card-content {
+    padding: 0.25em 1.5em;
+}
+
+#card-info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5em;
+}
+
+#category {
+    font-family: "Karla", sans-serif;
+    font-size: 1em;
+    font-style: italic;
+    margin: 0;
+    color: #c3c3c3;
+}
+
+#title {
+    font-family: "Rubik", sans-serif;
+    font-weight: 900;
+    font-size: 1.1em;
+    margin: 0.25em 0;
+    color: #2f2f2f;
+}
+
+#description {
+    font-family: "Karla", sans-serif;
+    font-size: 0.9em;
+    margin: 0.5em 0;
+    color: #333333;
+}
+
+favorites_button:hover {
+    background-color: transparent !important;
+}
+
+@media screen and (min-width: 352px) and (max-width: 576px) {
+    .Favorites {
+        margin-top: 6rem !important;
+    }
+
+    .cardsRow {
+        display: flex;
+        justify-content: center;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+@media screen and (min-width: 577px) and (max-width: 767px) {
+    .Favorites {
+        margin-top: 6rem !important;
+    }
+}

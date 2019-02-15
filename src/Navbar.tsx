@@ -11,6 +11,14 @@ import * as actions from './redux/actions/PageContentActions';
 import { ImageContent} from './redux/types/storeState';
 import './stylesheets/App.css';
 
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+// import { faHeart } from '@fortawesome/free-solid-svg-icons';
+
+// import { faCircle } from '@fortawesome/free-regular-svg-icons';
+
+
+
 // Create history variable to be able to go back and forth within routes
 import createBrowserHistory from 'history/createBrowserHistory';
 const history = createBrowserHistory({ forceRefresh: true });
@@ -89,7 +97,7 @@ class Navbar extends React.Component<Props> {
                         {/* <!- Search Form --> */}
                         <div className="row box">
                             <div className="col-12 col-sm-4 col-md-4 pt-2 nav_top">
-                                <a className="navbar-brand" ><img className="img-fluid rounded-circle img_logo" src={Logo} alt="" style={{ maxWidth: '30px', height: '30px' }} /></a>
+                                <a href="/" className="navbar-brand" ><img className="img-fluid rounded-circle img_logo" src={Logo} alt="" style={{ maxWidth: '30px', height: '30px' }} /></a>
                                 {/* <!- Menu Items or Home button--> */}
                                 {this.setMenuItemListOrHomeButton()}
                                 {/* <!-- End of the hamburger menu --> */}
@@ -116,11 +124,14 @@ class Navbar extends React.Component<Props> {
 
                                 {this.modifyLoginButton()}
                                 
-                                <a href="/api/images">
+                                <a href="/favorites">
                                     <button className="btn btn-sm favorites_button">
-                                        <i className="fas fa-heart">
-                                            <strong id="icons"> Favorites</strong>
-                                        </i>
+                                        {/* <!-<span className="fa-layers fa-fw">  --> */}
+                                            <i className="fas fa-heart">
+                                                <strong id="icons"> Favorites </strong>
+                                            </i>
+                                            {/* <!- <span className="fa-layers-counter fa-layers-top-right">1,419</span> --> */}
+                                        {/*</span> --> */}
                                     </button>
                                 </a>
                                 <a href="/myorders">
