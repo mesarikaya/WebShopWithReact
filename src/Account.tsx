@@ -80,6 +80,7 @@ class Account extends React.Component < AccountPageProps & RouteComponentProps <
             originatedPage: currAppState.originatedPage,
             pageData: currAppState.pageData,
             redirect: currAppState.redirect,
+            shoppingBasket: currAppState.shoppingBasket,
             userAuthorized: currAppState.userAuthorized,
             username: "guest"
         };

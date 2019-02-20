@@ -26442,6 +26442,8 @@
     <TypeScriptCompile Include="node_modules\uri-js\src\util.ts" />
     <TypeScriptCompile Include="node_modules\whatwg-encoding\node_modules\iconv-lite\lib\index.d.ts" />
     <TypeScriptCompile Include="node_modules\worker-farm\index.d.ts" />
+    <TypeScriptCompile Include="src\ShoppingBasketItems.tsx" />
+    <TypeScriptCompile Include="src\ShoppingBasket.tsx" />
     <TypeScriptCompile Include="src\Favorites.tsx" />
     <TypeScriptCompile Include="src\HamburgerMenu.tsx" />
     <TypeScriptCompile Include="src\FavoritesImages.tsx" />

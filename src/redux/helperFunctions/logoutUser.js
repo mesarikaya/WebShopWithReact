@@ -14,7 +14,19 @@ const logout = (dispatch, pageData) => {
     const userAuthorized = false;
     const redirect = false;
     const username = "guest";
-    dispatch({ type: 'UPDATE_LOCAL_USER_AUTHORIZATION', pageData, redirect, username, userAuthorized });
+    // Set the user favorites to empty
+    let favorites = [{
+        Author: '',
+        Description: '',
+        Group: '',
+        Image: '',
+        ImageId: '',
+        Name: '',
+        Reserved: '',
+        Reserved_Until: '',
+        Type: ''
+    }];
+    dispatch({ type: 'UPDATE_LOCAL_USER_AUTHORIZATION', pageData, redirect, username, userAuthorized, favorites });
 }
 
 export default logout;

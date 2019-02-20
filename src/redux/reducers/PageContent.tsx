@@ -1,6 +1,6 @@
 ﻿// Import Redux Actions, store state and type constants
 import { UpdatePageContentAction } from '../actions/PageContentActions';
-import { UPDATE_FAVORITES, UPDATE_PAGE_CONTENT } from '../constants/PageContentConstants';
+import { UPDATE_BASKET, UPDATE_FAVORITES, UPDATE_PAGE_CONTENT } from '../constants/PageContentConstants';
 import { UPDATE_LOCAL_USER_AUTHORIZATION } from '../constants/PageContentConstants';
 import { StoreState } from '../types/storeState';
 
@@ -15,12 +15,17 @@ export function updatePageReducer(state: any, action: UpdatePageContentAction): 
             })
         case UPDATE_LOCAL_USER_AUTHORIZATION: // Update user login status and redirect command
             return Object.assign({}, state, {
+                favorites: [...action.favorites],
                 pageData: [...action.pageData],
                 redirect: action.redirect,
                 userAuthorized: action.userAuthorized,
                 username: action.username
             })
         case UPDATE_FAVORITES: // Update user favorites
+            return Object.assign({}, state, {
+                favorites: [...action.favoritesData]
+            })
+        case UPDATE_BASKET: // Update user favorites
             return Object.assign({}, state, {
                 favorites: [...action.favoritesData]
             })

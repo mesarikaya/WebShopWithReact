@@ -35,6 +35,7 @@ export interface ProductPageProps {
     goToAccountPage: boolean;
     imageData: ImageData;
     pageData: ImageContent[];
+    shoppingBasket: ImageContent[];
     userAuthorized: boolean;
     modifyFavorites(e: any, props: any, action: boolean): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
     onLogout(e: any, pageData: ImageContent[]): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
@@ -100,6 +101,7 @@ class ProductPage extends React.Component<ProductPageProps & RouteComponentProps
             originatedPage: originatedPageStr,
             pageData: pageDataJSON,
             redirect: false,
+            shoppingBasket: currAppState.shoppingBasket,
             userAuthorized: false,
             username: "guest"
         };
@@ -213,6 +215,7 @@ export function mapStateToProps(state: StoreState & ProductPageState, OwnProps: 
         isLoading: state.isLoading,
         pageData: state.pageData,
         redirect: state.redirect,
+        shoppingBasket: state.shoppingBasket,
         userAuthorized: state.userAuthorized,
         username: state.username
     }

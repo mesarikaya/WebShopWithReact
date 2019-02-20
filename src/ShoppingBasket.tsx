@@ -14,9 +14,9 @@ import { ImageContent, StoreState } from './redux/types/storeState';
 import './stylesheets/Favorites.css';
 
 // Import the presentational components for this container  
-import FavoritesImages from './FavoritesImages';
-// import ImageList from './ImageList';
 import Navbar from './Navbar';
+import ShoppingBasketItems from './ShoppingBasketItems';
+
 
 // Creaate history variable to be able to go back and forth within routes
 import createBrowserHistory from 'history/createBrowserHistory';
@@ -51,7 +51,7 @@ interface PathProps {
 }
 
 // Create App component 
-class Favorites extends React.Component<Props & RouteComponentProps<PathProps>, StoreState> {
+class ShoppingBasket extends React.Component<Props & RouteComponentProps<PathProps>, StoreState> {
     public state: StoreState;
 
     constructor(props: Props & RouteComponentProps<PathProps>) {
@@ -92,7 +92,7 @@ class Favorites extends React.Component<Props & RouteComponentProps<PathProps>, 
         const rows = [];
         for (const obj in data) {
             if (data.hasOwnProperty(obj)) {
-                rows.push(<FavoritesImages
+                rows.push(<ShoppingBasketItems
                     key={data[obj]._id}
                     Author={data[obj].Author}
                     Description={data[obj].Description.substring(0,150)+"..."}
@@ -140,20 +140,34 @@ class Favorites extends React.Component<Props & RouteComponentProps<PathProps>, 
 
     public render() {
 
-        const rows = this.setContent(this.props.favorites);
+        const rows = this.setContent(this.props.shoppingBasket);
         // tslint:disable-next-line:no-console
         console.log("updating the App");
 
         return (
-            <div className="Favorites">
+            <div className="ShoppingBasket">
                 {/* <!- Navigation Bar --> */}
                 <Navbar showCategories={true} pageData={this.props.pageData}
                     userAuthorized={this.props.userAuthorized} />
 
                 <div className="container pt-5">
-                    <div className="row cardsRow justify-content-around" >
-                        {rows}
+                    <div className="table-responsive">
+                        <table className="table">
+                            <caption>Purchase List</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Image</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Author</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col" />
+                                </tr>
+                            </thead>
+                            {rows}
+                        </table>
                     </div>
+                    <button type="button" className="btn btn-primary float-right">Check Out</button>
                 </div>
 
             </div>
@@ -185,4 +199,4 @@ export function mapDispatchToProps(dispatch: any) {
     }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Favorites));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ShoppingBasket));

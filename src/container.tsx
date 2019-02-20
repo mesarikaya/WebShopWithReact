@@ -11,7 +11,8 @@ import { ImageContent, StoreState } from './redux/types/storeState';
 import Account from './Account';
 import App from './App';
 import Favorites from './Favorites';
-import ProductPage from './ProductPage';    
+import ProductPage from './ProductPage';   
+import ShoppingBasket from './ShoppingBasket'; 
 import Signup from './Signup';
 import './stylesheets/index.css';
 import VerifyUser from './VerifyUser';
@@ -24,6 +25,7 @@ export interface Props {
     favorites: ImageContent[];
     isLoading: boolean;
     pageData: ImageContent[];
+    shoppingBasket: ImageContent[];
     onRefresh(pageData: ImageContent[]): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
 };
 
@@ -46,6 +48,7 @@ class Container extends React.Component<Props & RouteComponentProps<PathProps>, 
             isLoading: true,
             pageData: currAppState.pageData,    
             redirect: false,
+            shoppingBasket: currAppState.shoppingBasket,
             userAuthorized: false,
             username: "guest"
         };
@@ -65,6 +68,7 @@ class Container extends React.Component<Props & RouteComponentProps<PathProps>, 
                 <Route path="/favorites" component={Favorites} />
                 <Route path="/productPage/:id" component={ProductPage} />
                 <Route path="/signup" component={Signup} />
+                <Route path="/shoppingBasket" component={ShoppingBasket} />
                 <Route path="/user/profile" component={App} />
                 <Route path="/verify/:email/:token" component={VerifyUser} />
                 <Route path="/**" component={App} />
@@ -79,6 +83,7 @@ export function mapStateToProps(state: StoreState, OwnProps: Props & RouteCompon
         favorites: state.favorites,
         isLoading: state.isLoading,
         pageData: state.pageData,
+        shoppingBasket: state.shoppingBasket
     }
 }
 

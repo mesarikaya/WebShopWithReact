@@ -16,6 +16,7 @@ export interface StoreState {
     isLoading: boolean;
     pageData: ImageContent[];
     redirect: boolean;
+    shoppingBasket: ImageContent[];
     userAuthorized: boolean;
     username: string;
 }

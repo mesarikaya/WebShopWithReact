@@ -14,7 +14,7 @@ import logoutUser from '../helperFunctions/logoutUser';
  * @param {any} userAuthorized
  * @param {any} redirect
  */
-const verify = (dispatch, pageData, token, username, userAuthorized, redirect) => {
+const verify = (dispatch, pageData, token, username, userAuthorized, redirect, favorites) => {
 
     jwt.verify(token, "jwtauthsecretthatnobodyshouldpip", (err, decoded) => {
         if (err) {
@@ -33,11 +33,15 @@ const verify = (dispatch, pageData, token, username, userAuthorized, redirect) =
             // tslint:disable-next-line:no-console
             console.log("token:", token, "--> decoded: ", decoded);
 
+            // tslint:disable-next-line:no-console
+            console.log("Favorites is", favorites);
+
+
             // Dispatch the data via redux
             userAuthorized = !isEmpty(decoded);
             redirect = true;
             username = decoded.id;
-            dispatch({ type: 'UPDATE_LOCAL_USER_AUTHORIZATION', pageData, redirect, username, userAuthorized });
+            dispatch({ type: 'UPDATE_LOCAL_USER_AUTHORIZATION', pageData, redirect, username, userAuthorized, favorites });
 
             // Check if the expiration time is up for the token
             // If expired log out the user again

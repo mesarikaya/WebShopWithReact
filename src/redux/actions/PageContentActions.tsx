@@ -21,10 +21,17 @@ export interface UpdateFavoritesInterface {
     type: constants.UPDATE_FAVORITES;
 }
 
+export interface UpdateBasketInterface {
+    basketData: ImageContent[];
+    type: constants.UPDATE_BASKET;
+}
+
 export interface LocalUserAuthorizationInterface {
+    favorites: ImageContent[];
     pageData: ImageContent[];
     type: constants.UPDATE_LOCAL_USER_AUTHORIZATION;
     redirect: boolean;
+    shoppingBasket: ImageContent[];
     userAuthorized: boolean;
     username: string;
 }
@@ -34,7 +41,7 @@ export interface LocalUserAuthorizationInterface {
 
 
 // Create a general Action for the provided action interfaces
-export type UpdatePageContentAction = UpdateFavoritesInterface & UpdatePageContentInterface & LocalUserAuthorizationInterface;
+export type UpdatePageContentAction = UpdateBasketInterface & UpdateFavoritesInterface & UpdatePageContentInterface & LocalUserAuthorizationInterface;
 
 /**
  * Make GET request and dipatch the image data to be shown via redux  
@@ -140,14 +147,15 @@ export function modifyFavorites(e: any, props: any, action: boolean) {
             console.log("POST METHOD CALLING FROM THE REDUX FOR ADD TO FAVORITES, response is:", response);
             if (response.status === 200) {
                 favoritesData = response.data.result;
+                dispatch({ type: 'UPDATE_FAVORITES', favoritesData });
             }
-            if (favoritesData !== [{
+            /* if (favoritesData !== [{
                 Author: '', Description: '', Group: '',
                 Image: '', ImageId: '', Name: '', Reserved: '',
                 Reserved_Until: '',Type: ''
             }]) {
                 dispatch({ type: 'UPDATE_FAVORITES', favoritesData });
-            }
+            } */
             // TODO: Create success message to share with the user
         }).catch(error => {
             // handle error
@@ -160,6 +168,73 @@ export function modifyFavorites(e: any, props: any, action: boolean) {
     });
 };
 
+
+/**
+ * Make a GET Request to add the clicked product to the user favorites
+ * @param e
+ * @param props Properties of the image
+ */
+export function modifyShoppingBasket(e: any, props: any, action: boolean) {
+    if (e !== null) { e.preventDefault(); }
+    // tslint:disable-next-line:no-console
+    console.log("MODIFY BASKET DISPATCH PROPS", props);
+
+    // Initialize the data to send with Post request
+    const params = new URLSearchParams();
+    params.append("UserId", props.UserId);
+    params.append('Author', props.Author);
+    params.append('Description', props.Description);
+    params.append('Group', props.Group);
+    params.append('Image', props.Image);
+    params.append('ImageId', props.ImageId);
+    params.append('Name', props.Name);
+    params.append('Reserved', props.Reserved);
+    params.append('ReservedUntil', props.Reserved_Until);
+    params.append('Type', props.Type);
+    if (action) {
+        params.append('action', "add");
+    } else {
+        params.append('action', "delete");
+    }
+
+    let basketData = [{
+        Author: '',
+        Description: '',
+        Group: '',
+        Image: '',
+        ImageId: '',
+        Name: '',
+        Reserved: '',
+        Reserved_Until: '',
+        Type: ''
+    }];
+
+    return ((dispatch: Dispatch<UpdateBasketInterface>) => {
+        return (axios.post(`${url}modifyShoppingBasket`, null, {
+            headers: {
+                'content-type': 'application/json'
+            },
+            params,
+            'withCredentials': true,
+        }).then((response) => {
+            // No dispatch is needed on success for now, maybe add
+            // tslint:disable-next-line:no-console
+            console.log("POST METHOD CALLING FROM THE REDUX FOR ADD TO BASKET, response is:", response);
+            if (response.status === 200) {
+                basketData = response.data.result;
+                dispatch({ type: 'UPDATE_BASKET', basketData });
+            }
+            // TODO: Create success message to share with the user
+        }).catch(error => {
+            // handle error
+            // tslint:disable-next-line:no-console
+            console.log("Error in post is:", error.response);
+
+            // TODO: Create a dispatch for error message to share with the user
+            throw (error);
+        }));
+    });
+};
 /**
  * On go back actions synchronize the page data
  * @param content
@@ -223,6 +298,7 @@ export function signInLocalUser(e: any, formState: any, pageData: ImageContent[]
     const username = "";
     const userAuthorized = false;
     const redirect = false;
+    
    
     return ((dispatch: Dispatch<LocalUserAuthorizationInterface>) => {
         return (axios.post(`${url}auth/sign-in`, data, {
@@ -237,7 +313,23 @@ export function signInLocalUser(e: any, formState: any, pageData: ImageContent[]
 
             if (response.status === 200 && response.data.result.userVerified) {
                 const token = response.data.result.token;
-                verifyTokenandDispatch(dispatch, pageData, token, username, userAuthorized, redirect);
+                let favorites = [{
+                    Author: '',
+                    Description: '',
+                    Group: '',
+                    Image: '',
+                    ImageId: '',
+                    Name: '',
+                    Reserved: '',
+                    Reserved_Until: '',
+                    Type: ''
+                }];
+                if (typeof response.data.result.favorites !== "undefined" && response.data.result.favorites !== []) {
+                    favorites = response.data.result.favorites;
+                }
+                // tslint:disable-next-line:no-console
+                console.log("SENDING THIS FAVORITES:", favorites);
+                verifyTokenandDispatch(dispatch, pageData, token, username, userAuthorized, redirect, favorites);
 
                 // TODO: Create success message to share with the user
             }
@@ -299,8 +391,17 @@ export function refreshPage(pageData: ImageContent[]) {
                 if (localStorage.jwtToken) {
                     // If the token exists set the user to the page data again
                     const token = localStorage.jwtToken;
+                    
+
+                    const serializedState = JSON.parse(localStorage.app_state);
+                    const favorites = serializedState.favorites;
+
+                    // tslint:disable-next-line:no-console
+                    console.log("Local storage items:", serializedState);
                     // it will first login and then log out if time is expired
-                    verifyTokenandDispatch(dispatch, pageData, token, username, userAuthorized, redirect); 
+                    verifyTokenandDispatch(dispatch, pageData, token, username, userAuthorized, redirect, favorites);
+
+                    
                     // TODO: Create success message to share with the user
                 }
             }

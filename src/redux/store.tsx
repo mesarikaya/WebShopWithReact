@@ -1,33 +1,12 @@
-﻿import { applyMiddleware, createStore} from 'redux';
-
-// import { createLogger } from 'redux-logger'
-// import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
+﻿import createHistory from 'history/createBrowserHistory';
+import { routerMiddleware } from 'react-router-redux';
+import { applyMiddleware, createStore } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import logger from 'redux-logger'
 import thunk from 'redux-thunk';
-
 import { updatePageReducer } from '../redux/reducers/PageContent';
-// import reducer from '../redux/reducers/combinedReducers';
-
-import { routerMiddleware } from 'react-router-redux';
-
-import { composeWithDevTools } from 'redux-devtools-extension';
-
-// import { History } from 'history';
-// import { routerReducer } from 'react-router-redux';
-
-// import { UpdatePageContentAction } from '../redux/actions/PageContentActions';
-
-import createHistory from 'history/createBrowserHistory';
-// import { StoreState } from './types/storeState';
-
 import { StoreState } from '../redux/types/storeState';
-// import { UpdateLocalUserAuthenticationStatusAction } from './actions/LocalUserAutorizationActions';
 import { UpdatePageContentAction } from './actions/PageContentActions';
-// import { config } from '@fortawesome/fontawesome-svg-core';
-
-/*const rootReducer = combineReducers({
-    updatePageReducer,
-}); */
 
 export const history = createHistory();
 
@@ -80,34 +59,42 @@ let initialState = loadState();
 if (typeof (initialState) === "undefined") {
     initialState = {
         error: "",
-        favorites: [
-            {
-                Author: "a",
-                Description: "Serious silliness for all ages. Artist Sandra Boynton is back and better than ever with completely redrawn versions of her multi-million selling board books. These whimsical and hilarious books, featuring nontraditional texts and her famous animal characters, have been printed on thick board pages, and are sure to educate and entertain children of all ages.",
-                Group: "0-1",
-                Image: './images/Books/0-1/Moo_Baa_La_La_La.png',
-                ImageId: "5bdb18887010fc071d43625b",
-                Name: "Moo, Baa, La La La!",
-                Reserved: "",
-                Reserved_Until: "",
-                Type: "Book"
-            },
-            {
-                Author: "a",
-                Description: "Serious silliness for all ages. Artist Sandra Boynton is back and better than ever with completely redrawn versions of her multi-million selling board books. These whimsical and hilarious books, featuring nontraditional texts and her famous animal characters, have been printed on thick board pages, and are sure to educate and entertain children of all ages.",
-                Group: "0-1",
-                Image: './images/Books/0-1/Moo_Baa_La_La_La.png',
-                ImageId: "5bdb18887010fc071d43625b",
-                Name: "Moo, Baa, La La La!",
-                Reserved: "",
-                Reserved_Until: "",
-                Type: "Book"
-            }
-        ],
+        favorites: [{
+            Author: '',
+            Description: '',
+            Group: '',
+            Image: '',
+            ImageId: '',
+            Name: '',
+            Reserved: '',
+            Reserved_Until: '',
+            Type: ''
+        }],
         isLoading: false,
         originatedPage: "/",
-        pageData: [{Author: "", Description: "", Group: "", Image: "", ImageId: "", Name: "", Reserved: "", Reserved_Until: "", Type: "" }],
+        pageData: [{
+            Author: "",
+            Description: "",
+            Group: "",
+            Image: "",
+            ImageId: "",
+            Name: "",
+            Reserved: "",
+            Reserved_Until: "",
+            Type: ""
+        }],
         redirect: false,
+        shoppingBasket: [{
+            Author: '',
+            Description: '',
+            Group: '',
+            Image: '',
+            ImageId: '',
+            Name: '',
+            Reserved: '',
+            Reserved_Until: '',
+            Type: ''
+        }], 
         userAuthorized: false,
         username: "guest"
     };

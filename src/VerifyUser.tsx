@@ -59,6 +59,7 @@ export function mapStateToProps(state: StoreState & VerifUserPageState, OwnProps
         isLoading: state.isLoading,
         pageData: state.pageData,
         redirect: state.redirect,
+        shoppingBasket: state.shoppingBasket,
         userAuthorized: state.userAuthorized,
         username: state.username,
     }
@@ -92,6 +93,17 @@ class VerifyUser extends React.Component<VerifyUserPageProps & RouteComponentPro
             isLoading: true,
             pageData:[{ Author: "", Description: "", Group: "", Image: "", ImageId: "", Name: "", Reserved: "", Reserved_Until: "", Type: "" }],
             redirect: false,
+            shoppingBasket: [{
+                Author: '',
+                Description: '',
+                Group: '',
+                Image: '',
+                ImageId: '',
+                Name: '',
+                Reserved: '',
+                Reserved_Until: '',
+                Type: ''
+            }],
             userAuthorized: false,
             username: 'guest'
         };
@@ -117,8 +129,6 @@ class VerifyUser extends React.Component<VerifyUserPageProps & RouteComponentPro
             params
         }).then((response) => {
             // handle success
-            // tslint:disable-next-line:no-console
-            console.log("GET METHOD VERIFY TOKEN:", response);
             if (response.status) {
                 this.setRedirect();
             }

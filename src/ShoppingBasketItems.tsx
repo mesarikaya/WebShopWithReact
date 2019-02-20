@@ -7,25 +7,25 @@ import { ImageContent } from './redux/types/storeState';
 
 /** CREATE Prop and State interfaces to use in the component */
 // Set the default Props
-type FavoriteImageProps = ImageContent;
-type FavoriteImageState = ImageContent;
+type ShoppingBasketItemProps = ImageContent;
+type ShoppingBasketItemState = ImageContent;
 
 // Import the final set store and actions from Redux
 import * as actions from './redux/actions/PageContentActions';
 
 export interface ImageExtraProps {
     UserId: string;
-    modifyFavorites(e: any, props: any, action: boolean): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
+    modifyShoppingBasket(e: any, props: any, action: boolean): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
 };
 
 export interface ImageExtraState {
     UserId: string;
 };
 
-class FavoritesImages extends React.Component<FavoriteImageProps & ImageExtraProps, FavoriteImageState & ImageExtraState> {
-    public state: FavoriteImageState & ImageExtraState;   
+class ShoppingBasketItems extends React.Component<ShoppingBasketItemProps & ImageExtraProps, ShoppingBasketItemState & ImageExtraState> {
+    public state: ShoppingBasketItemState & ImageExtraState;   
 
-    constructor(props: FavoriteImageProps & ImageExtraProps) {
+    constructor(props: ShoppingBasketItemProps & ImageExtraProps) {
         super(props);
         this.state = {
             Author: this.props.Author,
@@ -56,6 +56,7 @@ class FavoritesImages extends React.Component<FavoriteImageProps & ImageExtraPro
     }
 
     public render() {
+        
         // Set default picture
         let picture = './images/Books/0-1/At_the_zoo.png';
 
@@ -70,42 +71,21 @@ class FavoritesImages extends React.Component<FavoriteImageProps & ImageExtraPro
                 picture = './images/' + this.props.Type + '/' + this.props.Group + '/' + this.props.Image;
             }
         }
-
         // tslint:disable-next-line:no-console
         // console.log("Here are the final images!!!!!!:", defaultPicture);
         return (
-            <div id="card">
-                <div id="hero-container">
-                    <img className="img-fluid rounded favoriteImages" src={require(`${picture}`)}
-                        alt="Product photo" style={{ height: '250px' }}/>
-                </div>
-                <div id="card-content">
-                    <div id="card-info">
-                        <h2 id="category">{this.props.Type}</h2>
-                        <div id="rating">
-                            <a href="/api/images" id="favoritesImage">
-                                <button className="btn btn-sm favorites_button">
-                                    <i className="far fa-heart favoriteInActive"
-                                        style={{ color: '#f1356b', fontSize: '15px' }}
-                                        onClick={(e) => { this.props.modifyFavorites(e, this.props, false) }}>
-                                        <strong id="icons"> Favorites</strong>
-                                    </i>
-                                </button>
-                            </a>
-                            <a href="/myorders">
-                                <button className="btn btn-sm myorders_button">
-                                    <i className="fas fa-shopping-basket" id="orders"
-                                        style={{ color: '#ff6000', fontSize: '16px' }}>
-                                        <strong id="icons"> Add</strong>
-                                    </i>
-                                </button>
-                            </a>
-                        </div>
-                    </div>
-                    <h2 id="title">{this.props.Name}</h2>
-                    <p id="description">{this.props.Description}</p>
-                </div>
-            </div>
+                <tbody>
+                    <tr>
+                        <th scope="row"><img className="img-fluid rounded shoppingBasketImages" src={require(`${picture}`)}
+                            alt="Product photo" style={{ height: '50px', width: '50px' }} /></th>
+                        <td>{this.props.Type}</td>
+                        <td>{this.props.Name}</td>
+                        <td>{this.props.Author}</td>
+                        <td />
+                    <td><button type="button" className="btn btn-primary"
+                        onClick={(e) => { this.props.modifyShoppingBasket(e, this.props, false) }}>X</button></td>
+                    </tr>
+                </tbody>
         );
     }
 }
@@ -113,8 +93,8 @@ class FavoritesImages extends React.Component<FavoriteImageProps & ImageExtraPro
 // Set functions to use in Redux Dispatch
 export function mapDispatchToProps(dispatch: any) {
     return {
-        modifyFavorites: (e: any, props: any, action: boolean) => dispatch(actions.modifyFavorites(e, props, action))
+        modifyShoppingBasket: (e: any, props: any, action: boolean) => dispatch(actions.modifyShoppingBasket(e, props, action))
     }
 }
 
-export default connect(null, mapDispatchToProps)(FavoritesImages);
+export default connect(null, mapDispatchToProps)(ShoppingBasketItems);

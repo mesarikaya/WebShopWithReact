@@ -33,6 +33,7 @@ export interface Props {
     isLoading: boolean;
     pageData: ImageContent[];
     redirect: boolean;
+    shoppingBasket: ImageContent[];
     userAuthorized: boolean;
     username: string;
     onGetContent(e: any, type: string, ageGroup: string): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
@@ -66,6 +67,7 @@ class App extends React.Component<Props & RouteComponentProps<PathProps>, StoreS
             isLoading: true,
             pageData: currAppState.pageData,
             redirect: false,
+            shoppingBasket: currAppState.shoppingBasket,
             userAuthorized: false,
             username: "guest"
         };
@@ -92,7 +94,7 @@ class App extends React.Component<Props & RouteComponentProps<PathProps>, StoreS
         for (const obj in data) {
             if (data.hasOwnProperty(obj)) {
                 rows.push(<Image
-                    key={data[obj]._id.toString()}
+                    key={data[obj]._id}
                     Author={data[obj].Author}
                     Description={data[obj].Description}
                     Group={data[obj].Group}
@@ -164,6 +166,7 @@ export function mapStateToProps(state: StoreState, OwnProps: Props & RouteCompon
         isLoading: state.isLoading,
         pageData: state.pageData,
         redirect: state.redirect,
+        shoppingBasket: state.shoppingBasket,
         userAuthorized: state.userAuthorized,
         username: state.username
     }

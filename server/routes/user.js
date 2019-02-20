@@ -96,10 +96,11 @@ module.exports = (router, passport) => {
 
                         return res.status(200).json({
                             result: {
+                                favorites: user.favorites,
                                 message: "User signed in",
                                 token: token,
                                 userVerified: user.local_login.isVerified,
-                                username: user.local_login.email,
+                                username: user.local_login.email
                             }
                             
                         });

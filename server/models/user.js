@@ -17,9 +17,21 @@ var favoritesSchema = new Schema({
     Type: String
 });
 
+// Create shopping basket schema
+var shoppingBasketSchema = new Schema({
+    Author: String,
+    Description: String,
+    Group: String,
+    Image: String,
+    ImageId: String,
+    Name: String,
+    Reserved: String,
+    Reserved_Until: String,
+    Type: String
+});
+
 // Set user document schema
 var UserSchema = new Schema({
-
     favorites: [favoritesSchema],
     local_login: {
         city: String,
@@ -46,15 +58,13 @@ var UserSchema = new Schema({
         verify_token_expires: Date,
         zipcode: String
     },
+    shoppingBasket: [shoppingBasketSchema],
     social_login: {
         created: Date,
         name: String,
         oauthID: {}
     }
-
 }, { collection: 'User' });
-
-
 
 // Set the data model name specifically and export
 module.exports = mongoose.model('user', UserSchema, "Users");

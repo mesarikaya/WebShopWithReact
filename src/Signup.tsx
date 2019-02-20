@@ -68,6 +68,7 @@ export function mapStateToProps(state: StoreState & SignupPageState, OwnProps: S
         originatedPage: state.originatedPage,
         pageData: state.pageData,
         redirect: state.redirect,
+        shoppingBasket: state.shoppingBasket,
         userAuthorized: state.userAuthorized,
         username: state.username,
     }
@@ -107,6 +108,7 @@ class Signup extends React.Component<SignupPageProps & RouteComponentProps<PathP
             originatedPage: currAppState.originatedPage,
             pageData: currAppState.pageData,
             redirect: currAppState.redirect,
+            shoppingBasket: currAppState.shoppingBasket,
             userAuthorized: currAppState.userAuthorized,
             username: currAppState.username
         };
@@ -131,6 +133,7 @@ class Signup extends React.Component<SignupPageProps & RouteComponentProps<PathP
             isLoading: true,
             pageData: currAppState.pageData,
             redirect: currAppState.redirect,
+            shoppingBasket: currAppState.shoppingBasket,
             userAuthorized: currAppState.userAuthorized,
             username: currAppState.state.username
         };
