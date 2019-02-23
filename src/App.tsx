@@ -18,7 +18,7 @@ import Image from './Image';
 import ImageList from './ImageList';
 import Navbar from './Navbar';
 
-// Creaate history variable to be able to go back and forth within routes
+// Create history variable to be able to go back and forth within routes
 import createBrowserHistory from 'history/createBrowserHistory';
 const history = createBrowserHistory({ forceRefresh: true });
 
@@ -28,7 +28,10 @@ import { store } from './redux/store';
 /** CREATE Prop and State interfaces to use in the component */
 // Set the default Props
 export interface Props {
-    error: any;
+    error: {
+        message: string,
+        status: string
+    };
     favorites: ImageContent[];
     isLoading: boolean;
     pageData: ImageContent[];
@@ -81,7 +84,6 @@ class App extends React.Component<Props & RouteComponentProps<PathProps>, StoreS
     }
 
     public componentDidMount() {
-
         // update login status on page refresh
         this.props.onRefresh(this.state.pageData);
     }
@@ -147,7 +149,7 @@ class App extends React.Component<Props & RouteComponentProps<PathProps>, StoreS
         return (
             <div className="App">
                 {/* <!- Navigation Bar --> */}
-                <Navbar showCategories={true} pageData={this.props.pageData} userAuthorized={this.props.userAuthorized}/>
+                <Navbar showCategories={true} pageData={this.props.pageData} userAuthorized={this.props.userAuthorized} returnHomePage={false}/>
                 
                 <div className="container">
                     <ImageList pageData={this.props.pageData} rows={rows} history={this.props.history} />

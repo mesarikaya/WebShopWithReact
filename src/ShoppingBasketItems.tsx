@@ -58,7 +58,7 @@ class ShoppingBasketItems extends React.Component<ShoppingBasketItemProps & Imag
     public render() {
         
         // Set default picture
-        let picture = './images/Books/0-1/At_the_zoo.png';
+        let picture = '';
 
         // Get teh appropriate picture dynamically
         if (this.props.Type === "Smart Toys") {
@@ -73,7 +73,8 @@ class ShoppingBasketItems extends React.Component<ShoppingBasketItemProps & Imag
         }
         // tslint:disable-next-line:no-console
         // console.log("Here are the final images!!!!!!:", defaultPicture);
-        return (
+        if (picture !== '') {
+            return (
                 <tbody>
                     <tr>
                         <th scope="row"><img className="img-fluid rounded shoppingBasketImages" src={require(`${picture}`)}
@@ -82,11 +83,14 @@ class ShoppingBasketItems extends React.Component<ShoppingBasketItemProps & Imag
                         <td>{this.props.Name}</td>
                         <td>{this.props.Author}</td>
                         <td />
-                    <td><button type="button" className="btn btn-primary"
-                        onClick={(e) => { this.props.modifyShoppingBasket(e, this.props, false) }}>X</button></td>
+                        <td><button type="button" className="btn btn-outline-danger"
+                            onClick={(e) => { this.props.modifyShoppingBasket(e, this.props, false) }}>X</button></td>
                     </tr>
                 </tbody>
-        );
+            );
+        }else {
+            return (<h4>No item is in the shopping list</h4>);
+        }
     }
 }
 

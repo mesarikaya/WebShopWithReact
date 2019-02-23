@@ -14,7 +14,7 @@ import logoutUser from '../helperFunctions/logoutUser';
  * @param {any} userAuthorized
  * @param {any} redirect
  */
-const verify = (dispatch, pageData, token, username, userAuthorized, redirect, favorites) => {
+const verify = (dispatch, pageData, token, username, userAuthorized, redirect, favorites, basketData) => {
 
     jwt.verify(token, "jwtauthsecretthatnobodyshouldpip", (err, decoded) => {
         if (err) {
@@ -41,7 +41,7 @@ const verify = (dispatch, pageData, token, username, userAuthorized, redirect, f
             userAuthorized = !isEmpty(decoded);
             redirect = true;
             username = decoded.id;
-            dispatch({ type: 'UPDATE_LOCAL_USER_AUTHORIZATION', pageData, redirect, username, userAuthorized, favorites });
+            dispatch({ type: 'UPDATE_LOCAL_USER_AUTHORIZATION', pageData, redirect, username, userAuthorized, favorites, basketData });
 
             // Check if the expiration time is up for the token
             // If expired log out the user again

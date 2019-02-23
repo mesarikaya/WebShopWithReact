@@ -30,6 +30,7 @@ import HamburgerMenu from './HamburgerMenu';
 export interface Props {
     showCategories: boolean;
     pageData: ImageContent[];
+    returnHomePage: boolean;
     userAuthorized: boolean;
     onLogout(e: any, pageData: ImageContent[]): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
 };
@@ -41,22 +42,30 @@ class Navbar extends React.Component<Props> {
         super(props);
     }
 
+
     public setMenuItemListOrHomeButton() {
+
+        // tslint:disable-next-line:no-console
+        console.log("Show Categories?:", this.props.showCategories);
 
         // Check the state of the showCategories prop and show accordingly
         if (this.props.showCategories) {
             return (
-                <HamburgerMenu />
+                <HamburgerMenu returnHomePage={this.props.returnHomePage} />
             );
-        } else {
+        } else if (this.props.showCategories===false) {
             return (
-                <a href="/home">
+                <a href="/">
                     <button className="btn home_button" type="button">
                         <strong><i className="fas fa-home" /></strong>
                     </button>
                 </a>
             );
-        }
+        } 
+
+        return (
+            <HamburgerMenu returnHomePage={this.props.returnHomePage} />
+        );
     }
 
     public openAccountPage(e: any) {
@@ -97,10 +106,9 @@ class Navbar extends React.Component<Props> {
                         {/* <!- Search Form --> */}
                         <div className="row box">
                             <div className="col-12 col-sm-4 col-md-4 pt-2 nav_top">
-                                <a href="/" className="navbar-brand" ><img className="img-fluid rounded-circle img_logo" src={Logo} alt="" style={{ maxWidth: '30px', height: '30px' }} /></a>
-                                {/* <!- Menu Items or Home button--> */}
+                                <a href="/" className="navbar-brand" ><img className="img-fluid rounded-circle img_logo"
+                                    src={Logo} alt="" style={{ maxWidth: '30px', height: '30px' }} /></a>
                                 {this.setMenuItemListOrHomeButton()}
-                                {/* <!-- End of the hamburger menu --> */}
                             </div>
 
                             <div className="col-12 col-sm-12 col-md-4 d-flex search_box">
@@ -134,7 +142,7 @@ class Navbar extends React.Component<Props> {
                                         {/*</span> --> */}
                                     </button>
                                 </a>
-                                <a href="/myorders">
+                                <a href="/shoppingBasket">
                                     <button className="btn btn-sm myorders_button">
                                         <i className="fas fa-shopping-basket" id="orders">
                                             <strong id="icons"> My Basket</strong>

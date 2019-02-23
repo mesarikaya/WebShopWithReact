@@ -26,7 +26,20 @@ const logout = (dispatch, pageData) => {
         Reserved_Until: '',
         Type: ''
     }];
-    dispatch({ type: 'UPDATE_LOCAL_USER_AUTHORIZATION', pageData, redirect, username, userAuthorized, favorites });
+    // Set the user favorites to empty
+    let basketData = [{
+        Author: '',
+        Description: '',
+        Group: '',
+        Image: '',
+        ImageId: '',
+        Name: '',
+        Reserved: '',
+        Reserved_Until: '',
+        Type: ''
+    }];
+
+    dispatch({ type: 'UPDATE_LOCAL_USER_AUTHORIZATION', pageData, redirect, username, userAuthorized, favorites, basketData });
 }
 
 export default logout;

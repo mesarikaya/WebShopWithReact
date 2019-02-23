@@ -1,5 +1,9 @@
 ﻿@import url("https://fonts.googleapis.com/css?family=Karla|Rubik:700,900");
 
+.Favorites {
+    margin-top: 4rem !important;
+}
+
 #card {
     margin: 2em;
     max-width: 300px;
@@ -77,6 +81,19 @@
 
 favorites_button:hover {
     background-color: transparent !important;
+}
+
+@media screen and (max-width: 351px) {
+    .Favorites {
+        margin-top: 7rem !important;
+    }
+
+    .cardsRow {
+        display: flex;
+        justify-content: center;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
 }
 
 @media screen and (min-width: 352px) and (max-width: 576px) {

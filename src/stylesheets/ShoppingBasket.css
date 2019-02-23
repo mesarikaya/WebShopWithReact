@@ -1,0 +1,30 @@
+﻿.ShoppingBasket {
+    margin-top: 5rem !important;
+}
+
+
+.img-fluid {
+    max-width: 100%;
+    z-index: 1;
+    border: 1px solid rgba(0,0,0,.15);
+}
+
+@media screen and (max-width: 351px) {
+    .ShoppingBasket {
+        margin-top: 7rem !important;
+    }
+}
+
+
+@media screen and (min-width: 352px) and (max-width: 576px) {
+    .ShoppingBasket {
+        margin-top: 7rem !important;
+    }
+
+}
+
+@media screen and (min-width: 577px) and (max-width: 767px) {
+    .ShoppingBasket {
+        margin-top: 7rem !important;
+    }
+}

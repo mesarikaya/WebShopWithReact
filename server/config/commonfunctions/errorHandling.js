@@ -21,7 +21,7 @@ function handleErrors() {
                 // the 409 HTTP status code is for conflict error
                 return {
                     errors:'This email is already taken.',
-                    message: 'Check the form for errors.',
+                    message: 'This email is already taken! Please check the entered credentials!',
                     success: false
                 };
             }
@@ -29,7 +29,7 @@ function handleErrors() {
             if (err.code === 535) {
                 return {
                     errors: 'Subscription failed due to Invalid credentials.',
-                    message: 'Check the provided email address',
+                    message: 'Check the provided credentials',
                     success: false
                 };
             }

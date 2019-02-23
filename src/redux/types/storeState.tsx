@@ -11,7 +11,10 @@
 }
 
 export interface StoreState {
-    error: string;
+    error: {
+        message: string,
+        status: string
+    };
     favorites: ImageContent[]; 
     isLoading: boolean;
     pageData: ImageContent[];

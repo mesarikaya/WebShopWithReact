@@ -11,7 +11,7 @@ import 'font-awesome/css/font-awesome.min.css';
 
 import * as actions from './redux/actions/PageContentActions';
 import { ImageContent, StoreState } from './redux/types/storeState';
-import './stylesheets/Favorites.css';
+import './stylesheets/ShoppingBasket.css';
 
 // Import the presentational components for this container  
 import Navbar from './Navbar';
@@ -28,7 +28,10 @@ import { store } from './redux/store';
 /** CREATE Prop and State interfaces to use in the component */
 // Set the default Props
 export interface Props {
-    error: any;
+    error: {
+        message: string,
+        status: string
+    };
     favorites: ImageContent[];
     isLoading: boolean;
     pageData: ImageContent[];
@@ -148,7 +151,7 @@ class ShoppingBasket extends React.Component<Props & RouteComponentProps<PathPro
             <div className="ShoppingBasket">
                 {/* <!- Navigation Bar --> */}
                 <Navbar showCategories={true} pageData={this.props.pageData}
-                    userAuthorized={this.props.userAuthorized} />
+                    userAuthorized={this.props.userAuthorized} returnHomePage={true}/>
 
                 <div className="container pt-5">
                     <div className="table-responsive">

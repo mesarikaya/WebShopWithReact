@@ -54,7 +54,25 @@ module.exports = (router, passport) => {
         .route('/auth/sign-up')
         .post((req, res, next) => {
             return passport.authenticate('local-signup', (err, user) => {
-                errorHandler.sendErrorDetails(err, res);
+                const result = errorHandler.sendErrorDetails(err, res);
+
+                if (result.success) {
+                    return res.status(200).json({
+                        result: {
+                            message: "Success! Verification email is sent",
+                            status: "success"
+                        }
+                    });
+                } else {
+                    return res.status(400).json({
+                        result: {
+                            message: result.message,
+                            status: "error"
+                        }
+                    });
+                }
+
+
             })(req, res, next);
         });
 
@@ -98,6 +116,7 @@ module.exports = (router, passport) => {
                             result: {
                                 favorites: user.favorites,
                                 message: "User signed in",
+                                shoppingBasket: user.shoppingBasket,
                                 token: token,
                                 userVerified: user.local_login.isVerified,
                                 username: user.local_login.email
@@ -106,7 +125,12 @@ module.exports = (router, passport) => {
                         });
 
                     } else {
-                        return res.status(400).json(result);
+                        return res.status(400).json({
+                            result: {
+                                message: result.message,
+                                status: "error"
+                            }
+                        });
                     }
                 });
 
@@ -184,5 +208,14 @@ module.exports = (router, passport) => {
         .route('/modifyFavorites')
         .post   (function (req, res) {
             userController.modifyFavorites(req, res);
+        });
+
+
+    // Add the image to user favorites
+    router
+        .route('/modifyShoppingBasket')
+        .post(function (req, res) {
+
+            userController.modifyBasket(req, res);
         });
 };

@@ -58,7 +58,10 @@ const loadState = () => {
 let initialState = loadState();
 if (typeof (initialState) === "undefined") {
     initialState = {
-        error: "",
+        error: {
+            message: '',
+            status: ''
+        },
         favorites: [{
             Author: '',
             Description: '',

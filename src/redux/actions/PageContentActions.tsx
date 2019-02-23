@@ -36,12 +36,24 @@ export interface LocalUserAuthorizationInterface {
     username: string;
 }
 
+export interface ErrorMsgInterface {
+    error: {
+        message: string,
+        status: string
+    },
+    type: constants.ERROR_MSG;
+}
+
 // TODO: Modularize this code via splitting it based on User login activity
 // dispacth actions and page image vieww actions. It has grown to be very big
 
 
 // Create a general Action for the provided action interfaces
-export type UpdatePageContentAction = UpdateBasketInterface & UpdateFavoritesInterface & UpdatePageContentInterface & LocalUserAuthorizationInterface;
+export type UpdatePageContentAction = ErrorMsgInterface
+                                        & UpdateBasketInterface
+                                        & UpdateFavoritesInterface
+                                        & UpdatePageContentInterface
+                                        & LocalUserAuthorizationInterface;
 
 /**
  * Make GET request and dipatch the image data to be shown via redux  
@@ -149,13 +161,6 @@ export function modifyFavorites(e: any, props: any, action: boolean) {
                 favoritesData = response.data.result;
                 dispatch({ type: 'UPDATE_FAVORITES', favoritesData });
             }
-            /* if (favoritesData !== [{
-                Author: '', Description: '', Group: '',
-                Image: '', ImageId: '', Name: '', Reserved: '',
-                Reserved_Until: '',Type: ''
-            }]) {
-                dispatch({ type: 'UPDATE_FAVORITES', favoritesData });
-            } */
             // TODO: Create success message to share with the user
         }).catch(error => {
             // handle error
@@ -235,6 +240,7 @@ export function modifyShoppingBasket(e: any, props: any, action: boolean) {
         }));
     });
 };
+
 /**
  * On go back actions synchronize the page data
  * @param content
@@ -261,7 +267,7 @@ export function UpdateLocalUserAuthenticationStatus(e: any, formState: any) {
     // Initialize the data to send with Post request
     const data = formState;
 
-    return ((dispatch: Dispatch<LocalUserAuthorizationInterface>) => {
+    return ((dispatch: Dispatch<LocalUserAuthorizationInterface | ErrorMsgInterface>) => {
         return (axios.post(`${url}auth/sign-up`, data, {
             headers: {
                 'content-type': 'application/json'
@@ -270,15 +276,36 @@ export function UpdateLocalUserAuthenticationStatus(e: any, formState: any) {
         }).then((response) => { // No dispatch is needed on success for now, maybe add
             // tslint:disable-next-line:no-console
             console.log("POST METHOD CALLING FROM THE REDUX USE LOG IN ACTIONS, response is:", response);
+            if (response.status === 200) {
+                // No dispatch is needed on success for now, maybe add
+                const status = "Success";
+                const message = "You are registered!\n Please click the sent link in the verification email to activate your account!";
 
+                const error = {
+                    'message': message,
+                    'status': status
+                };
+                dispatch({ type: 'ERROR_MSG', error });
+            } else {
+                const status = "Error";
+                const message = "Reauthentication of user is unsuccessful! Please sign in again!";
+
+                const error = {
+                    'message': message,
+                    'status': status
+                };
+                dispatch({ type: 'ERROR_MSG', error });
+            }
             // TODO: Create success message to share with the user
-        }).catch(error => {
-            // handle error
-            // tslint:disable-next-line:no-console
-            console.log("Error in post is:", error.response);
+        }).catch(errors => {
+            const status = "Error";
+            const message = errors.response.data.result.message;
 
-            // TODO: Create a dispatch for error message to share with the user
-            throw (error);
+            const error = {
+                'message': message,
+                'status': status
+            };
+            dispatch({ type: 'ERROR_MSG', error });
         }));
       });
 };
@@ -299,8 +326,7 @@ export function signInLocalUser(e: any, formState: any, pageData: ImageContent[]
     const userAuthorized = false;
     const redirect = false;
     
-   
-    return ((dispatch: Dispatch<LocalUserAuthorizationInterface>) => {
+    return ((dispatch: Dispatch<LocalUserAuthorizationInterface | ErrorMsgInterface>) => {
         return (axios.post(`${url}auth/sign-in`, data, {
             headers: {
                 'content-type': 'application/json',
@@ -311,34 +337,73 @@ export function signInLocalUser(e: any, formState: any, pageData: ImageContent[]
             // tslint:disable-next-line:no-console
             console.log("REDUX USE LOG IN ACTIONS, response is:", response);
 
-            if (response.status === 200 && response.data.result.userVerified) {
-                const token = response.data.result.token;
-                let favorites = [{
-                    Author: '',
-                    Description: '',
-                    Group: '',
-                    Image: '',
-                    ImageId: '',
-                    Name: '',
-                    Reserved: '',
-                    Reserved_Until: '',
-                    Type: ''
-                }];
-                if (typeof response.data.result.favorites !== "undefined" && response.data.result.favorites !== []) {
-                    favorites = response.data.result.favorites;
+            if (response.status === 200) {
+                if (response.data.result.userVerified) {
+                    const token = response.data.result.token;
+                    let favorites = [{
+                        Author: '',
+                        Description: '',
+                        Group: '',
+                        Image: '',
+                        ImageId: '',
+                        Name: '',
+                        Reserved: '',
+                        Reserved_Until: '',
+                        Type: ''
+                    }];
+                    if (typeof response.data.result.favorites !== "undefined" && response.data.result.favorites !== []) {
+                        favorites = response.data.result.favorites;
+                    }
+
+                    let basketData = [{
+                        Author: '',
+                        Description: '',
+                        Group: '',
+                        Image: '',
+                        ImageId: '',
+                        Name: '',
+                        Reserved: '',
+                        Reserved_Until: '',
+                        Type: ''
+                    }];
+                    // tslint:disable-next-line:no-console
+                    console.log("shopping basket to verify:", response.data.result);
+                    if (typeof response.data.result.shoppingBasket !== "undefined" && response.data.result.shoppingBasket !== []) {
+                        basketData = response.data.result.shoppingBasket;
+                    }
+
+                    verifyTokenandDispatch(dispatch, pageData, token, username, userAuthorized, redirect, favorites, basketData);
+
+                    // TODO: Create success message to share with the user
+                } else {
+                    const status = "Error";
+                    const message = "Please verify your session again!";
+
+                    const error = {
+                        'message': message,
+                        'status': status
+                    };
+                    dispatch({ type: 'ERROR_MSG', error });
                 }
-                // tslint:disable-next-line:no-console
-                console.log("SENDING THIS FAVORITES:", favorites);
-                verifyTokenandDispatch(dispatch, pageData, token, username, userAuthorized, redirect, favorites);
+            } else {
+                const status = "Error";
+                const message = response.data.result.message;
 
-                // TODO: Create success message to share with the user
+                const error = {
+                    'message': message,
+                    'status': status
+                };
+                dispatch({ type: 'ERROR_MSG', error });
             }
-        }).catch(error => {
-                // tslint:disable-next-line:no-console
-                console.log("Error in post is:", error.response);
+        }).catch(errors => {
+            const status = "Error";
+            const message = errors.response;
 
-                // TODO: Create error message to share with the user
-                throw (error);
+            const error = {
+                'message': message,
+                'status': status
+            };
+            dispatch({ type: 'ERROR_MSG', error });
         }));
     });
 };
@@ -350,7 +415,7 @@ export function signInLocalUser(e: any, formState: any, pageData: ImageContent[]
 export function signOutLocalUser(e: any, pageData: ImageContent[]) {
     if (e !== null) { e.preventDefault(); }
 
-    return ((dispatch: Dispatch<LocalUserAuthorizationInterface>) => {
+    return ((dispatch: Dispatch<LocalUserAuthorizationInterface | ErrorMsgInterface>) => {
         return (axios.get(`${url}auth/sign-out`, {
                 'withCredentials': true
             }
@@ -361,14 +426,26 @@ export function signOutLocalUser(e: any, pageData: ImageContent[]) {
                 console.log("Log out the user");
                 logoutUser(dispatch, pageData);
                 // TODO: Create success message to share with the user
+            } else {
+                const status = "Error";
+                const message = response.data.result.message;
+
+                const error = {
+                    'message': message,
+                    'status': status
+                };
+                dispatch({ type: 'ERROR_MSG', error });
             }
             // TODO: Create error message to share with the user
-        }).catch(error => {
-            // tslint:disable-next-line:no-console
-            console.log("Error in GET is:", error.response);
+        }).catch(errors => {
+            const status = "Error";
+            const message = errors.response;
 
-            // TODO: Create error message to share with the user
-            throw (error);
+            const error = {
+                'message': message,
+                'status': status
+            };
+            dispatch({ type: 'ERROR_MSG', error });
         }));
     });
 };
@@ -391,17 +468,14 @@ export function refreshPage(pageData: ImageContent[]) {
                 if (localStorage.jwtToken) {
                     // If the token exists set the user to the page data again
                     const token = localStorage.jwtToken;
-                    
-
                     const serializedState = JSON.parse(localStorage.app_state);
                     const favorites = serializedState.favorites;
+                    const basketData = serializedState.shoppingBasket;
 
                     // tslint:disable-next-line:no-console
                     console.log("Local storage items:", serializedState);
                     // it will first login and then log out if time is expired
-                    verifyTokenandDispatch(dispatch, pageData, token, username, userAuthorized, redirect, favorites);
-
-                    
+                    verifyTokenandDispatch(dispatch, pageData, token, username, userAuthorized, redirect, favorites, basketData);
                     // TODO: Create success message to share with the user
                 }
             }

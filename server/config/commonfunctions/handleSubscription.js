@@ -30,7 +30,7 @@ function handleSubscription() {
             subject: 'Account Verification Token',
             text: 'Dear user of ' + email + ',\n\n' + 'We are delighted to see you joining our growing customer base.\n\n' +
                     'To be able to finalize the sign up process, please verify your account by clicking the link: \n\n' +
-                    'localhost:3000' + '\/' + 'verify' +
+                    req.headers.origin + '\/' + 'verify' +
                     '\/' + email + '\/' + verificationToken + '.\n\n' +
                     'Thanks for choosing us.\n\n' +
                     'Kind Regards, \n\n' + 'On behalf of KidsBooksWebShop Team',

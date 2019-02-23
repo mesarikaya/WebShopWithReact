@@ -22440,6 +22440,7 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="src\stylesheets\App.css" />
+    <Content Include="src\stylesheets\ShoppingBasket.css" />
     <Content Include="src\stylesheets\index.css" />
     <Content Include="src\stylesheets\ProductPage.css" />
     <Content Include="src\stylesheets\Favorites.css">
@@ -26442,6 +26443,7 @@
     <TypeScriptCompile Include="node_modules\uri-js\src\util.ts" />
     <TypeScriptCompile Include="node_modules\whatwg-encoding\node_modules\iconv-lite\lib\index.d.ts" />
     <TypeScriptCompile Include="node_modules\worker-farm\index.d.ts" />
+    <TypeScriptCompile Include="src\Error.tsx" />
     <TypeScriptCompile Include="src\ShoppingBasketItems.tsx" />
     <TypeScriptCompile Include="src\ShoppingBasket.tsx" />
     <TypeScriptCompile Include="src\Favorites.tsx" />

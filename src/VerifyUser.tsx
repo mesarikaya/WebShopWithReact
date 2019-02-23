@@ -78,7 +78,10 @@ class VerifyUser extends React.Component<VerifyUserPageProps & RouteComponentPro
     constructor(props: VerifyUserPageProps & RouteComponentProps<PathProps>) {
         super(props);
         this.state = {
-            error: '',
+            error: {
+                message: '',
+                status: '',
+            },
             favorites: [{
                 Author: '',
                 Description: '',

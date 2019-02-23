@@ -28,7 +28,10 @@ import { store } from './redux/store';
 /** CREATE Prop and State interfaces to use in the component */
 // Set the default Props
 export interface Props {
-    error: any;
+    error: {
+        message: string,
+        status: string
+    };
     favorites: ImageContent[];
     isLoading: boolean;
     pageData: ImageContent[];
@@ -148,7 +151,7 @@ class Favorites extends React.Component<Props & RouteComponentProps<PathProps>, 
             <div className="Favorites">
                 {/* <!- Navigation Bar --> */}
                 <Navbar showCategories={true} pageData={this.props.pageData}
-                    userAuthorized={this.props.userAuthorized} />
+                    userAuthorized={this.props.userAuthorized} returnHomePage={true}/>
 
                 <div className="container pt-5">
                     <div className="row cardsRow justify-content-around" >

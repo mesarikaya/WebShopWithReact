@@ -20,6 +20,7 @@ type ImageState = ImageContent;
 export interface ImageExtraProps {
     UserId: string;
     modifyFavorites(e: any, props: any, action: boolean): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
+    modifyShoppingBasket(e: any, props: any, action: boolean): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
 };
 
 export interface ImageExtraState {
@@ -58,6 +59,8 @@ class Image extends React.Component<ImageProps & ImageExtraProps, ImageState & I
             UserId: this.props.UserId
         });
     }
+
+    
     public openProductPage(e: any, imageData: any) {
         // Deactivate default behavior
         if (e !== null) { e.preventDefault(); }
@@ -85,7 +88,7 @@ class Image extends React.Component<ImageProps & ImageExtraProps, ImageState & I
 
     public render() {
         // Set default picture
-        let picture = './images/Books/0-1/At_the_zoo.png';
+        let picture = '';
 
         // Get teh appropriate picture dynamically
         if (this.props.Type === "Smart Toys") {
@@ -99,25 +102,36 @@ class Image extends React.Component<ImageProps & ImageExtraProps, ImageState & I
             }
         }
 
+        if (picture !== '') {
+            return (
+                <div className="col-12 col-sm-6 col-md-3 text-center p-2 image_add_ons">
+                    <a className="" onClick={(e) => { this.openProductPage(e, this.state) }}>
+                        <img className="img-fluid rounded" src={require(`${picture}`)} alt="test" />
+                    </a>
+                    <a className="add_to_cart_img" onClick={(e) => { this.props.modifyShoppingBasket(e, this.props, true) }} />
+                    <a className="add_to_favorites_img" onClick={(e) => { this.props.modifyFavorites(e, this.props, true) }} />
+                </div>
+            );
+        } else {
+            return (
+                <div className="col-12 col-sm-6 col-md-3 text-center p-2 image_add_ons">
+                    <h4>No items to show</h4>
+                </div>    
+            );
+            
+        }
+
         // tslint:disable-next-line:no-console
         // console.log("Here are the final images!!!!!!:", defaultPicture);
-        return (
-            
-            <div className="col-12 col-sm-6 col-md-3 text-center p-2 image_add_ons">
-                <a className="" onClick={(e) => { this.openProductPage(e, this.state) }}>
-                    <img className="img-fluid rounded" src={require(`${picture}`)} alt="test" />
-                </a>
-                <a className="add_to_cart_img" />
-                <a className="add_to_favorites_img" onClick={(e) => { this.props.modifyFavorites(e, this.props, true) }} />
-            </div>
-        );
+        
     }
 }
 
 // Set functions to use in Redux Dispatch
 export function mapDispatchToProps(dispatch: any) {
     return {
-        modifyFavorites: (e: any, props: any, action: boolean) => dispatch(actions.modifyFavorites(e, props, true))
+        modifyFavorites: (e: any, props: any, action: boolean) => dispatch(actions.modifyFavorites(e, props, true)),
+        modifyShoppingBasket: (e: any, props: any, action: boolean) => dispatch(actions.modifyShoppingBasket(e, props, true))
     }
 }
 

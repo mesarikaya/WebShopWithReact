@@ -160,7 +160,7 @@ class ProductPage extends React.Component<ProductPageProps & RouteComponentProps
             return (
                 <div className="ProductPage mt-5">
                     {/* <!- Navigation Bar --> */}
-                    <Navbar showCategories={false} pageData={this.props.pageData} userAuthorized={this.props.userAuthorized} />
+                    <Navbar showCategories={false} pageData={this.props.pageData} userAuthorized={this.props.userAuthorized} returnHomePage={true}/>
 
                     {/*<!-- Container for Selected image details -->*/}
                     <div className="container ">

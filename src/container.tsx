@@ -21,7 +21,10 @@ import VerifyUser from './VerifyUser';
 import { store } from './redux/store';
 
 export interface Props {
-    error: string;
+    error: {
+        message: string,
+        status: string
+    };
     favorites: ImageContent[];
     isLoading: boolean;
     pageData: ImageContent[];

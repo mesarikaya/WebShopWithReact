@@ -9,3 +9,6 @@ export type UPDATE_FAVORITES = typeof UPDATE_FAVORITES;
 
 export const UPDATE_BASKET = 'UPDATE_BASKET';
 export type UPDATE_BASKET = typeof UPDATE_BASKET;
+
+export const ERROR_MSG = 'ERROR_MSG';
+export type ERROR_MSG = typeof ERROR_MSG;

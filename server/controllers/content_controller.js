@@ -40,7 +40,7 @@ function handlePageContent() {
             }
 
             if (contents) {
-                return res.status(200).json({ "result": doc });
+                return res.status(200).json({ "result": doc});
             }else {
                 // No content is found
                 return res.status(200).send({"result": "No data"});
