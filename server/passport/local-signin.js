@@ -57,6 +57,7 @@ module.exports = new LocalStrategy({
                                 const payload = {
                                     id: user.local_login.email,
                                 };
+
                                 // tslint:disable-next-line:no-console
                                 console.log("JWT env secret is is? -->", process.env.jwtsecret);
                                 jwt.sign(payload, process.env.jwtsecret, {

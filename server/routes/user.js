@@ -3,6 +3,7 @@
 const UserController = require(process.cwd() + '/server/controllers/user_controller.js');
 const HandleSubscription = require('../config/commonfunctions/handleSubscription');
 const ErrorHandler = require('../config/commonfunctions/errorHandling');
+const SocialAuthHandler = require('../passport/social-google-sign');
 const jwt = require("jsonwebtoken");
 // const passport = require('../passport');
 
@@ -11,9 +12,11 @@ module.exports = (router, passport) => {
 
     // tslint:disable-next-line:no-console
     console.log("In user routing module");
-    var userController = new UserController();
-    var handleSubscription = new HandleSubscription();
-    var errorHandler = new ErrorHandler();
+    const userController = new UserController();
+    const handleSubscription = new HandleSubscription();
+    const errorHandler = new ErrorHandler();
+    const socialAuthHandler = new SocialAuthHandler();
+
 
     // Create authentication check via using passport.js    
     function ensureAuthenticated(req, res, next) {
@@ -121,7 +124,6 @@ module.exports = (router, passport) => {
                                 userVerified: user.local_login.isVerified,
                                 username: user.local_login.email
                             }
-                            
                         });
 
                     } else {
@@ -137,10 +139,10 @@ module.exports = (router, passport) => {
             })(req, res, next);
         });
 
-    //LOGOUT - After logout go back to opening page
+    // LOGOUT - After logout go back to opening page
     router
         .route('/auth/sign-out')
-        .get(function (req, res) {
+        .get((req, res) => {
                 req.logOut();
 
                 // tslint:disable-next-line:no-console
@@ -161,20 +163,19 @@ module.exports = (router, passport) => {
                 failureRedirect: '/',
                 successRedirect: '/',
             })
-    );
+        );
 
 
-    // TODO: GOOGLE AUTHENTICATE
+    // After successful login creates the token and saves the user if it does not exist
     router
         .route('/auth/google')
-        .get(passport.authenticate('google',
-            {
-                scope: [
-                    'https://www.googleapis.com/auth/plus.login',
-                    'https://www.googleapis.com/auth/plus.profile.emails.read'
-                ]
-            }
-        ));
+        .post((req, res) => {
+            const profile = req.body.profileObj;
+
+            // tslint:disable-next-line:no-console
+            console.log("INSIDE GOOGLE CALLBACK", req.body.profileObj);
+            socialAuthHandler.googleSignIn(res, profile);
+        });
 
     // Google callback call
     router
@@ -183,7 +184,7 @@ module.exports = (router, passport) => {
         function (req, res) {
                 // tslint:disable-next-line:no-console
                 console.log("Google sign in success");
-                res.redirect('/');
+                // res.redirect('/');
             }
         );
 

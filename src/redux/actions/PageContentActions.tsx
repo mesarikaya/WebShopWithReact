@@ -314,6 +314,7 @@ export function UpdateLocalUserAuthenticationStatus(e: any, formState: any) {
  * Get the signin form state and check the credentails in the backend
  * @param e
  * @param formState
+ * @param pageData
  */
 export function signInLocalUser(e: any, formState: any, pageData: ImageContent[]) {
     if (e !== null) { e.preventDefault(); }
@@ -407,6 +408,105 @@ export function signInLocalUser(e: any, formState: any, pageData: ImageContent[]
         }));
     });
 };
+
+/**
+ * Get the signin form state and check the credentails in the backend
+ * @param res
+ * @param pageData
+ */
+export function signInSocialUser(res: any, pageData: ImageContent[]) {
+
+    // Initialize the data to send with Post request
+    const data = res;
+
+    // Get the username parameters
+    const username = "";
+    const userAuthorized = false;
+    const redirect = false;
+
+    return ((dispatch: Dispatch<LocalUserAuthorizationInterface | ErrorMsgInterface>) => {
+        return (axios.post(`${url}auth/google`, data, {
+            headers: {
+                'content-type': 'application/json',
+                'withCredentials': true
+            }
+        }).then((response) => {
+
+            // tslint:disable-next-line:no-console
+            console.log("REDUX USE LOG IN ACTIONS, response is:", response);
+
+            if (response.status === 200) {
+                if (response.data.result.userVerified) {
+                    const token = response.data.result.token;
+                    let favorites = [{
+                        Author: '',
+                        Description: '',
+                        Group: '',
+                        Image: '',
+                        ImageId: '',
+                        Name: '',
+                        Reserved: '',
+                        Reserved_Until: '',
+                        Type: ''
+                    }];
+                    if (typeof response.data.result.favorites !== "undefined" && response.data.result.favorites !== []) {
+                        favorites = response.data.result.favorites;
+                    }
+
+                    let basketData = [{
+                        Author: '',
+                        Description: '',
+                        Group: '',
+                        Image: '',
+                        ImageId: '',
+                        Name: '',
+                        Reserved: '',
+                        Reserved_Until: '',
+                        Type: ''
+                    }];
+                    // tslint:disable-next-line:no-console
+                    console.log("shopping basket to verify:", response.data.result);
+                    if (typeof response.data.result.shoppingBasket !== "undefined" && response.data.result.shoppingBasket !== []) {
+                        basketData = response.data.result.shoppingBasket;
+                    }
+
+                    verifyTokenandDispatch(dispatch, pageData, token, username, userAuthorized, redirect, favorites, basketData);
+
+                    // TODO: Create success message to share with the user
+                } else {
+                    const status = "Error";
+                    const message = "Please verify your session again!";
+
+                    const error = {
+                        'message': message,
+                        'status': status
+                    };
+                    dispatch({ type: 'ERROR_MSG', error });
+                }
+            } else {
+                const status = "Error";
+                const message = response.data.result.message;
+
+                const error = {
+                    'message': message,
+                    'status': status
+                };
+                dispatch({ type: 'ERROR_MSG', error });
+            }
+        }).catch(errors => {
+            const status = "Error";
+            const message = errors.response;
+
+            const error = {
+                'message': message,
+                'status': status
+            };
+            dispatch({ type: 'ERROR_MSG', error });
+        }));
+    });
+};
+
+
 
 /**
  * Sig out the user with a GET request

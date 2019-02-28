@@ -102,6 +102,10 @@ function handleSubscription() {
             newUser.local_login.surname = req.body.surname;
             newUser.local_login.zipCode = req.body.zipCode;
 
+            // Set favorites and the shopping basket as empty
+            newUser.favorites = [];
+            newUser.shoppingBasket = [];
+
             // Try to save the user. If successful, send the verification email
             try {
 
@@ -146,7 +150,7 @@ function handleSubscription() {
         var email = req.query.email;
         var token = req.query.token;
 
-        User.findOne({ 'local_login.email': email }, function (err, user) {
+        User.findOne({ 'local_login.email': email } , function (err, user) {
 
             if (err) {
                 const customErr = {

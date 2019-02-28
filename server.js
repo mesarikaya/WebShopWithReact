@@ -14,6 +14,11 @@ const helmet = require('helmet');
 const path = require("path");
 const router = express.Router();
 
+/** set up middlewares */
+// Set cors availability
+const corsOptions = { credentials: true, origin: 'http://localhost:3000' };
+app.use("*", cors(corsOptions));
+
 // Introduce passportjs for local storage token management
 const passport = require('passport');
 
@@ -36,11 +41,6 @@ let port = 5000 || process.env.PORT;
 
 /** set up Oauth package to the app and load the Environment variables */
 require('dotenv').load();
-
-/** set up middlewares */
-// Set cors availability
-const corsOptions = { credentials: true, origin: 'http://localhost:3000' };
-app.use("*",cors(corsOptions));
 
 // Add helmet to protect for general attacks
 app.use(helmet());

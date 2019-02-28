@@ -29,7 +29,7 @@ function handleUserInfo() {
         if (userId !== "guest") {
 
             // Search if user has the producID already in favorites
-            let userQuery = users.findOne({ 'local_login.email': userId, 'favorites.ImageId': imageId });
+            let userQuery = users.findOne({ $or: [{ 'local_login.email': userId, 'favorites.ImageId': imageId }, { 'social_login.oauthID': userId, 'favorites.ImageId': imageId }] });
 
             return new Promise((resolve, reject) => {
 
@@ -57,7 +57,7 @@ function handleUserInfo() {
             }).then(request => {
                 const userID = request[0];
                 const actionType = request[1];
-                let user = users.findOne({ 'local_login.email': userID });
+                let user = users.findOne({ $or: [{ 'local_login.email': userID }, { 'social_login.oauthID': userId }] });
 
                 // Search if the user has the specific product in the favorites
                 user.exec(function (userErr, doc) {
@@ -97,7 +97,7 @@ function handleUserInfo() {
                         return res.status(200).json({ "result": doc.favorites });
                     } else {
                         // Reject the promise and catch Error
-                        reject("No such User exists");
+                        reject(new Error("Record does not exist"));
                     }
                 });
 
@@ -131,7 +131,7 @@ function handleUserInfo() {
         if (userId !== "guest") {
 
             // Search if user has the producID already in favorites
-            let userQuery = users.findOne({ 'local_login.email': userId, 'shoppingBasket.ImageId': imageId });
+            let userQuery = users.findOne({ $or: [{ 'local_login.email': userId, 'shoppingBasket.ImageId': imageId }, { 'social_login.oauthID': userId, 'shoppingBasket.ImageId': imageId }]});
 
             return new Promise((resolve, reject) => {
 
@@ -159,7 +159,7 @@ function handleUserInfo() {
             }).then(request => {
                 const userID = request[0];
                 const actionType = request[1];
-                let user = users.findOne({ 'local_login.email': userID });
+                let user = users.findOne({ $or: [{ 'local_login.email': userID }, { 'social_login.oauthID': userId}]});
 
                 // Search if the user has the specific product in the favorites
                 user.exec(function (userErr, doc) {

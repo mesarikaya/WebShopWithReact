@@ -14934,6 +14934,9 @@
     <Compile Include="server\passport\local-signup.js">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="server\passport\social-google-sign.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="src\redux\helperFunctions\isEmpty.js">
       <SubType>Code</SubType>
     </Compile>
@@ -26444,6 +26447,7 @@
     <TypeScriptCompile Include="node_modules\whatwg-encoding\node_modules\iconv-lite\lib\index.d.ts" />
     <TypeScriptCompile Include="node_modules\worker-farm\index.d.ts" />
     <TypeScriptCompile Include="src\Error.tsx" />
+    <TypeScriptCompile Include="src\GoogleButton.tsx" />
     <TypeScriptCompile Include="src\ShoppingBasketItems.tsx" />
     <TypeScriptCompile Include="src\ShoppingBasket.tsx" />
     <TypeScriptCompile Include="src\Favorites.tsx" />

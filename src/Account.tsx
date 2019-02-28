@@ -13,6 +13,8 @@ import 'font-awesome/css/font-awesome.min.css';
 import Logo from './images/Logo.png';
 import './stylesheets/Account.css';
 
+import GoogleButton from './GoogleButton'; 
+
 library.add(faUser);
 library.add(faKey);
 
@@ -40,6 +42,7 @@ export interface AccountPageProps {
     redirect: boolean
     userAuthorized: boolean;
     signInLocalUser(e: any, formFields: any, pageData: ImageContent[]): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
+    signInSocialUser(e: any, pageData: ImageContent[]): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
     synchronizePageData(pageData: ImageContent[]): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
 };
 
@@ -182,7 +185,9 @@ class Account extends React.Component < AccountPageProps & RouteComponentProps <
                                                                 data-validation-required-message="Please enter your password."
                                                                 onChange={(e) => { this.onChange(e) }} />
                                                             <div className="input-group-addon passwordIcon" style={{ background: 'white' }}>
-                                                                <div className="input-group-text border-0 border" style={{ background: 'white' }}><FontAwesomeIcon icon="key" aria-hidden="true" /></div>
+                                                                <div className="input-group-text border-0 border" style={{ background: 'white' }}>
+                                                                    <FontAwesomeIcon icon="key" aria-hidden="true" />
+                                                                </div>
                                                             </div>
                                                         </div>
                                                         <p className="help-block text-danger" />
@@ -214,10 +219,8 @@ class Account extends React.Component < AccountPageProps & RouteComponentProps <
                                                     <i className="fab fa-facebook-f" aria-hidden="true" />
                                                     <a href='api/auth/facebook' className="sign-in-letter">  Sign-in</a>
                                                 </button>
-                                                <button className="btn btn-sm btn-social btn-google">
-                                                    <i className="fab fa-google" aria-hidden="true" />
-                                                    <a href='/api/auth/google' className="sign-in-letter">  Sign-in</a>
-                                                </button>
+                                                <GoogleButton pageData={this.state.pageData} />
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -274,6 +277,7 @@ export function mapStateToProps(state: StoreState & AccountPageState, OwnProps: 
 export function mapDispatchToProps(dispatch: any) {
     return {
         signInLocalUser: (e: any, formFields: any, pageData: ImageContent[]) => dispatch(actions.signInLocalUser(e, formFields, pageData)),
+        signInSocialUser: (e: any, pageData: ImageContent[]) => dispatch(actions.signInSocialUser(e, pageData)),
         synchronizePageData: (pageData: ImageContent[]) => dispatch(actions.SynchronizePageData(pageData)),
     }
 }
