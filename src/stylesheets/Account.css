@@ -113,6 +113,7 @@
     width: 110px;
     border-radius: 8px;
     margin-top: 0px;
+    margin-left: 2px;
 }
 
 .btn-group-vertical > .btn + .btn, .btn-group-vertical > .btn + .btn-group, .btn-group-vertical > .btn-group + .btn, .btn-group-vertical > .btn-group + .btn-group {
@@ -199,6 +200,10 @@
     .right {
         margin-bottom: 20px;
     }
+
+    .btn-google {
+        margin-left: 0px;
+    }
 }
 
 @media screen and (min-width:769px) {
@@ -206,5 +211,9 @@
     #username, #password {
         max-width: 10rem;
         font-size: 8.5px;
+    }
+
+    .btn-google {
+        margin-left: 0px;
     }
 }

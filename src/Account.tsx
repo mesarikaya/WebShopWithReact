@@ -13,6 +13,8 @@ import 'font-awesome/css/font-awesome.min.css';
 import Logo from './images/Logo.png';
 import './stylesheets/Account.css';
 
+// Import Social Login buttons
+import FacebookButton from './FacebookButton';
 import GoogleButton from './GoogleButton'; 
 
 library.add(faUser);
@@ -42,7 +44,6 @@ export interface AccountPageProps {
     redirect: boolean
     userAuthorized: boolean;
     signInLocalUser(e: any, formFields: any, pageData: ImageContent[]): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
-    signInSocialUser(e: any, pageData: ImageContent[]): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
     synchronizePageData(pageData: ImageContent[]): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
 };
 
@@ -215,10 +216,7 @@ class Account extends React.Component < AccountPageProps & RouteComponentProps <
                                         <hr className="clearfix pt-2" />
                                         <div className="row justify-content-center">
                                             <div className="btn-group-vertical">
-                                                <button className="btn btn-sm btn-social btn-facebook">
-                                                    <i className="fab fa-facebook-f" aria-hidden="true" />
-                                                    <a href='api/auth/facebook' className="sign-in-letter">  Sign-in</a>
-                                                </button>
+                                                <FacebookButton pageData={this.state.pageData} />
                                                 <GoogleButton pageData={this.state.pageData} />
                                                 
                                             </div>
@@ -277,7 +275,6 @@ export function mapStateToProps(state: StoreState & AccountPageState, OwnProps: 
 export function mapDispatchToProps(dispatch: any) {
     return {
         signInLocalUser: (e: any, formFields: any, pageData: ImageContent[]) => dispatch(actions.signInLocalUser(e, formFields, pageData)),
-        signInSocialUser: (e: any, pageData: ImageContent[]) => dispatch(actions.signInSocialUser(e, pageData)),
         synchronizePageData: (pageData: ImageContent[]) => dispatch(actions.SynchronizePageData(pageData)),
     }
 }

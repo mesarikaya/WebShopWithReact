@@ -414,7 +414,7 @@ export function signInLocalUser(e: any, formState: any, pageData: ImageContent[]
  * @param res
  * @param pageData
  */
-export function signInSocialUser(res: any, pageData: ImageContent[]) {
+export function signInSocialUser(res: any, pageData: ImageContent[], caller: string) {
 
     // Initialize the data to send with Post request
     const data = res;
@@ -423,9 +423,13 @@ export function signInSocialUser(res: any, pageData: ImageContent[]) {
     const username = "";
     const userAuthorized = false;
     const redirect = false;
+    let urlExt = 'auth/google'
+
+    // Set the api url extenseion
+    if (caller === "fb") { urlExt = 'auth/facebook'; }
 
     return ((dispatch: Dispatch<LocalUserAuthorizationInterface | ErrorMsgInterface>) => {
-        return (axios.post(`${url}auth/google`, data, {
+        return (axios.post(`${url}` + urlExt, data, {
             headers: {
                 'content-type': 'application/json',
                 'withCredentials': true

@@ -3,7 +3,7 @@
 const UserController = require(process.cwd() + '/server/controllers/user_controller.js');
 const HandleSubscription = require('../config/commonfunctions/handleSubscription');
 const ErrorHandler = require('../config/commonfunctions/errorHandling');
-const SocialAuthHandler = require('../passport/social-google-sign');
+const SocialAuthHandler = require('../passport/social-sign');
 const jwt = require("jsonwebtoken");
 // const passport = require('../passport');
 
@@ -170,11 +170,13 @@ module.exports = (router, passport) => {
     router
         .route('/auth/google')
         .post((req, res) => {
-            const profile = req.body.profileObj;
-
+            const profile = {
+                id: req.body.profileObj.googleId,
+                name: req.body.profileObj.name
+            };
             // tslint:disable-next-line:no-console
-            console.log("INSIDE GOOGLE CALLBACK", req.body.profileObj);
-            socialAuthHandler.googleSignIn(res, profile);
+            console.log("INSIDE GOOGLE CALLBACK", req.body.profile);
+            socialAuthHandler.socialSignIn(res, profile);
         });
 
     // Google callback call
@@ -191,16 +193,25 @@ module.exports = (router, passport) => {
     // TODO: FACEBOOK AUTHENTICATE   
     router
         .route('/auth/facebook')
-        .get(passport.authenticate('facebook',
-            {}
-        ));
+        .post((req, res) => {
+            const profile = {
+                id: req.body.userID,
+                name: req.body.name
+            };
+
+            // tslint:disable-next-line:no-console
+            console.log("INSIDE FACEBOOK CALLBACK", req.body.userID);
+            socialAuthHandler.socialSignIn(res, profile);
+        });
 
     // Facebook callback call
     router
         .route('/auth/facebook/callback')
         .get(passport.authenticate('facebook', { failureRedirect: '/' }),
             function (req, res) {
-                res.redirect('/');
+                // tslint:disable-next-line:no-console
+                console.log("FB sign in success");
+                // res.redirect('/');
             }
     );
 
@@ -210,7 +221,6 @@ module.exports = (router, passport) => {
         .post   (function (req, res) {
             userController.modifyFavorites(req, res);
         });
-
 
     // Add the image to user favorites
     router

@@ -2,7 +2,7 @@
 const localSigninStrategy = require('./local-signin');
 const User = require('../models/user'); 
 const localSignupStrategy = require('./local-signup');
-const googleStrategy = require('./social-google-sign');
+const googleStrategy = require('./social-sign');
 
 // Called on login, saves the id and returns with the localstorage token
 module.exports = function (passport) {

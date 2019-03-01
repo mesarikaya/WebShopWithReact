@@ -6,17 +6,17 @@ const jwt = require("jsonwebtoken");
 function handleSocialSignIn() {
 
     // Google succcess function
-    this.googleSignIn = (res, profile) => {
+    this.socialSignIn = (res, profile) => {
 
         const payload = {
-            id: profile.googleId,
+            id: profile.id,
         };
 
         // Asynchronous call for google user sign in
         // tslint:disable-next-line:no-console
         console.log("Profile is:", profile);
         process.nextTick(function () {
-            User.findOne({ 'social_login.oauthID': profile.googleId }, function (err, user) {
+            User.findOne({ 'social_login.oauthID': profile.id}, function (err, user) {
                 if (err) {
                     return {
                         error: "DB Error",
@@ -61,7 +61,7 @@ function handleSocialSignIn() {
                             var newUser = new User();
                             // console.log("Profile is:", profile);
                             // Initiate the user details
-                            newUser.social_login.oauthID = profile.googleId;
+                            newUser.social_login.oauthID = profile.id;
                             newUser.social_login.name = profile.name;
                             newUser.social_login.created = Date.now();
 
@@ -107,7 +107,7 @@ function handleSocialSignIn() {
             });
         });
     };
-    
+
 };
 
 module.exports = handleSocialSignIn;

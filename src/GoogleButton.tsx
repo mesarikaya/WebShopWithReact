@@ -16,7 +16,7 @@ import 'font-awesome/css/font-awesome.min.css';
 // Set the default Props
 interface GoogleButtonProps {
     pageData: ImageContent[];
-    signInSocialUser(response: any, pageData: ImageContent[]): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
+    signInSocialUser(response: any, pageData: ImageContent[], caller: string): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
 };
 
 interface GoogleButtonState {
@@ -33,7 +33,7 @@ class GoogleButton extends React.Component<GoogleButtonProps, GoogleButtonState>
         const responseGoogle = (response: any) => {
             // tslint:disable-next-line:no-console
             // console.log(response.profileObj);
-            this.props.signInSocialUser(response, this.props.pageData);
+            this.props.signInSocialUser(response, this.props.pageData, "google");
         };
 
         const responseGoogle2 = (response: any) => {
@@ -52,7 +52,7 @@ class GoogleButton extends React.Component<GoogleButtonProps, GoogleButtonState>
                 render={(renderProps:any) => (
                     <button className="btn btn-sm btn-social btn-google" onClick={renderProps.onClick}>
                         <i className="fab fa-google" aria-hidden="true" />
-                        <a className="sign-in-letter">  Sign-in</a>
+                        <a className="sign-in-letter">  Login</a>
                     </button>
                 )}
                 onSuccess={responseGoogle}
@@ -65,7 +65,7 @@ class GoogleButton extends React.Component<GoogleButtonProps, GoogleButtonState>
 
 export function mapDispatchToProps(dispatch: any) {
     return {
-        signInSocialUser: (response: any, pageData: ImageContent[]) => dispatch(actions.signInSocialUser(response, pageData))
+        signInSocialUser: (response: any, pageData: ImageContent[], caller: string) => dispatch(actions.signInSocialUser(response, pageData,caller))
     }
 }
 
