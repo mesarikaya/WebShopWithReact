@@ -46,7 +46,6 @@ class FacebookButton extends React.Component<FacebookButtonProps, FacebookButton
         return (
             <FacebookLogin
                 appId={`${process.env.REACT_APP_FACEBOOK_CLIENTID}`}
-                autoLoad={true}
                 callback={responseFacebook}
                 cssClass="btn btn-sm btn-social btn-facebook"
                 icon="fa-facebook"

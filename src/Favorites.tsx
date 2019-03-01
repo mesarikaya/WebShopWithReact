@@ -150,7 +150,7 @@ class Favorites extends React.Component<Props & RouteComponentProps<PathProps>, 
         return (
             <div className="Favorites">
                 {/* <!- Navigation Bar --> */}
-                <Navbar showCategories={true} pageData={this.props.pageData}
+                <Navbar searchText={''} showCategories={true} pageData={this.props.pageData}
                     userAuthorized={this.props.userAuthorized} returnHomePage={true}/>
 
                 <div className="container pt-5">

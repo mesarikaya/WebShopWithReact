@@ -56,7 +56,8 @@ class HamburgerMenu extends React.Component<Props, State> {
 
         return (
             <React.Fragment >
-                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
                     <strong id="Category_list">Categories</strong>
                     <i className="fa fa-bars" />
                 </button>
@@ -66,33 +67,62 @@ class HamburgerMenu extends React.Component<Props, State> {
                         <div className="row">
                             <div className="col-6 col-sm-3 category_item">
                                 <li className="nav-item dropdown">
-                                    <a className="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <strong id="Books">Books</strong>
+                                    <a className="nav-link" role="button" data-toggle="collapse" data-target=".navbar-collapse.show"
+                                        onClick={(e) => { this.getContent(e, "allItems", "all") }}>
+                                        <strong id="All_Items">All</strong>
                                     </a>
-                                    <div className="dropdown-menu mx-auto" aria-labelledby="navbarDropdown">
-                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getContent(e, "Books", "All") }}><i className="fas fa-child"> All</i></a>
-                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getContent(e, "Books", "0-1") }}><i className="fas fa-child"> 0-1 year</i></a>
-                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getContent(e, "Books", "1-2") }}><i className="fas fa-child"> 1-2 years</i></a>
-                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getContent(e, "Books", "2-3") }}><i className="fas fa-child"> 2-3 years</i></a>
-                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getContent(e, "Books", "3-4") }}><i className="fas fa-child"> 3-4 years</i></a>
-                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getContent(e, "Books", "4-6") }}><i className="fas fa-child"> 4-6 years</i></a>
-                                    </div>
                                 </li>
                             </div>
 
                             <div className="col-6 col-sm-3 category_item">
                                 <li className="nav-item dropdown">
                                     <a className="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <strong id="Books">Books</strong>
+                                    </a>
+                                    <div className="dropdown-menu mx-auto" aria-labelledby="navbarDropdown">
+                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show"
+                                            onClick={(e) => { this.getContent(e, "Books", "All") }}><i className="fas fa-child"> All</i></a>
+                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show"
+                                            onClick={(e) => { this.getContent(e, "Books", "0-1") }}><i className="fas fa-child"> 0-1 year</i></a>
+                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show"
+                                            onClick={(e) => { this.getContent(e, "Books", "1-2") }}><i className="fas fa-child"> 1-2 years</i></a>
+                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show"
+                                            onClick={(e) => { this.getContent(e, "Books", "2-3") }}><i className="fas fa-child"> 2-3 years</i></a>
+                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show"
+                                            onClick={(e) => { this.getContent(e, "Books", "3-4") }}><i className="fas fa-child"> 3-4 years</i></a>
+                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show"
+                                            onClick={(e) => { this.getContent(e, "Books", "4-6") }}><i className="fas fa-child"> 4-6 years</i></a>
+                                    </div>
+                                </li>
+                            </div>
+
+                            <div className="col-6 col-sm-3 category_item">
+                                <li className="nav-item dropdown">
+                                    <a className="nav-link" role="button" data-toggle="collapse" data-target=".navbar-collapse.show"
+                                        onClick={(e) => { this.getContent(e, "Smart Toys", "all") }}><strong id="Smart_Toys">Smart Toys</strong></a>
+                                </li>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-6 col-sm-3 category_item">
+                                <li className="nav-item dropdown">
+                                    <a className="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><strong id="Toys">Toys</strong>
                                     </a>
                                     <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getContent(e, "Toys", "All") }}><i className="fas fa-child"> All</i></a>
-                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getContent(e, "Toys", "0-1") }}><i className="fas fa-child"> 0-1 year</i></a>
-                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getContent(e, "Toys", "1-2") }}><i className="fas fa-child"> 1-2 years</i></a>
-                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getContent(e, "Toys", "2-3") }}><i className="fas fa-child"> 2-3 years</i></a>
-                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getContent(e, "Toys", "3-4") }}><i className="fas fa-child"> 3-4 years</i></a>
-                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getContent(e, "Toys", "4-6") }}><i className="fas fa-child"> 4-6 years</i></a>
+                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show"
+                                            onClick={(e) => { this.getContent(e, "Toys", "All") }}><i className="fas fa-child"> All</i></a>
+                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show"
+                                            onClick={(e) => { this.getContent(e, "Toys", "0-1") }}><i className="fas fa-child"> 0-1 year</i></a>
+                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show"
+                                            onClick={(e) => { this.getContent(e, "Toys", "1-2") }}><i className="fas fa-child"> 1-2 years</i></a>
+                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show"
+                                            onClick={(e) => { this.getContent(e, "Toys", "2-3") }}><i className="fas fa-child"> 2-3 years</i></a>
+                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show"
+                                            onClick={(e) => { this.getContent(e, "Toys", "3-4") }}><i className="fas fa-child"> 3-4 years</i></a>
+                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show"
+                                            onClick={(e) => { this.getContent(e, "Toys", "4-6") }}><i className="fas fa-child"> 4-6 years</i></a>
                                     </div>
                                 </li>
                             </div>
@@ -102,18 +132,17 @@ class HamburgerMenu extends React.Component<Props, State> {
                                     <a className="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ><strong id="Puzzles">Puzzles</strong></a>
                                     <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getContent(e, "Puzzles", "All") }}><i className="fas fa-child"> All</i></a>
-                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getContent(e, "Puzzles", "1-2") }}><i className="fas fa-child"> 1-2 years</i></a>
-                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getContent(e, "Puzzles", "2-3") }}><i className="fas fa-child"> 2-3 years</i></a>
-                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getContent(e, "Puzzles", "3-4") }}><i className="fas fa-child"> 3-4 years</i></a>
-                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getContent(e, "Puzzles", "4-6") }}><i className="fas fa-child"> 4-6 years</i></a>
+                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show"
+                                            onClick={(e) => { this.getContent(e, "Puzzles", "All") }}><i className="fas fa-child"> All</i></a>
+                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show"
+                                            onClick={(e) => { this.getContent(e, "Puzzles", "1-2") }}><i className="fas fa-child"> 1-2 years</i></a>
+                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show"
+                                            onClick={(e) => { this.getContent(e, "Puzzles", "2-3") }}><i className="fas fa-child"> 2-3 years</i></a>
+                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show"
+                                            onClick={(e) => { this.getContent(e, "Puzzles", "3-4") }}><i className="fas fa-child"> 3-4 years</i></a>
+                                        <a className="dropdown-item" data-toggle="collapse" data-target=".navbar-collapse.show"
+                                            onClick={(e) => { this.getContent(e, "Puzzles", "4-6") }}><i className="fas fa-child"> 4-6 years</i></a>
                                     </div>
-                                </li>
-                            </div>
-
-                            <div className="col-6 col-sm-3 category_item">
-                                <li className="nav-item dropdown">
-                                    <a className="nav-link" role="button" data-toggle="collapse" data-target=".navbar-collapse.show" onClick={(e) => { this.getContent(e, "Smart Toys", "all") }}><strong id="Smart_Toys">Smart Toys</strong></a>
                                 </li>
                             </div>
                         </div>

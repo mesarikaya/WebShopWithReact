@@ -35,5 +35,14 @@ module.exports = (router) => {
                     console.log("Calling AllItems");
                     imageController.getImages(req, res, null);
                 }   
+        });
+
+    router
+        .route('/searchProduct')
+            .get(function (req, res) {
+                // tslint:disable-next-line:no-console
+                console.log("Called the GET with type:", req.query.searchText);
+                let searchText = req.query.searchText;
+                imageController.searchProduct(req, res);
             }); 
 };

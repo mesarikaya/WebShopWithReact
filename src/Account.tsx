@@ -197,7 +197,8 @@ class Account extends React.Component < AccountPageProps & RouteComponentProps <
                                                 <div className="form-group">
                                                     <div className="form-check ml-3">
                                                         <input className="form-check-input" type="checkbox" value="" id="remember_me" />
-                                                        <label className="form-check-label" htmlFor="remember_me" style={{ paddingLeft: '0px', fontSize: '10px' }}>
+                                                        <label className="form-check-label" htmlFor="remember_me"
+                                                            style={{ paddingLeft: '0px', fontSize: '10px' }}>
                                                             Remember me
                                                     </label>
                                                     </div>

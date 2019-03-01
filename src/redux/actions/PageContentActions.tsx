@@ -83,7 +83,7 @@ export function UpdatePageContent(e: any, type: string, ageGroup: string) {
 
             // Depending on response status, reset the data
             isLoading = true;
-            if (response.data.result === "No data") {
+            if (response.data.status=== 400) {
                 isLoading = false;
                 pageData = [{ Author: "", Description: "", Group: "", Image: "", ImageId: "", Name: "", Reserved: "", Reserved_Until: "", Type: "" }];
             }
@@ -105,6 +105,59 @@ export function UpdatePageContent(e: any, type: string, ageGroup: string) {
         }));
     });
 };
+
+
+/**
+ * GENERIC search for products from Search Box Form
+ * @param e
+ * @param type
+ * @param ageGroup
+ */
+export function searchProduct(e: any, searchText: string) {
+    if (e !== null) { e.preventDefault(); }
+
+    // tslint:disable-next-line:no-console
+    console.log('REDUX GENERIX SEARCH ACTION:', 'Requesting: ', searchText);
+
+    // Get the content for the page
+    const params = new URLSearchParams();
+    params.append('searchText', searchText);
+
+    let isLoading = true;
+    let pageData = [{ Author: "", Description: "", Group: "", Image: "", ImageId: "", Name: "", Reserved: "", Reserved_Until: "", Type: "" }];
+
+    return ((dispatch: Dispatch<UpdatePageContentInterface>) => {
+
+        return (axios.get(`${url}searchProduct`, {
+            params,
+            'withCredentials': true
+        }).then((response) => {
+
+            // Depending on response status, reset the data
+            isLoading = true;
+            if (response.status === 400) {
+                isLoading = false;
+                pageData = [{ Author: "", Description: "", Group: "", Image: "", ImageId: "", Name: "", Reserved: "", Reserved_Until: "", Type: "" }];
+            }
+            else if (response.status === 503) {
+                isLoading = false;
+                pageData = [{ Author: "", Description: "", Group: "", Image: "", ImageId: "", Name: "", Reserved: "", Reserved_Until: "", Type: "" }];
+            }
+            else {
+                isLoading = false;
+                pageData = response.data.result;
+            }
+            dispatch({ type: 'UPDATE_PAGE_CONTENT', pageData, isLoading });
+        })
+            .catch(error => {
+                // handle error
+                // tslint:disable-next-line:no-console
+                console.log("Error in get is:", error.response);
+                throw (error);
+            }));
+    });
+};
+
 
 /**
  * Make a GET Request to add the clicked product to the user favorites

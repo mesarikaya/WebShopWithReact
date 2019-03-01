@@ -11,14 +11,6 @@ import * as actions from './redux/actions/PageContentActions';
 import { ImageContent} from './redux/types/storeState';
 import './stylesheets/App.css';
 
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-// import { faHeart } from '@fortawesome/free-solid-svg-icons';
-
-// import { faCircle } from '@fortawesome/free-regular-svg-icons';
-
-
-
 // Create history variable to be able to go back and forth within routes
 import createBrowserHistory from 'history/createBrowserHistory';
 const history = createBrowserHistory({ forceRefresh: true });
@@ -28,20 +20,37 @@ import HamburgerMenu from './HamburgerMenu';
 /** CREATE Prop and State interfaces to use in the component */
 // Set the default Props
 export interface Props {
+    searchText: string;
     showCategories: boolean;
     pageData: ImageContent[];
     returnHomePage: boolean;
     userAuthorized: boolean;
     onLogout(e: any, pageData: ImageContent[]): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
+    searchProduct(e: any, searchText: any): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
+};
+
+
+interface NavBarState {
+    searchText: string;
 };
 
 // Create Navbar component 
-class Navbar extends React.Component<Props> {
-
+class Navbar extends React.Component<Props, NavBarState> {
+    public state: NavBarState;
     constructor(props: Props) {
         super(props);
+
+        this.state = {
+            searchText: ""
+        };
     }
 
+    // On search text change change the form state
+    public onChange = (e: any) => {
+        this.setState({
+            searchText: e.target.value
+        });
+    }
 
     public setMenuItemListOrHomeButton() {
 
@@ -113,10 +122,13 @@ class Navbar extends React.Component<Props> {
 
                             <div className="col-12 col-sm-12 col-md-4 d-flex search_box">
                                 <section className="search_form" id="search_form">
-                                    <form className="form-inline my-2 my-lg-0">
+                                    <form className="form-inline my-2 my-lg-0"
+                                        onSubmit={(e) => { this.props.searchProduct(e, this.state.searchText); }}
+                                    >
                                         <div className="input-group">
                                             <input type="search" className="form-control py-2 border-right-0 border search_input"
-                                                placeholder="Search" aria-label="search" aria-describedby="search-form" />
+                                                placeholder="Search" aria-label="search" aria-describedby="search-form"
+                                                onChange={(e) => { this.onChange(e) }}/>
                                             <div className="input-group-append">
                                                 <button className="btn btn-sm search_button btn-outline-secondary border-0 border"
                                                     type="submit" style={{ background: 'white' }}>
@@ -162,7 +174,8 @@ class Navbar extends React.Component<Props> {
 // Set functions to use in Redux Dispatch
 export function mapDispatchToProps(dispatch: any) {
     return {
-        onLogout: (e: any, pageData: ImageContent[]) => dispatch(actions.signOutLocalUser(e, pageData))
+        onLogout: (e: any, pageData: ImageContent[]) => dispatch(actions.signOutLocalUser(e, pageData)),
+        searchProduct: (e: any, searchText: any) => dispatch(actions.searchProduct(e, searchText))
     }
 }
 

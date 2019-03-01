@@ -144,7 +144,7 @@ module.exports = (router, passport) => {
         .route('/auth/sign-out')
         .get((req, res) => {
                 req.logOut();
-
+                
                 // tslint:disable-next-line:no-console
                 console.log("Logging out from the user session2", req.session);
                 
@@ -174,9 +174,20 @@ module.exports = (router, passport) => {
                 id: req.body.profileObj.googleId,
                 name: req.body.profileObj.name
             };
-            // tslint:disable-next-line:no-console
-            console.log("INSIDE GOOGLE CALLBACK", req.body.profile);
-            socialAuthHandler.socialSignIn(res, profile);
+
+            if (typeof profile.id === "undefined" || typeof profile.name === "undefined") {
+                return res.status(400).json({
+                    result: {
+                        message: "Login action iscanceled by the user",
+                        status: "error"
+                    }
+                });
+            } else {
+                // tslint:disable-next-line:no-console
+                console.log("INSIDE GOOGLE CALLBACK", req.body.profile);
+                socialAuthHandler.socialSignIn(res, profile);
+            }
+
         });
 
     // Google callback call
@@ -199,9 +210,20 @@ module.exports = (router, passport) => {
                 name: req.body.name
             };
 
-            // tslint:disable-next-line:no-console
-            console.log("INSIDE FACEBOOK CALLBACK", req.body.userID);
-            socialAuthHandler.socialSignIn(res, profile);
+
+            if (typeof profile.id === "undefined" || typeof profile.name === "undefined") {
+                return res.status(400).json({
+                    result: {
+                        message: "Login action iscanceled by the user",
+                        status: "error"
+                    }
+                });
+            } else{
+                // tslint:disable-next-line:no-console
+                console.log("INSIDE FACEBOOK CALLBACK", req.body.userID);
+                socialAuthHandler.socialSignIn(res, profile);
+            }
+
         });
 
     // Facebook callback call
