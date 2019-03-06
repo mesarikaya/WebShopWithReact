@@ -14,8 +14,6 @@ const helmet = require('helmet');
 const path = require("path");
 const router = express.Router();
 
-app.use(express.static(path.join(__dirname, 'build')));
-
 /** set up middlewares */
 // Set cors availability
 const corsOptions = { credentials: true, origin: 'http://localhost:3000' };
@@ -63,6 +61,9 @@ app.use('/api', router);
 /** set up routes {API Endpoints} */
 routes(router, passport);
 
+// serve the _current directory from where the script is running
+app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname, 'build')));
 app.get('*', function (req, res) {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
