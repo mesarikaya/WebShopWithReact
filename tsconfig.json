@@ -28,6 +28,8 @@
     "acceptance-tests",
     "webpack",
     "jest",
+    "lib",
+    "tests",
     "src/setupTests.ts"
   ],
   "includes": [
