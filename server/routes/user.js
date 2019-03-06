@@ -83,12 +83,6 @@ module.exports = (router, passport) => {
     router
         .route('/verify')
         .get((req, res) => {
-            // tslint:disable-next-line:no-console
-            console.log("Enter the verification side");
-
-            // tslint:disable-next-line:no-console
-            console.log("Called the GET with type:", req.query);
-
             handleSubscription.verifyEmail(req, res);
         });
 

@@ -101,6 +101,40 @@ function handlePageContent() {
             }
         });
     };
+
+
+    // Generic Specific product by Id
+    this.getProduct = function (req, res) {
+        // Retrieve the related age group
+        let productId = req.query.id;
+
+        // Set default search to all images
+        let query = contents.find({ '_id': productId } );
+
+        query.exec(function (err, doc) {
+            if (err) {
+                // Send error message due to connection issue
+                return res.status(503).json({
+                    result: {
+                        message: err + "server connection issue",
+                        status: "error"
+                    }
+                });
+            }
+
+            if (contents) {
+                return res.status(200).json({ "result": doc });
+            } else {
+                // No content is found
+                return res.status(400).json({
+                    result: {
+                        message: "No content is available",
+                        status: "error"
+                    }
+                });
+            }
+        });
+    };
 }
 
 module.exports = handlePageContent;

@@ -17,10 +17,14 @@ import Navbar from './Navbar';
 import * as actions from './redux/actions/PageContentActions';
 import { ImageContent, StoreState } from './redux/types/storeState';
 
-import createBrowserHistory from 'history/createBrowserHistory';
+// import createBrowserHistory from 'history/createBrowserHistory';
 import { Dispatch } from 'redux';
 
-const history = createBrowserHistory({ forceRefresh: true });
+import axios from 'axios';
+
+const url = process.env.NODE_ENV === 'production' ? "/api/" : "http://localhost:5000/api/";
+
+// const history = createBrowserHistory({ forceRefresh: true });
 
 type ImageData = ImageContent;
 
@@ -57,11 +61,26 @@ class ProductPage extends React.Component<ProductPageProps & RouteComponentProps
         super(props);
 
         const currAppState = store.getState();
-        const historyState = history.location.state;
+
+        const imageDataJSON = {
+            Author: '',
+            Description: '',
+            Group: '',
+            Image: '',
+            ImageId: '',
+            Name: '',
+            Reserved: '',
+            Reserved_Until: '',
+            Type: '',
+            UserId: '',
+            key: ''
+        };
+
+        /*const historyState = history.location.state;
         const originatedPageStr = (typeof (historyState) !== "undefined" && typeof (historyState.originatedPage) !== "undefined") ? historyState.originatedPage : "/";
         const pageDataJSON = (typeof (historyState) !== "undefined" && typeof (historyState.pageData) !== "undefined") ? historyState.pageData : currAppState.pageData;
 
-        let imageDataJSON = {
+        const imageDataJSON = {
             Author: '',
             Description: '',
             Group: '',
@@ -90,8 +109,9 @@ class ProductPage extends React.Component<ProductPageProps & RouteComponentProps
                 key: historyState.imageData.key
             }
         }
+
         // tslint:disable-next-line:no-console
-        console.log("originated state is: ", typeof historyState);
+        console.log("originated state is: ", typeof historyState);*/
 
         this.state = {
             error: currAppState.error,
@@ -99,8 +119,8 @@ class ProductPage extends React.Component<ProductPageProps & RouteComponentProps
             goToAccountPage: false,
             imageData: imageDataJSON,
             isLoading: true,
-            originatedPage: originatedPageStr,
-            pageData: pageDataJSON,
+            originatedPage: '/',
+            pageData: currAppState.pageData,
             redirect: false,
             shoppingBasket: currAppState.shoppingBasket,
             userAuthorized: false,
@@ -109,9 +129,55 @@ class ProductPage extends React.Component<ProductPageProps & RouteComponentProps
     }
 
     public componentDidMount() {
+
         // Send all the data on component load
-        this.props.synchronizePageData(this.state.pageData);
+        // this.props.synchronizePageData(this.state.pageData);
+        // tslint:disable-next-line:no-console  
+        console.log("Location parsing for verification: ", this.props.match.params);
+        const params = JSON.parse(JSON.stringify(this.props.match.params));
+        // tslint:disable-next-line:no-console  
+        console.log("Location parsing for verification: ", params);
+
+        // Send all the data on component load
+        this.getProduct(params);
     }
+
+    public getProduct = (params: any) => {
+
+        return (axios.get(`${url}product`, {
+            params
+        }).then((response) => {
+
+            // handle success
+            // tslint:disable-next-line:no-console  
+            console.log("success in aios in get product", params, response);
+            if (response.status) {
+                const result = response.data.result[0];
+                // tslint:disable-next-line:no-console  
+                console.log("shared result", result);
+                this.setState({
+                    imageData: {
+                        Author: result.Author,
+                        Description: result.Description,
+                        Group: result.Group,
+                        Image: result.Image,
+                        ImageId: result._id,
+                        Name: result.Name,
+                        Reserved: result.Reserved,
+                        Reserved_Until: result.Reserved_Until,
+                        Type: result.Type,
+                        UserId: this.state.username,
+                        key: result._id
+                    }
+                });
+            }
+
+        }).catch(error => {
+            // handle error
+            // tslint:disable-next-line:no-console
+            console.log("Error in get product is:", error.response);
+        }));
+    };
 
     public modifyLoginButton() {
         if (this.props.userAuthorized === false) {
@@ -145,64 +211,73 @@ class ProductPage extends React.Component<ProductPageProps & RouteComponentProps
             return (<Redirect to='/account' />);
         } else {
             // Set default picture
-            let picture = './images/Books/0-1/At_the_zoo.png';
+            let picture = '';
 
             // Get the appropriate picture dynamically
             if (this.state.imageData.Type === "Smart Toys") {
-                if (typeof this.state.imageData.Type !== 'undefined' && typeof this.state.imageData.Image !== 'undefined') {
+                if (this.state.imageData.Image !== '' && typeof this.state.imageData.Type !== 'undefined' && typeof this.state.imageData.Image !== 'undefined') {
                     picture = './images/' + this.state.imageData.Type + '/' + this.state.imageData.Image;
                 }
             } else {
-                if (typeof this.state.imageData.Type !== 'undefined' && typeof this.state.imageData.Group !== 'undefined' && typeof this.state.imageData.Image !== 'undefined') {
+                if (this.state.imageData.Image !== '' && typeof this.state.imageData.Type !== 'undefined' && typeof this.state.imageData.Group !== 'undefined' && typeof this.state.imageData.Image !== 'undefined') {
                     picture = './images/' + this.state.imageData.Type + '/' + this.state.imageData.Group + '/' + this.state.imageData.Image;
                 }
             }
 
-            return (
-                <div className="ProductPage mt-5">
-                    {/* <!- Navigation Bar --> */}
-                    <Navbar canReturnHome={true} searchText={''} showCategories={false}
-                        pageData={this.props.pageData} userAuthorized={this.props.userAuthorized} returnHomePage={true} />
 
-                    {/*<!-- Container for Selected image details -->*/}
-                    <div className="container ">
-                        <div className="row">
-                            <div className="col-12 col-sm-4 col-md-4 text-center p-2">
-                                <a>
-                                    <img className="img-fluid rounded mb-3" src={require(`${picture}`)} alt="testing" />
-                                </a>
-                            </div>
-                            <div className="col-12 col-sm-8 col-md-8">
-                                <h4 className="text-center mb-3" id="product_name">{this.state.imageData.Name}</h4>
-                                <div className="product_details">
-                                    <p> <strong>Author:</strong> <span id="Author">{this.state.imageData.Author}</span></p>
-                                    <p> <strong>Age Group:</strong> <span id="Age_Group">{this.state.imageData.Group}</span></p>
-                                    <p> <strong>Description:</strong> <span id="Description">{this.state.imageData.Description}</span></p>
+            if (picture !== '') {
+                return (
+                    <div className="ProductPage mt-5">
+                        {/* <!- Navigation Bar --> */}
+                        <Navbar canReturnHome={true} searchText={''} showCategories={false}
+                            pageData={this.props.pageData} userAuthorized={this.props.userAuthorized} returnHomePage={true} />
+
+                        {/*<!-- Container for Selected image details -->*/}
+                        <div className="container ">
+                            <div className="row">
+                                <div className="col-12 col-sm-4 col-md-4 text-center p-2">
+                                    <a>
+                                        <img className="img-fluid rounded mb-3" src={require(`${picture}`)} alt="testing" />
+                                    </a>
                                 </div>
+                                <div className="col-12 col-sm-8 col-md-8">
+                                    <h4 className="text-center mb-3" id="product_name">{this.state.imageData.Name}</h4>
+                                    <div className="product_details">
+                                        <p> <strong>Author:</strong> <span id="Author">{this.state.imageData.Author}</span></p>
+                                        <p> <strong>Age Group:</strong> <span id="Age_Group">{this.state.imageData.Group}</span></p>
+                                        <p> <strong>Description:</strong> <span id="Description">{this.state.imageData.Description}</span></p>
+                                    </div>
 
-                                <div className="row justify-content-center">
-                                    <a className="mr-5" href="/add_to_basket">
-                                        <button className="btn btn-sm add_to_basket_button"
-                                            onClick={(e) => { this.props.modifyShoppingBasket(e, this.state.imageData, true) }}>
-                                            <i className="fas fa-cart-plus icon_big">
-                                                <strong className="text-center" id="icons"> Add to basket </strong>
-                                            </i>
-                                        </button>
-                                    </a>
-                                    <a href="/add_to_favorites">
-                                        <button className="btn btn-sm favorites_button"
-                                            onClick={(e) => { this.props.modifyFavorites(e, this.state.imageData, true) }}>
-                                            <i className="fas fa-heart icon_big">
-                                                <strong id="icons"> Add to Favorites</strong>
-                                            </i>
-                                        </button>
-                                    </a>
+                                    <div className="row justify-content-center">
+                                        <a className="mr-5" href="/add_to_basket">
+                                            <button className="btn btn-sm add_to_basket_button"
+                                                onClick={(e) => { this.props.modifyShoppingBasket(e, this.state.imageData, true) }}>
+                                                <i className="fas fa-cart-plus icon_big">
+                                                    <strong className="text-center" id="icons"> Add to basket </strong>
+                                                </i>
+                                            </button>
+                                        </a>
+                                        <a href="/add_to_favorites">
+                                            <button className="btn btn-sm favorites_button"
+                                                onClick={(e) => { this.props.modifyFavorites(e, this.state.imageData, true) }}>
+                                                <i className="fas fa-heart icon_big">
+                                                    <strong id="icons"> Add to Favorites</strong>
+                                                </i>
+                                            </button>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            )
+                )
+            } else {
+                return (
+                    <div className="col-12 col-sm-6 col-md-3 text-center p-2 image_add_ons">
+                        <h4>No items to show</h4>
+                    </div>
+                );
+            }
         }
 
 

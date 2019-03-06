@@ -39,10 +39,16 @@ module.exports = (router) => {
 
     router
         .route('/searchProduct')
-            .get(function (req, res) {
-                // tslint:disable-next-line:no-console
-                console.log("Called the GET with type:", req.query.searchText);
-                let searchText = req.query.searchText;
+        .get(function (req, res) {
+                // Search product
                 imageController.searchProduct(req, res);
-            }); 
+        });
+
+    // Get product by ID
+    router
+        .route('/product')
+        .get(function (req, res) {
+            // Get specific product based on id
+            imageController.getProduct(req, res);
+        }); 
 };
