@@ -92,11 +92,11 @@ class Image extends React.Component<ImageProps & ImageExtraProps, ImageState & I
 
         // Get teh appropriate picture dynamically
         if (this.props.Type === "Smart Toys") {
-            if (this.props.Image != '' && typeof this.props.Type !== 'undefined' && typeof this.props.Image !== 'undefined') {
+            if (this.props.Image !== '' && typeof this.props.Type !== 'undefined' && typeof this.props.Image !== 'undefined') {
                 picture = './images/' + this.props.Type + '/' + this.props.Image;
             }
         } else {
-            if (this.props.Image != '' && typeof this.props.Type !== 'undefined' && typeof this.props.Group !== 'undefined'
+            if (this.props.Image !== '' && typeof this.props.Type !== 'undefined' && typeof this.props.Group !== 'undefined'
                 && typeof this.props.Image !== 'undefined') {
                 picture = './images/' + this.props.Type + '/' + this.props.Group + '/' + this.props.Image;
             }
