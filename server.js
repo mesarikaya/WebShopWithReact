@@ -37,8 +37,6 @@ try {
     throw new Error("Error in connecting the database server");
 }
 
-let port = 5000 || process.env.PORT;
-
 /** set up Oauth package to the app and load the Environment variables */
 require('dotenv').load();
 
@@ -67,6 +65,8 @@ app.use(express.static(path.join(__dirname, 'build')));
 app.get('/*', function (req, res) {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
+
+let port = 5000 || process.env.PORT;
 
 /** start server */
 app.listen(port, () => {
