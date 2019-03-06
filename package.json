@@ -52,7 +52,6 @@
   },
   "scripts": {
     "start": "react-scripts-ts start",
-    "heroku-postbuild": "npm install && npm run build",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject"
