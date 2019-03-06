@@ -150,8 +150,8 @@ class Favorites extends React.Component<Props & RouteComponentProps<PathProps>, 
         return (
             <div className="Favorites">
                 {/* <!- Navigation Bar --> */}
-                <Navbar searchText={''} showCategories={true} pageData={this.props.pageData}
-                    userAuthorized={this.props.userAuthorized} returnHomePage={true}/>
+                <Navbar canReturnHome={true} searchText={''} showCategories={true}
+                    pageData={this.props.pageData} userAuthorized={this.props.userAuthorized} returnHomePage={true}/>
 
                 <div className="container pt-5">
                     <div className="row cardsRow justify-content-around" >

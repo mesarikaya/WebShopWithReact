@@ -1,6 +1,7 @@
 // Import necessary packages
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from "react-router";
 import { Dispatch } from "redux";
 
 // Import necessary Redux store state interface, actions, bootstrap.css, stylesheets, basic image and font awesome
@@ -20,6 +21,7 @@ import HamburgerMenu from './HamburgerMenu';
 /** CREATE Prop and State interfaces to use in the component */
 // Set the default Props
 export interface Props {
+    canReturnHome: boolean;
     searchText: string;
     showCategories: boolean;
     pageData: ImageContent[];
@@ -31,6 +33,7 @@ export interface Props {
 
 
 interface NavBarState {
+    goToAccountPage: boolean
     searchText: string;
 };
 
@@ -41,6 +44,7 @@ class Navbar extends React.Component<Props, NavBarState> {
         super(props);
 
         this.state = {
+            goToAccountPage: false,
             searchText: ""
         };
     }
@@ -104,8 +108,23 @@ class Navbar extends React.Component<Props, NavBarState> {
         }
     }
 
-    public render() {
+    public searchProduct = (e: any, searchText: string) => {
+        this.props.searchProduct(e, searchText);
 
+        // If not the home page, redirect
+        if (this.props.canReturnHome) {
+            this.setState({
+                goToAccountPage: true,
+            });
+        }
+
+    };
+
+    public render() {
+        
+        if (this.state.goToAccountPage) {
+            return (<Redirect to='/' />);
+        }
         return (
             <React.Fragment>
                 {/* <!- Navigation Bar --> */}
@@ -123,7 +142,7 @@ class Navbar extends React.Component<Props, NavBarState> {
                             <div className="col-12 col-sm-12 col-md-4 d-flex search_box">
                                 <section className="search_form" id="search_form">
                                     <form className="form-inline my-2 my-lg-0"
-                                        onSubmit={(e) => { this.props.searchProduct(e, this.state.searchText); }}
+                                        onSubmit={(e) => { this.searchProduct(e, this.state.searchText); }}
                                     >
                                         <div className="input-group">
                                             <input type="search" className="form-control py-2 border-right-0 border search_input"

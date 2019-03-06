@@ -25,7 +25,7 @@ const passport = require('passport');
 // Create Mongoose connection with existing mongodb schema
 const mongoose = require('mongoose');
 const MongoDBStore = require('connect-mongodb-session')(session);
-const url = process.env.MONGODB_URI || "mongodb://localhost:27017/sharing_app";
+const url = process.env.MONGOLAB_URI || "mongodb://localhost:27017/sharing_app";
 
 /** connect to MongoDB datastore */
 try {

@@ -150,8 +150,8 @@ class ShoppingBasket extends React.Component<Props & RouteComponentProps<PathPro
         return (
             <div className="ShoppingBasket">
                 {/* <!- Navigation Bar --> */}
-                <Navbar searchText={''} showCategories={true} pageData={this.props.pageData}
-                    userAuthorized={this.props.userAuthorized} returnHomePage={true}/>
+                <Navbar canReturnHome={true} searchText={''} showCategories={true}
+                    pageData={this.props.pageData} userAuthorized={this.props.userAuthorized} returnHomePage={true}/>
 
                 <div className="container pt-5">
                     <div className="table-responsive">

@@ -149,7 +149,8 @@ class App extends React.Component<Props & RouteComponentProps<PathProps>, StoreS
         return (
             <div className="App">
                 {/* <!- Navigation Bar --> */}
-                <Navbar searchText={''} showCategories={true} pageData={this.props.pageData} userAuthorized={this.props.userAuthorized} returnHomePage={false} />
+                <Navbar canReturnHome={false} searchText={''} showCategories={true}
+                    pageData={this.props.pageData} userAuthorized={this.props.userAuthorized} returnHomePage={false} />
                 
                 <div className="container">
                     <ImageList pageData={this.props.pageData} rows={rows} history={this.props.history} />
