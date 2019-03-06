@@ -38,6 +38,7 @@ export interface ProductPageProps {
     shoppingBasket: ImageContent[];
     userAuthorized: boolean;
     modifyFavorites(e: any, props: any, action: boolean): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
+    modifyShoppingBasket(e: any, props: any, action: boolean): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
     onLogout(e: any, pageData: ImageContent[]): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
     synchronizePageData(pageData: ImageContent[]): (dispatch: Dispatch<actions.UpdatePageContentAction>) => Promise<void>;
 };
@@ -181,12 +182,20 @@ class ProductPage extends React.Component<ProductPageProps & RouteComponentProps
 
                                 <div className="row justify-content-center">
                                     <a className="mr-5" href="/add_to_basket">
-                                        <button className="btn btn-sm add_to_basket_button">
-                                            <i className="fas fa-cart-plus icon_big"><strong className="text-center" id="icons"> Add to basket </strong></i>
+                                        <button className="btn btn-sm add_to_basket_button"
+                                            onClick={(e) => { this.props.modifyShoppingBasket(e, this.state.imageData, true) }}>
+                                            <i className="fas fa-cart-plus icon_big">
+                                                <strong className="text-center" id="icons"> Add to basket </strong>
+                                            </i>
                                         </button>
                                     </a>
                                     <a href="/add_to_favorites">
-                                        <button className="btn btn-sm favorites_button" onClick={(e) => { this.props.modifyFavorites(e, this.state.imageData, true) }}><i className="fas fa-heart icon_big"><strong id="icons"> Add to Favorites</strong></i></button>
+                                        <button className="btn btn-sm favorites_button"
+                                            onClick={(e) => { this.props.modifyFavorites(e, this.state.imageData, true) }}>
+                                            <i className="fas fa-heart icon_big">
+                                                <strong id="icons"> Add to Favorites</strong>
+                                            </i>
+                                        </button>
                                     </a>
                                 </div>
                             </div>
@@ -203,6 +212,7 @@ class ProductPage extends React.Component<ProductPageProps & RouteComponentProps
 export function mapDispatchToProps(dispatch: any) {
     return {
         modifyFavorites: (e: any, props: any, action: boolean) => dispatch(actions.modifyFavorites(e, props, action)),
+        modifyShoppingBasket: (e: any, props: any, action: boolean) => dispatch(actions.modifyShoppingBasket(e, props, true)),
         onLogout: (e: any, pageData: ImageContent[]) => dispatch(actions.signOutLocalUser(e, pageData)),
         synchronizePageData: (pageData: ImageContent[]) => dispatch(actions.SynchronizePageData(pageData)),
     }
