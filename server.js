@@ -68,8 +68,8 @@ app.use('/api', router);
 routes(router, passport);
 
 // serve the _current directory from where the script is running
-app.use(express.static(__dirname));
 app.use(express.static(path.join(__dirname, 'build')));
+
 app.get('/*', function (req, res) {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });

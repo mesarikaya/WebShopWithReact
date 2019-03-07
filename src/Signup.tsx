@@ -248,7 +248,8 @@ class Signup extends React.Component<SignupPageProps & RouteComponentProps<PathP
                                         </div>
 
                                         {/*<!-- Step 1 Account information-->*/}
-                                        <div id="collapseOne" className={this.state.activeFormPage[0] ? 'collapse show':'collapse'} aria-labelledby="headingOne" data-parent="#accordion" >
+                                        <div id="collapseOne" className={this.state.activeFormPage[0] ? 'collapse show' : 'collapse'}
+                                            aria-labelledby="headingOne" data-parent="#accordion" >
                                             <div id="collapseOne" aria-labelledby="headingOne" data-parent="#accordion" className="card">
                                                 <h4 className="text-center mb-4 mt-3">Account Details:</h4>
                                                 {/*<!--<div className="alert alert-danger">
@@ -258,11 +259,14 @@ class Signup extends React.Component<SignupPageProps & RouteComponentProps<PathP
                                                     <div className="control-group col-10 col-sm-10 col-md-7">
                                                         <div className="form-group floating-label-form-group controls mb-0 pb-2">
                                                             <div className="input-group text-center">
-                                                                <input className="form-control py-2 border-right-0 border" id="signup_username" type="text" placeholder="Username"
+                                                                <input className="form-control py-2 border-right-0 border" id="signup_username"
+                                                                    type="text" placeholder="Username"
                                                                     name="email" required={true} data-validation-required-message="Please enter username."
                                                                     onChange={(e) => { this.onChange(e) }} />
                                                                 <div className="input-group-addon userIcon" style={{ background: "white" }}>
-                                                                    <div className="input-group-text border-0 border" style={{ background: "white" }}><i className="fas fa-user"/></div>
+                                                                    <div className="input-group-text border-0 border" style={{ background: "white" }}>
+                                                                        <i className="fas fa-user" />
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <p className="help-block text-danger"/>
@@ -274,10 +278,13 @@ class Signup extends React.Component<SignupPageProps & RouteComponentProps<PathP
                                                         <div className="form-group floating-label-form-group controls">
                                                             <div className="input-group text-center">
                                                                 <input className="form-control py-2 border-right-0 border" id="signup_password" type="password"
-                                                                    name="password" placeholder="Password" required={true} data-validation-required-message="Please enter your password."
+                                                                    name="password" placeholder="Password" required={true}
+                                                                    data-validation-required-message="Please enter your password."
                                                                     onChange={(e) => { this.onChange(e) }} />
                                                                 <div className="input-group-addon passwordIcon" style={{ background: "white" }}>
-                                                                    <div className="input-group-text border-0 border" style={{ background: "white" }}><i className="fas fa-key"/></div>
+                                                                    <div className="input-group-text border-0 border" style={{ background: "white" }}>
+                                                                        <i className="fas fa-key" />
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <p className="help-block text-danger"/>
@@ -285,7 +292,8 @@ class Signup extends React.Component<SignupPageProps & RouteComponentProps<PathP
                                                         <div className="form-group floating-label-form-group controls">
                                                             <div className="input-group justify-content-center">
                                                                 <input className="form-control py-2 border-right-0 border" id="signup_confirm_password" type="password"
-                                                                    name="confirm_password" placeholder="Confirm Password" required={true} data-validation-required-message="Please reenter your password."
+                                                                    name="confirm_password" placeholder="Confirm Password"
+                                                                    required={true} data-validation-required-message="Please reenter your password."
                                                                     onChange={(e) => { this.onChange(e) }}
                                                                 />
                                                                 <div className="input-group-addon passwordIcon" style={{ background: "white" }}>
