@@ -35,7 +35,8 @@ function handlePageContent() {
 
         query.exec(function (err, doc) {
             if (err) {
-                // Send error message due to connection issue
+                // tslint:disable-next-line:no-console
+                console.log("inside the mongo call ");
                 // Send error message due to connection issue
                 return res.status(503).json({
                     result: {
