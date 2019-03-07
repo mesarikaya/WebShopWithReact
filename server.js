@@ -14,6 +14,9 @@ const helmet = require('helmet');
 const path = require("path");
 const router = express.Router();
 
+/** set up Oauth package to the app and load the Environment variables */
+require('dotenv').load();
+
 /** set up middlewares */
 // Set cors availability
 const corsOptions = { credentials: true, origin: 'http://localhost:3000' };
@@ -25,7 +28,11 @@ const passport = require('passport');
 // Create Mongoose connection with existing mongodb schema
 const mongoose = require('mongoose');
 const MongoDBStore = require('connect-mongodb-session')(session);
+
 const url = process.env.MONGOLAB_URI || "mongodb://localhost:27017/sharing_app";
+
+// tslint:disable-next-line:no-console
+console.log(`connected to mongodb:`, url);
 
 /** connect to MongoDB datastore */
 try {
@@ -33,12 +40,13 @@ try {
         useNewUrlParser: true,
     });
     mongoose.Promise = global.Promise;
+    // tslint:disable-next-line:no-console
+    console.log(`connected to mongodb:`, url);
 } catch (error) {
     throw new Error("Error in connecting the database server");
 }
 
-/** set up Oauth package to the app and load the Environment variables */
-require('dotenv').load();
+
 
 // Add helmet to protect for general attacks
 app.use(helmet());
