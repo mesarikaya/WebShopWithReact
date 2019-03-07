@@ -5,7 +5,8 @@ import { UPDATE_LOCAL_USER_AUTHORIZATION } from '../constants/PageContentConstan
 import { StoreState } from '../types/storeState';
 
 export function updatePageReducer(state: any, action: UpdatePageContentAction): StoreState  {
-
+    // tslint:disable-next-line:no-console
+    console.log("action is:", action);
     switch (action.type) {
 
         case UPDATE_PAGE_CONTENT: // Update images and loading status on page

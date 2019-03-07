@@ -92,6 +92,8 @@ export function UpdatePageContent(e: any, type: string, ageGroup: string) {
                 pageData = [{ Author: "", Description: "", Group: "", Image: "", ImageId: "", Name: "", Reserved: "", Reserved_Until: "", Type: "" }];
             }
             else {
+                // tslint:disable-next-line:no-console
+                console.log("Page data to share is:", pageData);
                 isLoading = false;
                 pageData = response.data.result;
             }
