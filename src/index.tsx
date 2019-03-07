@@ -13,7 +13,7 @@ import './stylesheets/index.css';
 
 import { history, store } from './redux/store';
 
-import registerServiceWorker from './registerServiceWorker';
+// import registerServiceWorker from './registerServiceWorker';
 
 // const history = createBrowserHistory();
 ReactDOM.render(
