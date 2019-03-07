@@ -93,10 +93,13 @@ export function UpdatePageContent(e: any, type: string, ageGroup: string) {
             }
             else {
                 // tslint:disable-next-line:no-console
-                console.log("Page data to share is:", pageData);
+                console.log("Page data to share is:", pageData, "response is: ", response);
                 isLoading = false;
                 pageData = response.data.result;
             }
+
+            // tslint:disable-next-line:no-console
+            console.log("Page data to share is:", pageData, "response is: ", response);
             dispatch({ type: 'UPDATE_PAGE_CONTENT', pageData, isLoading });
         })
         .catch(error => {
