@@ -171,7 +171,6 @@ class ProductPage extends React.Component<ProductPageProps & RouteComponentProps
                     }
                 });
             }
-
         }).catch(error => {
             // handle error
             // tslint:disable-next-line:no-console
@@ -191,7 +190,8 @@ class ProductPage extends React.Component<ProductPageProps & RouteComponentProps
         } else {
             return (
                 <a>
-                    <button className="btn btn-sm login_button m-2" onClick={(e) => { this.props.onLogout(e, this.state.pageData) }}>
+                    <button className="btn btn-sm login_button m-2"
+                        onClick={(e) => { this.props.onLogout(e, this.state.pageData) }}>
                         <i className="fas fa-user-plus"><strong id="icons"> Log out</strong></i>
                     </button>
                 </a>
