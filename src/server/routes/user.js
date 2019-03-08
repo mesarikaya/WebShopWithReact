@@ -54,7 +54,7 @@ module.exports = (router, passport) => {
     // Set created authenticate
     // After sign up request, direct to home page for login
     router
-        .route('/auth/sign-up')
+        .route('/api/auth/sign-up')
         .post((req, res, next) => {
             return passport.authenticate('local-signup', (err, user) => {
                 const result = errorHandler.sendErrorDetails(err, res);
