@@ -13,7 +13,7 @@ import './stylesheets/index.css';
 
 import { history, store } from './redux/store';
 
-// import registerServiceWorker from './registerServiceWorker';
+import registerServiceWorker from './registerServiceWorker';
 
 // const history = createBrowserHistory();
 ReactDOM.render(
@@ -23,5 +23,4 @@ ReactDOM.render(
         </ConnectedRouter>
     </Provider>
 ), document.getElementById('root') as HTMLElement);
-
-    
+registerServiceWorker();

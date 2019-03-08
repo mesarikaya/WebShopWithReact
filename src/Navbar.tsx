@@ -13,8 +13,8 @@ import { ImageContent} from './redux/types/storeState';
 import './stylesheets/App.css';
 
 // Create history variable to be able to go back and forth within routes
-import createBrowserHistory from 'history/createBrowserHistory';
-const history = createBrowserHistory({ forceRefresh: true });
+// import createBrowserHistory from 'history/createBrowserHistory';
+// const history = createBrowserHistory({ forceRefresh: true });
 
 import HamburgerMenu from './HamburgerMenu';
 
@@ -33,8 +33,10 @@ export interface Props {
 
 
 interface NavBarState {
-    goToAccountPage: boolean
+    goToAccountPage: boolean;
+    goToHomePage: boolean;
     searchText: string;
+
 };
 
 // Create Navbar component 
@@ -45,6 +47,7 @@ class Navbar extends React.Component<Props, NavBarState> {
 
         this.state = {
             goToAccountPage: false,
+            goToHomePage: false,
             searchText: ""
         };
     }
@@ -84,8 +87,9 @@ class Navbar extends React.Component<Props, NavBarState> {
     public openAccountPage(e: any) {
         // Deactivate default behavior
         if (e !== null) { e.preventDefault(); }
-
-        history.push('account');
+        this.setState({
+            goToAccountPage: true
+        });
     }
 
     public modifyLoginButton() {
@@ -114,7 +118,7 @@ class Navbar extends React.Component<Props, NavBarState> {
         // If not the home page, redirect
         if (this.props.canReturnHome) {
             this.setState({
-                goToAccountPage: true,
+                goToHomePage: true,
             });
         }
 
@@ -122,9 +126,14 @@ class Navbar extends React.Component<Props, NavBarState> {
 
     public render() {
         
-        if (this.state.goToAccountPage) {
+        if (this.state.goToHomePage) {
             return (<Redirect to='/' />);
         }
+
+        if (this.state.goToAccountPage) {
+            return (<Redirect to='/account' />);
+        }
+
         return (
             <React.Fragment>
                 {/* <!- Navigation Bar --> */}

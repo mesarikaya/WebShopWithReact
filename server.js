@@ -5,7 +5,7 @@
 const express = require("express");
 const session = require('express-session');
 const app = express();
-const routes = require('./server/routes/index');
+const routes = require('./src/server/routes/index');
 const flash = require('connect-flash');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
@@ -59,7 +59,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(passport.initialize());
 
 // Serialize and deserialize the local storage session
-require('./server/passport/index')(passport);
+require('./src/server/passport/index')(passport);
 
 // Set all the /api/* routes extension for the nodejs backend server calls
 app.use('/api', router);

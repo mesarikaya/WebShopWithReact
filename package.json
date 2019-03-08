@@ -5,6 +5,7 @@
   "proxy": "http://localhost:5000/",
   "homepage": "https://webshopforyourkids.netlify.com/",
   "dependencies": {
+    "dns": "file:./src/mock/dns",
     "@fortawesome/fontawesome-svg-core": "^1.2.15",
     "@fortawesome/free-regular-svg-icons": "^5.7.2",
     "@fortawesome/free-solid-svg-icons": "^5.7.2",
