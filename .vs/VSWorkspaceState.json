@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\.netlify",
+    "\\build",
+    "\\public",
+    "\\src",
+    "\\src\\server",
+    "\\src\\server\\config",
+    "\\src\\server\\config\\commonfunctions",
+    "\\src\\server\\controllers",
+    "\\src\\server\\models"
+  ],
+  "PreviewInSolutionExplorer": false
+}
