@@ -83,6 +83,10 @@ if (process.env.NODE_ENV === 'production') {
     app.get('*', function (req, res) {
         res.sendFile(path.join(__dirname, 'build', 'index.html'));
     });
+
+    app.use('/api', router);
+    // tslint:disable-next-line:no-console
+    console.log("app routes are set for /api");
 }
 
 let port = 5000 || process.env.PORT;
