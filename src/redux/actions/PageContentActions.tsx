@@ -6,6 +6,10 @@ import verifyTokenandDispatch from '../helperFunctions/verifyToken';
 import { ImageContent } from '../types/storeState';
 import { UpdatePageContentAction } from './PageContentActions';
 
+// Check the environment
+// tslint:disable-next-line:no-console
+console.log('environment is', process.env.NODE_ENV);
+
 // Set the API url for back end calls
 const url = process.env.NODE_ENV === 'production' ? "/api/" : "http://localhost:5000/api/";
 
