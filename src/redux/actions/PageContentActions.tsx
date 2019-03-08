@@ -7,7 +7,7 @@ import { ImageContent } from '../types/storeState';
 import { UpdatePageContentAction } from './PageContentActions';
 
 // Set the API url for back end calls
-const url = process.env.NODE_ENV === 'production' ? "/api/" : "http://localhost:5000/api/";
+const url = process.env.NODE_ENV === 'production' ? "/" : "http://localhost:5000/api/";
 
 /** Set action interfaces */
 export interface UpdatePageContentInterface {
