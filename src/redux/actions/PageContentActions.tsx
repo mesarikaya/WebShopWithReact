@@ -6,9 +6,6 @@ import verifyTokenandDispatch from '../helperFunctions/verifyToken';
 import { ImageContent } from '../types/storeState';
 import { UpdatePageContentAction } from './PageContentActions';
 
-// Check the environment
-// tslint:disable-next-line:no-console
-console.log('environment is', process.env.NODE_ENV);
 
 // Set the API url for back end calls
 const url = process.env.NODE_ENV === 'production' ? "/api/" : "http://localhost:5000/api/";
@@ -70,7 +67,9 @@ export function UpdatePageContent(e: any, type: string, ageGroup: string) {
 
     // tslint:disable-next-line:no-console
     console.log('REDUX UPDATE_PAGE_CONTENT The link was clicked.', 'Requesting: ', type, "and", e);
-
+    // Check the environment
+    // tslint:disable-next-line:no-console
+    console.log('environment is', process.env.NODE_ENV);
     // Get the content for the page
     const params = new URLSearchParams();
     params.append('searchType', type);
